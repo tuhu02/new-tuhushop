@@ -1,9 +1,9 @@
 import { Link } from '@inertiajs/react';
 import { BookOpen, FolderGit2, LayoutGrid } from 'lucide-react';
-import AppLogo from '@/components/app-logo';
-import { NavFooter } from '@/components/nav-footer';
-import { NavMain } from '@/components/nav-main';
-import { NavUser } from '@/components/nav-user';
+import AppLogo from '@/components/ui/app-logo';
+import { NavFooter } from '@/components/customer/nav-footer';
+import { NavMain } from '@/components/customer/nav-main';
+import { NavUser } from '@/components/customer/nav-user';
 import {
     Sidebar,
     SidebarContent,
