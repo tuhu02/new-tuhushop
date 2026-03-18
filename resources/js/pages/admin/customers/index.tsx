@@ -1,19 +1,6 @@
 import { Link, router } from '@inertiajs/react';
 import AdminLayout from '@/layouts/admin-layout';
-
-type Customer = {
-    id: number;
-    user_id: number;
-    name: string;
-    phone: string | null;
-    address: string | null;
-    created_at: string;
-    user: {
-        id: number;
-        name: string;
-        email: string;
-    };
-};
+import type { Customer } from '@/types';
 
 export default function CustomerIndex({
     customers,

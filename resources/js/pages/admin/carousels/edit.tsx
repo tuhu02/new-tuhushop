@@ -4,15 +4,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import AdminLayout from '@/layouts/admin-layout';
-
-type CarouselItem = {
-    id: number;
-    title: string | null;
-    image_path: string;
-    image_url: string;
-    sort_order: number;
-    is_active: boolean;
-};
+import type { CarouselItem } from '@/types';
 
 export default function CarouselEdit({ carousel }: { carousel: CarouselItem }) {
     const { data, setData, put, processing, errors } = useForm({

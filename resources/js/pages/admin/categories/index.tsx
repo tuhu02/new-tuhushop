@@ -1,12 +1,6 @@
 import { Link, router } from '@inertiajs/react';
 import AdminLayout from '@/layouts/admin-layout';
-
-type Category = {
-    id: number;
-    name: string;
-    slug: string;
-    is_active: boolean;
-};
+import type { Category } from '@/types';
 
 export default function CategoryIndex({
     categories,

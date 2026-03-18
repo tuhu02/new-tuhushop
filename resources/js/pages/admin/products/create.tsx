@@ -4,23 +4,14 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import AdminLayout from '@/layouts/admin-layout';
-
-type Brand = {
-    id: number;
-    name: string;
-};
-
-type Category = {
-    id: number;
-    name: string;
-};
+import type { Brand, CategoryOption } from '@/types';
 
 export default function ProductCreate({
     brands,
     categories,
 }: {
     brands: Brand[];
-    categories: Category[];
+    categories: CategoryOption[];
 }) {
     const { data, setData, post, processing, errors } = useForm({
         name: '',

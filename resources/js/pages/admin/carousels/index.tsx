@@ -1,14 +1,6 @@
 import { Link, router } from '@inertiajs/react';
 import AdminLayout from '@/layouts/admin-layout';
-
-type CarouselItem = {
-    id: number;
-    title: string | null;
-    image_path: string;
-    image_url: string;
-    sort_order: number;
-    is_active: boolean;
-};
+import type { CarouselItem } from '@/types';
 
 export default function CarouselIndex({
     carousels,

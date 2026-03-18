@@ -4,31 +4,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import AdminLayout from '@/layouts/admin-layout';
-
-type Brand = {
-    id: number;
-    name: string;
-};
-
-type Category = {
-    id: number;
-    name: string;
-};
-
-type Product = {
-    id: number;
-    name: string;
-    slug: string;
-    brand_id: number;
-    thumbnail: string | null;
-    thumbnail_url: string | null;
-    is_active: boolean;
-    brand: {
-        id: number;
-        name: string;
-    } | null;
-    categories: Category[];
-};
+import type { Brand, CategoryOption, Product } from '@/types';
 
 export default function ProductEdit({
     product,
@@ -37,7 +13,7 @@ export default function ProductEdit({
 }: {
     product: Product;
     brands: Brand[];
-    categories: Category[];
+    categories: CategoryOption[];
 }) {
     const { data, setData, post, processing, errors } = useForm({
         _method: 'put',

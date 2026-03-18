@@ -1,23 +1,6 @@
 import { Link, router } from '@inertiajs/react';
 import AdminLayout from '@/layouts/admin-layout';
-
-type Product = {
-    id: number;
-    name: string;
-    slug: string;
-    brand_id: number;
-    thumbnail: string | null;
-    thumbnail_url: string | null;
-    is_active: boolean;
-    brand: {
-        id: number;
-        name: string;
-    } | null;
-    categories: {
-        id: number;
-        name: string;
-    }[];
-};
+import type { Product } from '@/types';
 
 export default function ProductIndex({ products }: { products: Product[] }) {
     const handleDelete = (productId: number) => {

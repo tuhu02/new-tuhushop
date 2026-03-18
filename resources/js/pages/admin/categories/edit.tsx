@@ -4,13 +4,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import AdminLayout from '@/layouts/admin-layout';
-
-type Category = {
-    id: number;
-    name: string;
-    slug: string;
-    is_active: boolean;
-};
+import type { Category } from '@/types';
 
 export default function CategoryEdit({ category }: { category: Category }) {
     const { data, setData, put, processing, errors } = useForm({

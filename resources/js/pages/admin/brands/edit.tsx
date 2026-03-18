@@ -4,11 +4,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import AdminLayout from '@/layouts/admin-layout';
-
-type Brand = {
-    id: number;
-    name: string;
-};
+import type { Brand } from '@/types';
 
 export default function BrandEdit({ brand }: { brand: Brand }) {
     const { data, setData, put, processing, errors } = useForm({

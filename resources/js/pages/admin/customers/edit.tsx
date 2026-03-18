@@ -4,25 +4,9 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import AdminLayout from '@/layouts/admin-layout';
+import type { Customer } from '@/types';
 
-type Customer = {
-    id: number;
-    user_id: number;
-    name: string;
-    phone: string | null;
-    address: string | null;
-    user: {
-        id: number;
-        name: string;
-        email: string;
-    };
-};
-
-export default function CustomerEdit({
-    customer,
-}: {
-    customer: Customer;
-}) {
+export default function CustomerEdit({ customer }: { customer: Customer }) {
     const { data, setData, put, processing, errors } = useForm({
         name: customer.user.name,
         email: customer.user.email,
@@ -82,7 +66,9 @@ export default function CustomerEdit({
                     </div>
 
                     <div className="grid gap-2">
-                        <Label htmlFor="password">Password Baru (Opsional)</Label>
+                        <Label htmlFor="password">
+                            Password Baru (Opsional)
+                        </Label>
                         <Input
                             id="password"
                             type="password"
