@@ -1,164 +1,147 @@
-import { Head, Link, router } from '@inertiajs/react';
-import { Button } from '@/components/ui/button';
+import { Link, router } from '@inertiajs/react';
 import AdminLayout from '@/layouts/admin-layout';
-import {
-    Table,
-    TableBody,
-    TableCell,
-    TableHead,
-    TableHeader,
-    TableRow,
-} from '@/components/ui/table';
-import { Pencil, Trash2, Plus } from 'lucide-react';
 import { PriceListCategoryIndexProps } from '@/types';
 
-
-export default function PriceListCategoryIndex({ categories }: PriceListCategoryIndexProps) {
+export default function PriceListCategoryIndex({
+    categories,
+}: PriceListCategoryIndexProps) {
     const handleDelete = (id: number) => {
-        if (confirm('Hapus kategori price list ini?')) {
-            router.delete(`/admin/price-list-categories/${id}`);
+        if (!window.confirm('Hapus kategori price list ini?')) {
+            return;
         }
+
+        router.delete(`/admin/price-list-categories/${id}`);
     };
 
     return (
-        <AdminLayout title="Price List Categories">
-            <Head title="Price List Categories" />
-
-            <div className="py-8 pl-8">
-                <div className="mb-8 flex items-center justify-between">
-                    <div>
-                        <h1 className="text-3xl font-bold">
-                            Price List Categories
-                        </h1>
-                        <p className="text-sm text-muted-foreground">
-                            Kelola kategori harga (Diamond, Weekly Pass, dll)
-                        </p>
-                    </div>
+        <AdminLayout
+            title="Admin Price List Categories"
+            headerTitle="Price List Categories"
+        >
+            <div className="space-y-4 p-4">
+                <div className="flex items-center justify-between">
+                    <h1 className="text-xl font-semibold">
+                        Price List Categories
+                    </h1>
                     <Link
                         href="/admin/price-list-categories/create"
-                        as="button"
-                        className="inline-flex items-center gap-2 rounded bg-green-600 px-4 py-2 text-white hover:bg-green-700"
+                        className="inline-flex h-9 items-center rounded-md bg-primary px-4 text-sm font-medium text-primary-foreground"
                     >
-                        <Plus className="h-4 w-4" />
-                        Tambah Category
+                        Tambah Kategori
                     </Link>
                 </div>
 
-                {categories.data.length > 0 ? (
-                    <div>
-                        <Table className="rounded border">
-                            <TableHeader>
-                                <TableRow>
-                                    <TableHead>Nama</TableHead>
-                                    <TableHead>Slug</TableHead>
-                                    <TableHead className="w-40">
-                                        Deskripsi
-                                    </TableHead>
-                                    <TableHead className="w-20">
-                                        Urutan
-                                    </TableHead>
-                                    <TableHead className="w-20">
-                                        Status
-                                    </TableHead>
-                                    <TableHead className="w-32">Aksi</TableHead>
-                                </TableRow>
-                            </TableHeader>
-                            <TableBody>
-                                {categories.data.map((category) => (
-                                    <TableRow key={category.id}>
-                                        <TableCell className="font-medium">
-                                            {category.name}
-                                        </TableCell>
-                                        <TableCell>
-                                            <code className="rounded bg-slate-100 px-2 py-1 font-mono text-sm dark:bg-slate-800">
-                                                {category.slug}
-                                            </code>
-                                        </TableCell>
-                                        <TableCell className="max-w-40 truncate">
-                                            {category.description || '-'}
-                                        </TableCell>
-                                        <TableCell className="text-center">
-                                            {category.order}
-                                        </TableCell>
-                                        <TableCell>
-                                            <span
-                                                className={
-                                                    category.is_active
-                                                        ? 'text-green-600'
-                                                        : 'text-red-600'
-                                                }
+                <div className="overflow-x-auto rounded-xl border border-sidebar-border/70">
+                    <table className="w-full min-w-200 text-left text-sm">
+                        <thead className="bg-muted/40">
+                            <tr>
+                                <th className="px-4 py-3 font-medium">Nama</th>
+                                <th className="px-4 py-3 font-medium">Slug</th>
+                                <th className="px-4 py-3 font-medium">
+                                    Deskripsi
+                                </th>
+                                <th className="px-4 py-3 font-medium">
+                                    Urutan
+                                </th>
+                                <th className="px-4 py-3 font-medium">
+                                    Status
+                                </th>
+                                <th className="px-4 py-3 font-medium">Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {categories.data.length === 0 && (
+                                <tr>
+                                    <td
+                                        className="px-4 py-6 text-muted-foreground"
+                                        colSpan={6}
+                                    >
+                                        Belum ada kategori price list.
+                                    </td>
+                                </tr>
+                            )}
+                            {categories.data.map((category) => (
+                                <tr
+                                    key={category.id}
+                                    className="border-t border-sidebar-border/50"
+                                >
+                                    <td className="px-4 py-3">
+                                        {category.name}
+                                    </td>
+                                    <td className="px-4 py-3">
+                                        <code className="rounded bg-muted px-2 py-1 font-mono text-xs">
+                                            {category.slug}
+                                        </code>
+                                    </td>
+                                    <td className="max-w-40 truncate px-4 py-3 text-muted-foreground">
+                                        {category.description || '-'}
+                                    </td>
+                                    <td className="px-4 py-3">
+                                        {category.order}
+                                    </td>
+                                    <td className="px-4 py-3">
+                                        <span
+                                            className={
+                                                category.is_active
+                                                    ? 'text-sm font-medium text-black-600'
+                                                    : 'text-sm font-medium text-red-600'
+                                            }
+                                        >
+                                            {category.is_active
+                                                ? 'Aktif'
+                                                : 'Tidak Aktif'}
+                                        </span>
+                                    </td>
+                                    <td className="px-4 py-3">
+                                        <div className="flex gap-2">
+                                            <Link
+                                                href={`/admin/price-list-categories/${category.id}/edit`}
+                                                className="inline-flex h-8 items-center rounded-md border px-3 text-xs font-medium"
                                             >
-                                                {category.is_active
-                                                    ? 'Aktif'
-                                                    : 'Tidak Aktif'}
-                                            </span>
-                                        </TableCell>
-                                        <TableCell>
-                                            <div className="flex gap-2">
-                                                <Link
-                                                    href={`/admin/price-list-categories/${category.id}/edit`}
-                                                    as="button"
-                                                    className="inline-flex items-center gap-1 rounded bg-blue-500 px-3 py-1 text-sm text-white hover:bg-blue-600"
-                                                >
-                                                    <Pencil className="h-4 w-4" />
-                                                    Edit
-                                                </Link>
-                                                <Button
-                                                    size="sm"
-                                                    variant="destructive"
-                                                    onClick={() =>
-                                                        handleDelete(
-                                                            category.id,
-                                                        )
-                                                    }
-                                                >
-                                                    <Trash2 className="h-4 w-4" />
-                                                </Button>
-                                            </div>
-                                        </TableCell>
-                                    </TableRow>
-                                ))}
-                            </TableBody>
-                        </Table>
+                                                Edit
+                                            </Link>
+                                            <button
+                                                type="button"
+                                                onClick={() =>
+                                                    handleDelete(category.id)
+                                                }
+                                                className="inline-flex h-8 items-center rounded-md border border-red-300 px-3 text-xs font-medium text-red-600"
+                                            >
+                                                Hapus
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
+                </div>
 
-                        {/* Pagination */}
-                        <div className="mt-6 flex items-center justify-between">
-                            <p className="text-sm text-muted-foreground">
-                                Menampilkan {categories.from} hingga{' '}
-                                {categories.to} dari {categories.total} kategori
-                            </p>
-                            <div className="flex gap-2">
-                                {categories.current_page > 1 && (
-                                    <Link
-                                        href={`/admin/price-list-categories?page=${categories.current_page - 1}`}
-                                        className="rounded border px-3 py-1 hover:bg-slate-100 dark:hover:bg-slate-800"
-                                    >
-                                        Sebelumnya
-                                    </Link>
-                                )}
-                                {categories.current_page <
-                                    categories.last_page && (
-                                    <Link
-                                        href={`/admin/price-list-categories?page=${categories.current_page + 1}`}
-                                        className="rounded border px-3 py-1 hover:bg-slate-100 dark:hover:bg-slate-800"
-                                    >
-                                        Berikutnya
-                                    </Link>
-                                )}
-                            </div>
-                        </div>
-                    </div>
-                ) : (
-                    <div className="rounded border border-dashed border-muted-foreground p-8 text-center">
-                        <p className="mb-4 text-muted-foreground">
-                            Belum ada kategori price list
+                {/* Pagination */}
+                {categories.data.length > 0 && (
+                    <div className="flex items-center justify-between">
+                        <p className="text-sm text-muted-foreground">
+                            Menampilkan {categories.from} hingga {categories.to}{' '}
+                            dari {categories.total} kategori
                         </p>
-                        <Link
-                            href="/admin/price-list-categories/create"
-                            className="inline-block rounded bg-green-600 px-4 py-2 text-white hover:bg-green-700"
-                        >
-                            Buat Category Pertama
-                        </Link>
+                        <div className="flex gap-2">
+                            {categories.current_page > 1 && (
+                                <Link
+                                    href={`/admin/price-list-categories?page=${categories.current_page - 1}`}
+                                    className="inline-flex h-8 items-center rounded-md border px-3 text-xs font-medium"
+                                >
+                                    Sebelumnya
+                                </Link>
+                            )}
+                            {categories.current_page < categories.last_page && (
+                                <Link
+                                    href={`/admin/price-list-categories?page=${categories.current_page + 1}`}
+                                    className="inline-flex h-8 items-center rounded-md border px-3 text-xs font-medium"
+                                >
+                                    Berikutnya
+                                </Link>
+                            )}
+                        </div>
                     </div>
                 )}
             </div>

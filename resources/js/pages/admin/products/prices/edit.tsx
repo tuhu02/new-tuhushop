@@ -1,4 +1,4 @@
-import { Head, Link, useForm } from '@inertiajs/react';
+import { Link, useForm } from '@inertiajs/react';
 import { FormEvent } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -6,23 +6,12 @@ import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import AdminLayout from '@/layouts/admin-layout';
 import { ChevronLeft } from 'lucide-react';
-
-interface Brand {
-    id: number;
-    name: string;
-}
+import { Brand, Product } from '@/types/admin';
 
 interface PriceListCategory {
     id: number;
     name: string;
     slug: string;
-}
-
-interface Product {
-    id: number;
-    name: string;
-    slug: string;
-    brand: Brand;
 }
 
 interface ProductPrice {
@@ -63,14 +52,15 @@ export default function ProductPriceEdit({
     };
 
     return (
-        <AdminLayout title={`Edit Price List - ${product.name}`}>
-            <Head title={`Edit Price List - ${product.name}`} />
-
-            <div className="py-8 pl-8">
-                <div className="mb-8">
+        <AdminLayout
+            title={`Edit Price List - ${product.name}`}
+            headerTitle="Edit Product Price"
+        >
+            <div className="space-y-4 p-4">
+                <div>
                     <Link
                         href={`/admin/products/${product.id}/prices`}
-                        className="inline-flex items-center gap-1 text-blue-600 hover:text-blue-800"
+                        className="inline-flex items-center gap-1 text-sm font-medium text-muted-foreground hover:text-foreground"
                     >
                         <ChevronLeft className="h-4 w-4" />
                         Kembali
@@ -78,43 +68,6 @@ export default function ProductPriceEdit({
                 </div>
 
                 <div className="grid gap-8 lg:grid-cols-3">
-                    {/* Sidebar Info */}
-                    <div className="lg:col-span-1">
-                        <Card>
-                            <CardHeader>
-                                <CardTitle className="text-lg">
-                                    Produk
-                                </CardTitle>
-                            </CardHeader>
-                            <CardContent className="space-y-2">
-                                <div>
-                                    <p className="text-sm text-muted-foreground">
-                                        Brand
-                                    </p>
-                                    <p className="font-semibold">
-                                        {product.brand?.name}
-                                    </p>
-                                </div>
-                                <div>
-                                    <p className="text-sm text-muted-foreground">
-                                        Nama Produk
-                                    </p>
-                                    <p className="font-semibold">
-                                        {product.name}
-                                    </p>
-                                </div>
-                                <div>
-                                    <p className="text-sm text-muted-foreground">
-                                        Slug
-                                    </p>
-                                    <p className="font-mono text-sm">
-                                        {product.slug}
-                                    </p>
-                                </div>
-                            </CardContent>
-                        </Card>
-                    </div>
-
                     {/* Form */}
                     <div className="lg:col-span-2">
                         <Card>
@@ -265,7 +218,7 @@ export default function ProductPriceEdit({
                                                     e.target.checked,
                                                 )
                                             }
-                                            className="rounded border-gray-300"
+                                            className="rounded border-input"
                                         />
                                         <Label
                                             htmlFor="is_active"
@@ -277,23 +230,61 @@ export default function ProductPriceEdit({
 
                                     {/* Submit */}
                                     <div className="flex gap-2">
-                                        <Button
-                                            type="submit"
-                                            disabled={processing}
-                                            className="flex-1"
-                                        >
+                                        <Button type="submit" disabled={processing}>
                                             {processing
                                                 ? 'Menyimpan...'
                                                 : 'Update Price List'}
                                         </Button>
-                                        <Link
-                                            href={`/admin/products/${product.id}/prices`}
-                                            className="inline-flex items-center rounded border border-input bg-background px-4 py-2 hover:bg-slate-100 dark:hover:bg-slate-800"
+                                        <Button
+                                            type="button"
+                                            variant="outline"
+                                            asChild
                                         >
-                                            Batal
-                                        </Link>
+                                            <Link
+                                                href={`/admin/products/${product.id}/prices`}
+                                            >
+                                                Batal
+                                            </Link>
+                                        </Button>
                                     </div>
                                 </form>
+                            </CardContent>
+                        </Card>
+                    </div>
+
+                    {/* Sidebar Info */}
+                    <div className="lg:col-span-1">
+                        <Card>
+                            <CardHeader>
+                                <CardTitle className="text-lg">
+                                    Produk
+                                </CardTitle>
+                            </CardHeader>
+                            <CardContent className="space-y-2">
+                                <div>
+                                    <p className="text-sm text-muted-foreground">
+                                        Brand
+                                    </p>
+                                    <p className="font-semibold">
+                                        {product.brand?.name}
+                                    </p>
+                                </div>
+                                <div>
+                                    <p className="text-sm text-muted-foreground">
+                                        Nama Produk
+                                    </p>
+                                    <p className="font-semibold">
+                                        {product.name}
+                                    </p>
+                                </div>
+                                <div>
+                                    <p className="text-sm text-muted-foreground">
+                                        Slug
+                                    </p>
+                                    <p className="font-mono text-sm">
+                                        {product.slug}
+                                    </p>
+                                </div>
                             </CardContent>
                         </Card>
                     </div>

@@ -1,4 +1,4 @@
-import { Head, Link, useForm } from '@inertiajs/react';
+import { Link, useForm } from '@inertiajs/react';
 import { FormEvent } from 'react';
 import { Button } from '@/components/ui/button';
 import AdminLayout from '@/layouts/admin-layout';
@@ -36,14 +36,15 @@ export default function PriceListCategoryCreate() {
     };
 
     return (
-        <AdminLayout title="Tambah Price List Category">
-            <Head title="Tambah Price List Category" />
-
-            <div className="py-8 pl-8">
-                <div className="mb-8">
+        <AdminLayout
+            title="Tambah Price List Category"
+            headerTitle="Price List Categories"
+        >
+            <div className="space-y-4 p-4">
+                <div>
                     <Link
                         href="/admin/price-list-categories"
-                        className="inline-flex items-center gap-1 text-blue-600 hover:text-blue-800"
+                        className="inline-flex items-center gap-1 text-sm font-medium text-muted-foreground hover:text-foreground"
                     >
                         <ChevronLeft className="h-4 w-4" />
                         Kembali
@@ -78,7 +79,7 @@ export default function PriceListCategoryCreate() {
                                             onChange={(e) =>
                                                 handleNameChange(e.target.value)
                                             }
-                                            className="mt-2 w-full rounded border border-gray-300 px-3 py-2 dark:border-gray-600 dark:bg-slate-800"
+                                            className="mt-2 w-full rounded border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:outline-none"
                                             placeholder="Contoh: Weekly Pass"
                                         />
                                         {errors.name && (
@@ -99,7 +100,7 @@ export default function PriceListCategoryCreate() {
                                             onChange={(e) =>
                                                 setData('slug', e.target.value)
                                             }
-                                            className="mt-2 w-full rounded border border-gray-300 px-3 py-2 dark:border-gray-600 dark:bg-slate-800"
+                                            className="mt-2 w-full rounded border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:outline-none"
                                             placeholder="weekly-pass"
                                         />
                                         {errors.slug && (
@@ -125,7 +126,7 @@ export default function PriceListCategoryCreate() {
                                                     e.target.value,
                                                 )
                                             }
-                                            className="mt-2 w-full rounded border border-gray-300 px-3 py-2 dark:border-gray-600 dark:bg-slate-800"
+                                            className="mt-2 w-full rounded border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:outline-none"
                                             placeholder="Deskripsi kategori..."
                                             rows={3}
                                         />
@@ -147,7 +148,7 @@ export default function PriceListCategoryCreate() {
                                             onChange={(e) =>
                                                 setData('order', e.target.value)
                                             }
-                                            className="mt-2 w-full rounded border border-gray-300 px-3 py-2 dark:border-gray-600 dark:bg-slate-800"
+                                            className="mt-2 w-full rounded border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:outline-none"
                                             placeholder="0"
                                         />
                                         {errors.order && (
@@ -168,7 +169,7 @@ export default function PriceListCategoryCreate() {
                                                     e.target.checked,
                                                 )
                                             }
-                                            className="h-4 w-4 rounded border-gray-300"
+                                            className="h-4 w-4 rounded border border-input"
                                         />
                                         <label className="text-sm font-medium">
                                             Kategori Aktif
@@ -180,18 +181,20 @@ export default function PriceListCategoryCreate() {
                                         <Button
                                             type="submit"
                                             disabled={processing}
-                                            className="bg-blue-600 hover:bg-blue-700"
                                         >
                                             {processing
                                                 ? 'Menyimpan...'
                                                 : 'Simpan Category'}
                                         </Button>
-                                        <Link
-                                            href="/admin/price-list-categories"
-                                            className="inline-flex items-center rounded border px-4 py-2 hover:bg-slate-100 dark:hover:bg-slate-800"
+                                        <Button
+                                            type="button"
+                                            variant="outline"
+                                            asChild
                                         >
-                                            Batal
-                                        </Link>
+                                            <Link href="/admin/price-list-categories">
+                                                Batal
+                                            </Link>
+                                        </Button>
                                     </div>
                                 </form>
                             </CardContent>
