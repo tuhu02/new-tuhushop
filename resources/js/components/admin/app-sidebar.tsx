@@ -73,6 +73,11 @@ const data = {
             icon: IconCategory,
         },
         {
+            title: 'Price List Categories',
+            url: '/admin/price-list-categories',
+            icon: IconTag,
+        },
+        {
             title: 'Lifecycle',
             url: '#',
             icon: IconListDetails,

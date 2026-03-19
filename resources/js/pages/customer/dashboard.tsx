@@ -131,6 +131,7 @@ export default function Dashboard({
                                         }
                                         brand={product.brand ?? 'Unknown'}
                                         badge={product.categories[0] ?? 'New'}
+                                        slug={product.slug}
                                     />
                                 ))}
                             </div>

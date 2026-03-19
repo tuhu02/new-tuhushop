@@ -97,6 +97,12 @@ export default function ProductIndex({ products }: { products: Product[] }) {
                                     <td className="px-4 py-3">
                                         <div className="flex gap-2">
                                             <Link
+                                                href={`/admin/products/${product.id}/prices`}
+                                                className="inline-flex h-8 items-center rounded-md border border-amber-300 bg-amber-50 px-3 text-xs font-medium text-amber-700 dark:border-amber-700 dark:bg-amber-950 dark:text-amber-300"
+                                            >
+                                                Harga
+                                            </Link>
+                                            <Link
                                                 href={`/admin/products/${product.id}/edit`}
                                                 className="inline-flex h-8 items-center rounded-md border px-3 text-xs font-medium"
                                             >
