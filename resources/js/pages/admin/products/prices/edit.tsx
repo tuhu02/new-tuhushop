@@ -66,7 +66,7 @@ export default function ProductPriceEdit({
         <AdminLayout title={`Edit Price List - ${product.name}`}>
             <Head title={`Edit Price List - ${product.name}`} />
 
-            <div className="py-8">
+            <div className="py-8 pl-8">
                 <div className="mb-8">
                     <Link
                         href={`/admin/products/${product.id}/prices`}

@@ -20,7 +20,6 @@ class ProductController extends Controller
             ])
             ->firstOrFail();
 
-        // Group prices by category
         $pricesByCategory = $product->prices->groupBy('price_list_category_id')->map(function ($prices) {
             return [
                 'category' => $prices->first()->category,

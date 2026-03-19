@@ -25,7 +25,6 @@ export default function PriceListCategoryCreate() {
         post('/admin/price-list-categories');
     };
 
-    // Auto-generate slug from name
     const handleNameChange = (value: string) => {
         setData('name', value);
         if (
@@ -40,7 +39,7 @@ export default function PriceListCategoryCreate() {
         <AdminLayout title="Tambah Price List Category">
             <Head title="Tambah Price List Category" />
 
-            <div className="py-8">
+            <div className="py-8 pl-8">
                 <div className="mb-8">
                     <Link
                         href="/admin/price-list-categories"

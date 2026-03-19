@@ -48,3 +48,32 @@ export type CarouselItem = {
     sort_order: number;
     is_active: boolean;
 };
+
+export type PriceListCategory = {
+    id: number;
+    name: string;
+    slug: string;
+    description: string | null;
+    order: number;
+    is_active: boolean;
+}
+
+export type PaginatedData = {
+    data: PriceListCategory[];
+    current_page: number;
+    last_page: number;
+    per_page: number;
+    total: number;
+    from: number;
+    to: number;
+}
+
+// Price List Categories Pages
+export type PriceListCategoryIndexProps = {
+    categories: PaginatedData;
+}
+
+export type PriceListCategoryEditProps = {
+    category: PriceListCategory;
+}
+

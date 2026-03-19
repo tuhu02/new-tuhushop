@@ -10,31 +10,10 @@ import {
     TableRow,
 } from '@/components/ui/table';
 import { Pencil, Trash2, Plus } from 'lucide-react';
+import { PriceListCategoryIndexProps } from '@/types';
 
-interface PriceListCategory {
-    id: number;
-    name: string;
-    slug: string;
-    description: string | null;
-    order: number;
-    is_active: boolean;
-}
 
-interface PaginatedData {
-    data: PriceListCategory[];
-    current_page: number;
-    last_page: number;
-    per_page: number;
-    total: number;
-    from: number;
-    to: number;
-}
-
-interface Props {
-    categories: PaginatedData;
-}
-
-export default function PriceListCategoryIndex({ categories }: Props) {
+export default function PriceListCategoryIndex({ categories }: PriceListCategoryIndexProps) {
     const handleDelete = (id: number) => {
         if (confirm('Hapus kategori price list ini?')) {
             router.delete(`/admin/price-list-categories/${id}`);
@@ -45,7 +24,7 @@ export default function PriceListCategoryIndex({ categories }: Props) {
         <AdminLayout title="Price List Categories">
             <Head title="Price List Categories" />
 
-            <div className="py-8">
+            <div className="py-8 pl-8">
                 <div className="mb-8 flex items-center justify-between">
                     <div>
                         <h1 className="text-3xl font-bold">

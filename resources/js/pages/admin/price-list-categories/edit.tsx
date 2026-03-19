@@ -10,21 +10,9 @@ import {
     CardTitle,
 } from '@/components/ui/card';
 import { ChevronLeft } from 'lucide-react';
+import { PriceListCategoryEditProps } from '@/types/admin';
 
-interface PriceListCategory {
-    id: number;
-    name: string;
-    slug: string;
-    description: string | null;
-    order: number;
-    is_active: boolean;
-}
-
-interface Props {
-    category: PriceListCategory;
-}
-
-export default function PriceListCategoryEdit({ category }: Props) {
+export default function PriceListCategoryEdit({ category }: PriceListCategoryEditProps) {
     const { data, setData, put, processing, errors } = useForm({
         name: category.name,
         slug: category.slug,
@@ -42,7 +30,7 @@ export default function PriceListCategoryEdit({ category }: Props) {
         <AdminLayout title={`Edit Price List Category - ${category.name}`}>
             <Head title={`Edit Price List Category - ${category.name}`} />
 
-            <div className="py-8">
+            <div className="py-8 pl-8">
                 <div className="mb-8">
                     <Link
                         href="/admin/price-list-categories"

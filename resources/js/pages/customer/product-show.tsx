@@ -12,54 +12,7 @@ import {
 } from '@/components/ui/card';
 import { Textarea } from '@/components/ui/textarea';
 import AppLayout from '@/layouts/app-layout';
-
-interface Brand {
-    id: number;
-    name: string;
-}
-
-interface PriceListCategory {
-    id: number;
-    name: string;
-    slug: string;
-    description: string;
-}
-
-interface ProductPriceItem {
-    id: number;
-    product_id: number;
-    price_list_category_id: number;
-    display_name: string;
-    code: string;
-    price: number;
-    category: PriceListCategory;
-}
-
-interface Product {
-    id: number;
-    name: string;
-    slug: string;
-    description: string;
-    thumbnail: string;
-    brand: Brand;
-}
-
-interface PriceByCategory {
-    category: PriceListCategory;
-    prices: ProductPriceItem[];
-}
-
-interface User {
-    id: number;
-    name: string;
-    email: string;
-}
-
-interface ProductShowProps {
-    product: Product;
-    pricesByCategory: PriceByCategory[];
-    user: User;
-}
+import { ProductPriceItem, ProductShowProps } from '@/types';
 
 export default function ProductShow({
     product,
@@ -136,48 +89,9 @@ export default function ProductShow({
         <AppLayout>
             <Head title={product.name} />
 
-            <div className="space-y-8 py-8">
+            <div className="space-y-8 py-8 pl-8">
                 {/* Product Header */}
                 <div className="space-y-6">
-                    {/* Product Image and Info */}
-                    <div className="grid gap-8 lg:grid-cols-3">
-                        <div className="lg:col-span-1">
-                            <div className="space-y-4">
-                                <img
-                                    src={product.thumbnail}
-                                    alt={product.name}
-                                    className="h-80 w-full rounded-lg object-cover"
-                                />
-                                <div className="space-y-2">
-                                    <p className="text-sm text-muted-foreground">
-                                        {product.brand?.name}
-                                    </p>
-                                    <h1 className="text-3xl font-bold">
-                                        {product.name}
-                                    </h1>
-                                </div>
-                            </div>
-                        </div>
-
-                        {/* Description */}
-                        <div className="lg:col-span-2">
-                            {product.description && (
-                                <Card>
-                                    <CardHeader>
-                                        <CardTitle className="text-lg">
-                                            Deskripsi Produk
-                                        </CardTitle>
-                                    </CardHeader>
-                                    <CardContent>
-                                        <p className="text-sm leading-relaxed text-muted-foreground">
-                                            {product.description}
-                                        </p>
-                                    </CardContent>
-                                </Card>
-                            )}
-                        </div>
-                    </div>
-
                     {/* Price List Categories and Items */}
                     <div className="space-y-4">
                         {/* Category Tabs */}

@@ -77,26 +77,6 @@ const data = {
             url: '/admin/price-list-categories',
             icon: IconTag,
         },
-        {
-            title: 'Lifecycle',
-            url: '#',
-            icon: IconListDetails,
-        },
-        {
-            title: 'Analytics',
-            url: '#',
-            icon: IconChartBar,
-        },
-        {
-            title: 'Projects',
-            url: '#',
-            icon: IconFolder,
-        },
-        {
-            title: 'Team',
-            url: '#',
-            icon: IconUsers,
-        },
     ],
     navClouds: [
         {

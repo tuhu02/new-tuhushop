@@ -18,12 +18,6 @@ export type Brand = {
     name: string;
 }
 
-export type PriceListCategory = {
-    id: number;
-    name: string;
-    slug: string;
-}
-
 export type ProductPrice = {
     id: number;
     product_id: number;
@@ -36,14 +30,51 @@ export type ProductPrice = {
     category: PriceListCategory;
 }
 
+export type ProductPriceIndexProps = {
+    product: Product;
+    prices: ProductPrice[];
+}
+
+
+export type PriceListCategory = {
+    id: number;
+    name: string;
+    slug: string;
+    description: string;
+}
+
+export type ProductPriceItem = {
+    id: number;
+    product_id: number;
+    price_list_category_id: number;
+    display_name: string;
+    code: string;
+    price: number;
+    category: PriceListCategory;
+}
+
 export type Product = {
     id: number;
     name: string;
     slug: string;
+    description: string;
+    thumbnail: string;
     brand: Brand;
 }
 
-export type ProductPriceIndexProps = {
+export type PriceByCategory = {
+    category: PriceListCategory;
+    prices: ProductPriceItem[];
+}
+
+export type User = {
+    id: number;
+    name: string;
+    email: string;
+}
+
+export type ProductShowProps = {
     product: Product;
-    prices: ProductPrice[];
+    pricesByCategory: PriceByCategory[];
+    user: User;
 }
