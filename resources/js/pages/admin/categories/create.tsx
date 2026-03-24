@@ -48,19 +48,6 @@ export default function CategoryCreate() {
                         <InputError message={errors.name} />
                     </div>
 
-                    <div className="grid gap-2">
-                        <Label htmlFor="slug">Slug</Label>
-                        <Input
-                            id="slug"
-                            value={data.slug}
-                            onChange={(event) =>
-                                setData('slug', event.target.value)
-                            }
-                            placeholder="contoh: top-up-game"
-                        />
-                        <InputError message={errors.slug} />
-                    </div>
-
                     <div className="flex items-center gap-2">
                         <input
                             id="is_active"

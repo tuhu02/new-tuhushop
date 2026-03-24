@@ -19,6 +19,7 @@ export default function ProductCreate({
         brand_id: '',
         category_ids: [] as string[],
         thumbnail: null as File | null,
+        banner: null as File | null,
         is_active: true,
     });
 
@@ -117,6 +118,22 @@ export default function ProductCreate({
                     </div>
 
                     <div className="grid gap-2">
+                        <Label htmlFor="banner">Banner</Label>
+                        <Input
+                            id="banner"
+                            type="file"
+                            accept="image/png,image/jpeg,image/jpg,image/webp"
+                            onChange={(event) =>
+                                setData(
+                                    'banner',
+                                    event.target.files?.[0] ?? null,
+                                )
+                            }
+                        />
+                        <InputError message={errors.banner} />
+                    </div>
+
+                    <div className="grid gap-2">
                         <Label>Kategori</Label>
                         <div className="grid grid-cols-1 gap-2 rounded-md border p-3 md:grid-cols-2">
                             {categories.map((category) => {
@@ -146,19 +163,6 @@ export default function ProductCreate({
                             })}
                         </div>
                         <InputError message={errors.category_ids} />
-                    </div>
-
-                    <div className="grid gap-2">
-                        <Label htmlFor="slug">Slug</Label>
-                        <Input
-                            id="slug"
-                            value={data.slug}
-                            onChange={(event) =>
-                                setData('slug', event.target.value)
-                            }
-                            placeholder="contoh: mobile-legend-weekly"
-                        />
-                        <InputError message={errors.slug} />
                     </div>
 
                     <div className="flex items-center gap-2">

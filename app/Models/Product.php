@@ -22,6 +22,7 @@ class Product extends Model
         'description',
         'brand_id',
         'thumbnail',
+        'banner',
         'is_active',
     ];
 

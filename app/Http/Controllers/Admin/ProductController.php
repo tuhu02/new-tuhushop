@@ -12,6 +12,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Storage;
 use Inertia\Inertia;
 use Inertia\Response;
+use Illuminate\Support\Str;
 
 class ProductController extends Controller
 {
@@ -33,6 +34,10 @@ class ProductController extends Controller
                     'thumbnail' => $product->thumbnail,
                     'thumbnail_url' => $product->thumbnail !== null
                         ? asset('storage/' . $product->thumbnail)
+                        : null,
+                    'banner' => $product->banner,
+                    'banner_url' => $product->banner !== null
+                        ? asset('storage/' . $product->banner)
                         : null,
                     'is_active' => $product->is_active,
                     'brand' => $product->brand,
@@ -62,16 +67,23 @@ class ProductController extends Controller
     public function store(StoreProductRequest $request): RedirectResponse
     {
         $validated = $request->validated();
+        $slug = Str::slug($validated['name']);
+        $count = Product::where('slug', 'LIKE', "{$slug}%")->count();
+        $slug = $count ? "{$slug}-{$count}" : $slug;
 
         $payload = [
             'name' => $validated['name'],
-            'slug' => $validated['slug'],
             'brand_id' => $validated['brand_id'],
+            'slug' => $slug,
             'is_active' => $validated['is_active'],
         ];
 
         if ($request->hasFile('thumbnail')) {
             $payload['thumbnail'] = $request->file('thumbnail')->store('products', 'public');
+        }
+
+        if ($request->hasFile('banner')) {
+            $payload['banner'] = $request->file('banner')->store('products', 'public');
         }
 
         $product = Product::query()->create($payload);
@@ -97,6 +109,10 @@ class ProductController extends Controller
                 'thumbnail' => $product->thumbnail,
                 'thumbnail_url' => $product->thumbnail !== null
                     ? asset('storage/' . $product->thumbnail)
+                    : null,
+                'banner' => $product->banner,
+                'banner_url' => $product->banner !== null
+                    ? asset('storage/' . $product->banner)
                     : null,
                 'is_active' => $product->is_active,
                 'brand' => $product->brand,
@@ -130,6 +146,14 @@ class ProductController extends Controller
             $payload['thumbnail'] = $request->file('thumbnail')->store('products', 'public');
         }
 
+        if ($request->hasFile('banner')) {
+            if ($product->banner !== null) {
+                Storage::disk('public')->delete($product->banner);
+            }
+
+            $payload['banner'] = $request->file('banner')->store('products', 'public');
+        }
+
         if ($payload !== []) {
             $product->update($payload);
         }
@@ -148,6 +172,10 @@ class ProductController extends Controller
     {
         if ($product->thumbnail !== null) {
             Storage::disk('public')->delete($product->thumbnail);
+        }
+
+        if ($product->banner !== null) {
+            Storage::disk('public')->delete($product->banner);
         }
 
         $product->delete();

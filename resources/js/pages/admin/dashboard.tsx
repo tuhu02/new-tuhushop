@@ -3,8 +3,6 @@ import { DataTable } from '@/components/admin/data-table';
 import { SectionCards } from '@/components/admin/section-cards';
 import AdminLayout from '@/layouts/admin-layout';
 
-import data from './data';
-
 export default function Page() {
     return (
         <AdminLayout title="Admin Dashboard" headerTitle="Dashboard">
@@ -13,7 +11,6 @@ export default function Page() {
                 <div className="px-4 lg:px-6">
                     <ChartAreaInteractive />
                 </div>
-                <DataTable data={data} />
             </div>
         </AdminLayout>
     );

@@ -15,11 +15,11 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->string('slug')->unique();
-                $table->unsignedBigInteger('brand_id');
-                $table->string('thumbnail')->nullable();
+            $table->unsignedBigInteger('brand_id');
+            $table->string('thumbnail')->nullable();
             $table->boolean('is_active')->default(true);
             $table->timestamps();
-                $table->index('brand_id');
+            $table->index('brand_id');
         });
     }
 

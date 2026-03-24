@@ -2,7 +2,9 @@
 
 namespace App\Http\Requests\Admin;
 
+use App\Models\Category;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Str;
 
 class StoreCategoryRequest extends FormRequest
 {
@@ -12,6 +14,31 @@ class StoreCategoryRequest extends FormRequest
     public function authorize(): bool
     {
         return true;
+    }
+
+    /**
+     * Prepare data before validation.
+     */
+    protected function prepareForValidation(): void
+    {
+        $name = trim((string) $this->input('name', ''));
+
+        if ($name === '') {
+            return;
+        }
+
+        $baseSlug = Str::slug($name);
+        $slug = $baseSlug !== '' ? $baseSlug : 'category';
+        $counter = 1;
+
+        while (Category::query()->where('slug', $slug)->exists()) {
+            $slug = $baseSlug !== '' ? "{$baseSlug}-{$counter}" : "category-{$counter}";
+            $counter++;
+        }
+
+        $this->merge([
+            'slug' => $slug,
+        ]);
     }
 
     /**

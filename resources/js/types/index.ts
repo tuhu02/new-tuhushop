@@ -2,6 +2,7 @@ export type * from './auth';
 export type * from './admin';
 export type * from './navigation';
 export type * from './ui';
+import type { Product } from './admin';
 
 
 export type CardProductProps = {
@@ -11,12 +12,6 @@ export type CardProductProps = {
     badge: string;
     slug: string;
 };
-
-
-export type Brand = {
-    id: number;
-    name: string;
-}
 
 export type ProductPrice = {
     id: number;
@@ -51,15 +46,6 @@ export type ProductPriceItem = {
     code: string;
     price: number;
     category: PriceListCategory;
-}
-
-export type Product = {
-    id: number;
-    name: string;
-    slug: string;
-    description: string;
-    thumbnail: string;
-    brand: Brand;
 }
 
 export type PriceByCategory = {

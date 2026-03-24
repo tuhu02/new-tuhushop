@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('price_list_categories', function (Blueprint $table) {
             $table->id();
-            $table->string('name'); // Diamond, Weekly Pass, Level Up Pass
+            $table->string('name'); 
             $table->string('slug')->unique();
             $table->text('description')->nullable();
             $table->integer('order')->default(0);
