@@ -23,7 +23,7 @@ class UpdatePriceListCategoryRequest extends FormRequest
     protected function prepareForValidation(): void
     {
         /** @var PriceListCategory $category */
-        $category = $this->route('priceListCategory');
+        $category = $this->route('price_list_category');
         $name = trim((string) $this->input('name', ''));
 
         if ($name === '') {
@@ -64,7 +64,7 @@ class UpdatePriceListCategoryRequest extends FormRequest
     public function rules(): array
     {
         /** @var PriceListCategory $category */
-        $category = $this->route('priceListCategory');
+        $category = $this->route('price_list_category');
 
         return [
             'name' => ['required', 'string', 'max:255'],
