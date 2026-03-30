@@ -23,7 +23,7 @@ class StoreProductRequest extends FormRequest
     {
         return [
             'name' => ['required', 'string', 'max:255'],
-            'slug' => ['required', 'string', 'max:255', 'alpha_dash', 'unique:products,slug'],
+            'description' => ['required', 'string', 'max:255'],
             'brand_id' => ['required', 'integer', 'exists:brands,id'],
             'category_ids' => ['nullable', 'array'],
             'category_ids.*' => ['integer', 'exists:categories,id'],

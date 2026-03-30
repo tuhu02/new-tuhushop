@@ -3,6 +3,7 @@ import InputError from '@/components/ui/input-error';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import { Textarea } from '@/components/ui/textarea';
 import AdminLayout from '@/layouts/admin-layout';
 import type { Brand, CategoryOption } from '@/types';
 
@@ -15,7 +16,7 @@ export default function ProductCreate({
 }) {
     const { data, setData, post, processing, errors } = useForm({
         name: '',
-        slug: '',
+        description: '',
         brand_id: '',
         category_ids: [] as string[],
         thumbnail: null as File | null,
@@ -79,6 +80,19 @@ export default function ProductCreate({
                             placeholder="Nama product"
                         />
                         <InputError message={errors.name} />
+                    </div>
+
+                    <div className="grid gap-2">
+                        <Label htmlFor="description">Deskripsi</Label>
+                        <Textarea
+                            id="description"
+                            value={data.description}
+                            onChange={(event) =>
+                                setData('description', event.target.value)
+                            }
+                            placeholder="Deskripsi lengkap product"
+                        />
+                        <InputError message={errors.description} />
                     </div>
 
                     <div className="grid gap-2">

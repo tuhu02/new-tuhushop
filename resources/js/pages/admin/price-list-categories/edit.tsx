@@ -17,7 +17,6 @@ export default function PriceListCategoryEdit({
 }: PriceListCategoryEditProps) {
     const { data, setData, put, processing, errors } = useForm({
         name: category.name,
-        slug: category.slug,
         description: category.description || '',
         order: category.order.toString(),
         is_active: category.is_active,
@@ -76,27 +75,6 @@ export default function PriceListCategoryEdit({
                                         {errors.name && (
                                             <p className="mt-1 text-sm text-red-600">
                                                 {errors.name}
-                                            </p>
-                                        )}
-                                    </div>
-
-                                    {/* Slug */}
-                                    <div>
-                                        <label className="block text-sm font-medium">
-                                            Slug
-                                        </label>
-                                        <input
-                                            type="text"
-                                            value={data.slug}
-                                            onChange={(e) =>
-                                                setData('slug', e.target.value)
-                                            }
-                                            className="mt-2 w-full rounded border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:outline-none"
-                                            placeholder="weekly-pass"
-                                        />
-                                        {errors.slug && (
-                                            <p className="mt-1 text-sm text-red-600">
-                                                {errors.slug}
                                             </p>
                                         )}
                                     </div>

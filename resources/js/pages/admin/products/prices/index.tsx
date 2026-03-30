@@ -95,9 +95,11 @@ export default function ProductPriceIndex({
                                         </td>
                                         <td className="px-4 py-3 text-right">
                                             Rp{' '}
-                                            {price.price.toLocaleString(
-                                                'id-ID',
-                                            )}
+                                            {new Intl.NumberFormat('id-ID', {
+                                                style: 'decimal',
+                                                minimumFractionDigits: 0,
+                                                maximumFractionDigits: 0,
+                                            }).format(price.price)}
                                         </td>
                                         <td className="px-4 py-3">
                                             <span

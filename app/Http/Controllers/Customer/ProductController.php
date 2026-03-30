@@ -4,16 +4,17 @@ namespace App\Http\Controllers\Customer;
 
 use App\Http\Controllers\Controller;
 use App\Models\Product;
-use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
 
 class ProductController extends Controller
 {
-    public function index($slug)
+    public function index(string $slug)
     {
         $product = Product::where('slug', $slug)
             ->with([
                 'brand',
+                'categories:id,name',
                 'prices' => function ($query) {
                     $query->with('category')->orderBy('price_list_category_id')->orderBy('order');
                 }
@@ -27,10 +28,25 @@ class ProductController extends Controller
             ];
         })->values();
 
-        $user = auth()->user();
+        $user = Auth::user();
 
         return Inertia::render('customer/product-show', [
-            'product' => $product,
+            'product' => [
+                'id' => $product->id,
+                'name' => $product->name,
+                'slug' => $product->slug,
+                'description' => $product->description,
+                'brand' => $product->brand?->name,
+                'categories' => $product->categories->pluck('name')->values(),
+                'thumbnail' => $product->thumbnail,
+                'thumbnail_url' => $product->thumbnail !== null
+                    ? asset('storage/' . $product->thumbnail)
+                    : null,
+                'banner' => $product->banner,
+                'banner_url' => $product->banner !== null
+                    ? asset('storage/' . $product->banner)
+                    : null,
+            ],
             'pricesByCategory' => $pricesByCategory,
             'user' => $user,
         ]);

@@ -17,7 +17,7 @@ return new class extends Migration
             $table->foreignId('price_list_category_id')->constrained('price_list_categories')->cascadeOnDelete();
             $table->integer('quantity'); // 10, 25, 50, 100
             $table->string('display_name'); // "10 Diamond", "25 Diamond"
-            $table->decimal('price', 12, 2); // Harga dalam Rupiah
+            $table->integer('price');
             $table->integer('order')->default(0);
             $table->boolean('is_active')->default(true);
             $table->timestamps();

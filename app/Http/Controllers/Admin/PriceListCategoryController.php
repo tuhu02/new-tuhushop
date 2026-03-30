@@ -2,8 +2,9 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Http\Requests\Admin\StorePriceListCategoryRequest;
+use App\Http\Requests\Admin\UpdatePriceListCategoryRequest;
 use App\Models\PriceListCategory;
-use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Inertia\Response;
 
@@ -33,17 +34,9 @@ class PriceListCategoryController
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(StorePriceListCategoryRequest $request)
     {
-        $validated = $request->validate([
-            'name' => 'required|string|max:255',
-            'slug' => 'required|string|max:255|unique:price_list_categories',
-            'description' => 'nullable|string',
-            'order' => 'required|integer|min:0',
-            'is_active' => 'boolean',
-        ]);
-
-        $category = PriceListCategory::create($validated);
+        $category = PriceListCategory::create($request->validated());
 
         return redirect()->route('admin.price-list-categories.index')
             ->with('success', 'Price List Category berhasil ditambahkan');
@@ -72,17 +65,9 @@ class PriceListCategoryController
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, PriceListCategory $priceListCategory)
+    public function update(UpdatePriceListCategoryRequest $request, PriceListCategory $priceListCategory)
     {
-        $validated = $request->validate([
-            'name' => 'required|string|max:255',
-            'slug' => 'required|string|max:255|unique:price_list_categories,slug,' . $priceListCategory->id,
-            'description' => 'nullable|string',
-            'order' => 'required|integer|min:0',
-            'is_active' => 'boolean',
-        ]);
-
-        $priceListCategory->update($validated);
+        $priceListCategory->update($request->validated());
 
         return redirect()->route('admin.price-list-categories.index')
             ->with('success', 'Price List Category berhasil diperbarui');

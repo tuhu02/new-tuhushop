@@ -132,7 +132,7 @@ class ProductController extends Controller
 
         $payload = [];
 
-        foreach (['name', 'slug', 'brand_id', 'is_active'] as $field) {
+        foreach (['name', 'description', 'slug', 'brand_id', 'is_active'] as $field) {
             if (array_key_exists($field, $validated)) {
                 $payload[$field] = $validated[$field];
             }

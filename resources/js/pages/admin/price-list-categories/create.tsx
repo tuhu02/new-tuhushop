@@ -14,7 +14,6 @@ import { ChevronLeft } from 'lucide-react';
 export default function PriceListCategoryCreate() {
     const { data, setData, post, processing, errors } = useForm({
         name: '',
-        slug: '',
         description: '',
         order: '0',
         is_active: true,
@@ -23,16 +22,6 @@ export default function PriceListCategoryCreate() {
     const handleSubmit = (e: FormEvent) => {
         e.preventDefault();
         post('/admin/price-list-categories');
-    };
-
-    const handleNameChange = (value: string) => {
-        setData('name', value);
-        if (
-            !data.slug ||
-            data.slug === value.toLowerCase().replace(/\s+/g, '-')
-        ) {
-            setData('slug', value.toLowerCase().replace(/\s+/g, '-'));
-        }
     };
 
     return (
@@ -77,7 +66,7 @@ export default function PriceListCategoryCreate() {
                                             type="text"
                                             value={data.name}
                                             onChange={(e) =>
-                                                handleNameChange(e.target.value)
+                                                setData('name', e.target.value)
                                             }
                                             className="mt-2 w-full rounded border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:outline-none"
                                             placeholder="Contoh: Weekly Pass"
@@ -87,30 +76,6 @@ export default function PriceListCategoryCreate() {
                                                 {errors.name}
                                             </p>
                                         )}
-                                    </div>
-
-                                    {/* Slug */}
-                                    <div>
-                                        <label className="block text-sm font-medium">
-                                            Slug
-                                        </label>
-                                        <input
-                                            type="text"
-                                            value={data.slug}
-                                            onChange={(e) =>
-                                                setData('slug', e.target.value)
-                                            }
-                                            className="mt-2 w-full rounded border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:outline-none"
-                                            placeholder="weekly-pass"
-                                        />
-                                        {errors.slug && (
-                                            <p className="mt-1 text-sm text-red-600">
-                                                {errors.slug}
-                                            </p>
-                                        )}
-                                        <p className="mt-1 text-xs text-muted-foreground">
-                                            Slug untuk URL (otomatis dari nama)
-                                        </p>
                                     </div>
 
                                     {/* Description */}

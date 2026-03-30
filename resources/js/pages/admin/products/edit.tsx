@@ -3,6 +3,7 @@ import InputError from '@/components/ui/input-error';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import { Textarea } from '@/components/ui/textarea';
 import AdminLayout from '@/layouts/admin-layout';
 import type { Brand, CategoryOption, Product } from '@/types';
 
@@ -15,13 +16,23 @@ export default function ProductEdit({
     brands: Brand[];
     categories: CategoryOption[];
 }) {
-    const { data, setData, post, processing, errors } = useForm({
+    const { data, setData, post, processing, errors } = useForm<{
+        _method: string;
+        name: string;
+        description: string;
+        slug: string;
+        brand_id: string;
+        category_ids: string[];
+        thumbnail: File | null;
+        is_active: boolean;
+    }>({
         _method: 'put',
         name: product.name,
+        description: product.description ?? '',
         slug: product.slug,
         brand_id: String(product.brand_id),
         category_ids: product.categories.map((category) => String(category.id)),
-        thumbnail: null as File | null,
+        thumbnail: null,
         is_active: product.is_active,
     });
 
@@ -81,6 +92,19 @@ export default function ProductEdit({
                             placeholder="Nama product"
                         />
                         <InputError message={errors.name} />
+                    </div>
+
+                    <div className="grid gap-2">
+                        <Label htmlFor="description">Deskripsi</Label>
+                        <Textarea
+                            id="description"
+                            value={data.description}
+                            onChange={(event) =>
+                                setData('description', event.target.value)
+                            }
+                            placeholder="Deskripsi lengkap product"
+                        />
+                        <InputError message={errors.description} />
                     </div>
 
                     <div className="grid gap-2">

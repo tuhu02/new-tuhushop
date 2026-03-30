@@ -16,9 +16,12 @@ export type Product = {
     id: number;
     name: string;
     slug: string;
+    description: string | null;
     brand_id: number;
     thumbnail: string | null;
     thumbnail_url: string | null;
+    banner: string | null;
+    banner_url: string | null;
     is_active: boolean;
     brand: Brand | null;
     categories: CategoryOption[];
