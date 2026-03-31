@@ -15,6 +15,7 @@ class ProductController extends Controller
             ->with([
                 'brand',
                 'categories:id,name',
+                'instructions',
                 'prices' => function ($query) {
                     $query->with('category')->orderBy('price_list_category_id')->orderBy('order');
                 }
@@ -27,6 +28,7 @@ class ProductController extends Controller
                 'prices' => $prices->values(),
             ];
         })->values();
+
 
         $user = Auth::user();
 
@@ -46,7 +48,14 @@ class ProductController extends Controller
                 'banner_url' => $product->banner !== null
                     ? asset('storage/' . $product->banner)
                     : null,
+                'instructions' => $product->instructions->map(function ($instruction) {
+                    return [
+                        'title' => $instruction->title,
+                        'content' => $instruction->content,
+                    ];
+                })->values(),
             ],
+
             'pricesByCategory' => $pricesByCategory,
             'user' => $user,
         ]);

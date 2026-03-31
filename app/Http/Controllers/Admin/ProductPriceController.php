@@ -19,7 +19,6 @@ class ProductPriceController extends Controller
     public function index(Product $product): Response
     {
         $product->load(['brand', 'prices.category']);
-
         return Inertia::render('admin/products/prices/index', [
             'product' => $product,
             'prices' => $product->prices()

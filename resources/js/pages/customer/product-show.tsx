@@ -25,6 +25,10 @@ type ProductShowPageProps = {
         thumbnail_url: string | null;
         banner: string | null;
         banner_url: string | null;
+        instructions: {
+            title: string;
+            content: string;
+        }[];
     };
     pricesByCategory: PriceByCategory[];
     user: User | null;
@@ -102,7 +106,7 @@ export default function ProductShow({
                 className={`mt-5 px-4 ${selectedPrice !== null ? 'pb-28' : 'pb-8'}`}
             >
                 <div className="mx-auto grid max-w-5xl gap-3 xl:grid-cols-[minmax(260px,300px)_minmax(0,1fr)]">
-                    <SupportAside />
+                    <SupportAside instructions={product.instructions} />
 
                     <div className="space-y-4">
                         <QuantitySection
