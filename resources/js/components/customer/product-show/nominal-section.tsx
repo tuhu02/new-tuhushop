@@ -1,7 +1,9 @@
 import type { PriceByCategory, ProductPriceItem } from '@/types';
-import { Gem } from 'lucide-react';
 
 import { formatRupiah } from './utils';
+
+const DIAMOND_LOGO_URL =
+    'https://sin1.contabostorage.com/b1d79b8bbee7475eab6c15cd3d13cd4d:knock/p/17066126930981670143.webp';
 
 type NominalSectionProps = {
     categoryTitle: string;
@@ -56,7 +58,7 @@ export default function NominalSection({
                     })}
                 </div>
             )}
-            <div className="mt-2.5 grid gap-2.5 sm:grid-cols-2 lg:grid-cols-4">
+            <div className="mt-2.5 grid gap-1.5 sm:grid-cols-2 lg:grid-cols-3">
                 {priceItems.map((price) => {
                     const isSelected = selectedPriceId === price.id;
 
@@ -65,23 +67,29 @@ export default function NominalSection({
                             key={price.id}
                             type="button"
                             onClick={() => onSelectPrice(price.id)}
-                            className={`overflow-hidden rounded-xl border transition hover:-translate-y-px hover:border-slate-800 ${
+                            className={`overflow-hidden rounded-lg border transition hover:-translate-y-px hover:border-blue-600 ${
                                 isSelected
                                     ? 'border-blue-600 bg-white ring-2 ring-blue-200'
                                     : 'border-slate-200 bg-white'
                             }`}
                         >
-                            <div className="px-3 pt-3 pb-2">
-                                <p className="text-sm font-semibold text-slate-900">
-                                    {price.display_name}
-                                </p>
+                            <div className="flex items-center justify-between gap-2 px-2.5 py-2">
+                                <div className="min-w-0 text-left">
+                                    <p className="truncate text-[12px] font-semibold text-slate-900">
+                                        {price.display_name}
+                                    </p>
 
-                                <div className="mt-2 flex items-center gap-1.5">
-                                    <Gem className="h-4 w-4 text-slate-900" />
-                                    <p className="text-lg font-bold text-slate-900">
+                                    <p className="mt-0.5 text-sm pt-2 leading-tight text-slate-900">
                                         {formatRupiah(price.price)}
                                     </p>
                                 </div>
+
+                                <img
+                                    src={DIAMOND_LOGO_URL}
+                                    alt="Diamond"
+                                    className="h-5 w-5 shrink-0 object-contain"
+                                    loading="lazy"
+                                />
                             </div>
                         </button>
                     );

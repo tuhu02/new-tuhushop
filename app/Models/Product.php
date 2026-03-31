@@ -61,4 +61,9 @@ class Product extends Model
     {
         return $this->hasMany(ProductPrice::class)->where('is_active', true)->orderBy('order');
     }
+
+    public function instructions(): HasMany
+    {
+        return $this->hasMany(ProductInstruction::class);
+    }
 }

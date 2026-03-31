@@ -27,6 +27,19 @@ export type Product = {
     categories: CategoryOption[];
 };
 
+export type ProductOption = {
+    id: number;
+    name: string;
+};
+
+export type ProductInstruction = {
+    id: number;
+    product_id: number;
+    title: string;
+    content: string;
+    product: ProductOption | null;
+};
+
 export type CustomerUser = {
     id: number;
     name: string;

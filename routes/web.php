@@ -6,6 +6,7 @@ use App\Http\Controllers\Admin\BrandController;
 use App\Http\Controllers\Admin\CarouselController;
 use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Admin\ProductPriceController;
+use App\Http\Controllers\Admin\ProductInstructionController;
 use App\Http\Controllers\Admin\PriceListCategoryController;
 use App\Http\Controllers\Customer\DashboardController;
 use App\Http\Controllers\Customer\ProductController as CustomerProductController;
@@ -34,6 +35,7 @@ Route::middleware([])->prefix('admin')->name('admin.')->group(function () {
     Route::resource('brands', BrandController::class)->except('show');
     Route::resource('categories', CategoryController::class)->except('show');
     Route::resource('products', ProductController::class)->except('show');
+    Route::resource('product-instructions', ProductInstructionController::class)->except('show');
     Route::resource('price-list-categories', PriceListCategoryController::class)->except('show');
 
     // Nested routes for product prices

@@ -14,6 +14,7 @@ import {
     IconInnerShadowTop,
     IconListDetails,
     IconTag,
+    IconList,
     IconPackage,
     IconReport,
     IconSearch,
@@ -61,6 +62,11 @@ const data = {
             title: 'Products',
             url: '/admin/products',
             icon: IconPackage,
+        },
+        {
+            title: 'Product Instructions',
+            url: '/admin/product-instructions',
+            icon: IconList,
         },
         {
             title: 'Brands',
