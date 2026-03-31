@@ -83,6 +83,16 @@ const data = {
             url: '/admin/price-list-categories',
             icon: IconTag,
         },
+        {
+            title: 'Payment Methods',
+            url: '/admin/payment-methods',
+            icon: IconListDetails,
+        },
+        {
+            title: 'Payment Channels',
+            url: '/admin/payment-channels',
+            icon: IconChartBar,
+        },
     ],
     navClouds: [
         {

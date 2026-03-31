@@ -93,3 +93,26 @@ export type PriceListCategoryEditProps = {
     category: PriceListCategory;
 }
 
+export type PaymentMethod = {
+    id: number;
+    name: string;
+    code: string;
+    is_active: boolean;
+    channels_count?: number;
+};
+
+export type PaymentMethodOption = Pick<PaymentMethod, 'id' | 'name' | 'code'>;
+
+export type PaymentChannel = {
+    id: number;
+    payment_method_id: number;
+    name: string;
+    code: string;
+    logo: string;
+    fee: number;
+    min_amount: number | null;
+    max_amount: number | null;
+    is_active: boolean;
+    payment_method?: PaymentMethodOption | null;
+};
+

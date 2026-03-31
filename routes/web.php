@@ -8,6 +8,8 @@ use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Admin\ProductPriceController;
 use App\Http\Controllers\Admin\ProductInstructionController;
 use App\Http\Controllers\Admin\PriceListCategoryController;
+use App\Http\Controllers\Admin\PaymentMethodController;
+use App\Http\Controllers\Admin\PaymentChannelController;
 use App\Http\Controllers\Customer\DashboardController;
 use App\Http\Controllers\Customer\ProductController as CustomerProductController;
 use Illuminate\Support\Facades\Route;
@@ -37,6 +39,8 @@ Route::middleware([])->prefix('admin')->name('admin.')->group(function () {
     Route::resource('products', ProductController::class)->except('show');
     Route::resource('product-instructions', ProductInstructionController::class)->except('show');
     Route::resource('price-list-categories', PriceListCategoryController::class)->except('show');
+    Route::resource('payment-methods', PaymentMethodController::class)->except('show');
+    Route::resource('payment-channels', PaymentChannelController::class)->except('show');
 
     // Nested routes for product prices
     Route::resource('products.prices', ProductPriceController::class)->except('show');

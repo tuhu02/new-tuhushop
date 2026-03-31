@@ -20,7 +20,7 @@ export default function SupportAside({ instructions = [] }: SupportAsideProps) {
 
             {instructions.map((item, index) => (
                 <div key={index} className="rounded-xl bg-slate-50 px-3 py-2.5">
-                    <p className="text-sm font-semibold text-slate-900">
+                    <p className="text-sm font-semibold text-slate-900 mb-4">
                         {item.title}
                     </p>
                     <p className="mt-1 text-sm leading-relaxed whitespace-pre-line text-slate-700">
