@@ -13,7 +13,7 @@ export default function PaymentSection({
     onSelectPayment,
 }: PaymentSectionProps) {
     return (
-        <SectionCard number={5} title="Pilih Pembayaran">
+        <SectionCard number={4} title="Pilih Pembayaran">
             <div className="space-y-3 text-slate-900">
                 <button
                     type="button"

@@ -71,21 +71,11 @@ export default function NominalSection({
                                     : 'border-slate-200 bg-white'
                             }`}
                         >
-                            {/* Content Card */}
                             <div className="px-3 pt-3 pb-2">
-                                {/* Nama Produk */}
                                 <p className="text-sm font-semibold text-slate-900">
                                     {price.display_name}
                                 </p>
 
-                                {/* Deskripsi */}
-                                {/* {price.description && (
-                                    <p className="mt-0.5 text-xs text-slate-500">
-                                        {price.description}
-                                    </p>
-                                )} */}
-
-                                {/* Harga */}
                                 <div className="mt-2 flex items-center gap-1.5">
                                     <Gem className="h-4 w-4 text-slate-900" />
                                     <p className="text-lg font-bold text-slate-900">
@@ -93,7 +83,6 @@ export default function NominalSection({
                                     </p>
                                 </div>
                             </div>
-                            
                         </button>
                     );
                 })}

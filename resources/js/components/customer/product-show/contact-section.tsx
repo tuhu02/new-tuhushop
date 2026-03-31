@@ -12,7 +12,7 @@ export default function ContactSection({
     onChangePhoneNumber,
 }: ContactSectionProps) {
     return (
-        <SectionCard number={6} title="Detail Kontak">
+        <SectionCard number={5} title="Detail Kontak">
             <div className="space-y-3 text-slate-900">
                 <div>
                     <label className="mb-1 block text-xs text-slate-600">

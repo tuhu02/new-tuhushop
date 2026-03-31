@@ -14,7 +14,7 @@ export default function QuantitySection({
     onDecrease,
 }: QuantitySectionProps) {
     return (
-        <SectionCard number={3} title="Masukkan Jumlah Pembelian">
+        <SectionCard number={2} title="Masukkan Jumlah Pembelian">
             <div className="flex items-center gap-2">
                 <input
                     value={quantity}
