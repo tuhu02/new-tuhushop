@@ -19,7 +19,7 @@ export default function PaymentChannelEdit({
         payment_method_id: paymentChannel.payment_method_id.toString(),
         name: paymentChannel.name,
         code: paymentChannel.code,
-        logo: paymentChannel.logo,
+        logo: null as File | null,
         fee: paymentChannel.fee.toString(),
         min_amount:
             paymentChannel.min_amount === null
@@ -35,7 +35,9 @@ export default function PaymentChannelEdit({
     const submit = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
 
-        put(`/admin/payment-channels/${paymentChannel.id}`);
+        put(`/admin/payment-channels/${paymentChannel.id}`, {
+            forceFormData: true,
+        });
     };
 
     return (
@@ -112,14 +114,21 @@ export default function PaymentChannelEdit({
                     </div>
 
                     <div className="grid gap-2">
-                        <Label htmlFor="logo">Logo URL / Path</Label>
+                        <Label htmlFor="logo">Logo</Label>
+                        {paymentChannel.logo_url && (
+                            <img
+                                src={paymentChannel.logo_url}
+                                alt={paymentChannel.name}
+                                className="h-12 w-12 rounded-md border object-contain"
+                            />
+                        )}
                         <Input
                             id="logo"
-                            value={data.logo}
+                            type="file"
+                            accept="image/png,image/jpeg,image/jpg,image/webp"
                             onChange={(event) =>
-                                setData('logo', event.target.value)
+                                setData('logo', event.target.files?.[0] ?? null)
                             }
-                            placeholder="Contoh: /images/payments/bca.png"
                         />
                         <InputError message={errors.logo} />
                     </div>

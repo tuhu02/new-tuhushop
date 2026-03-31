@@ -38,6 +38,7 @@ export default function PaymentChannelIndex({
                                 <th className="px-4 py-3 font-medium">
                                     Method
                                 </th>
+                                <th className="px-4 py-3 font-medium">Logo</th>
                                 <th className="px-4 py-3 font-medium">Nama</th>
                                 <th className="px-4 py-3 font-medium">Code</th>
                                 <th className="px-4 py-3 font-medium">Fee</th>
@@ -68,6 +69,17 @@ export default function PaymentChannelIndex({
                                     <td className="px-4 py-3">
                                         {paymentChannel.payment_method?.name ??
                                             '-'}
+                                    </td>
+                                    <td className="px-4 py-3">
+                                        {paymentChannel.logo_url ? (
+                                            <img
+                                                src={paymentChannel.logo_url}
+                                                alt={paymentChannel.name}
+                                                className="h-10 w-10 rounded-md border object-contain"
+                                            />
+                                        ) : (
+                                            '-'
+                                        )}
                                     </td>
                                     <td className="px-4 py-3">
                                         {paymentChannel.name}

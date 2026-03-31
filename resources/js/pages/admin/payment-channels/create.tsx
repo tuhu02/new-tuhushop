@@ -17,7 +17,7 @@ export default function PaymentChannelCreate({
         payment_method_id: '',
         name: '',
         code: '',
-        logo: '',
+        logo: null as File | null,
         fee: '0',
         min_amount: '',
         max_amount: '',
@@ -27,7 +27,9 @@ export default function PaymentChannelCreate({
     const submit = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
 
-        post('/admin/payment-channels');
+        post('/admin/payment-channels', {
+            forceFormData: true,
+        });
     };
 
     return (
@@ -104,14 +106,14 @@ export default function PaymentChannelCreate({
                     </div>
 
                     <div className="grid gap-2">
-                        <Label htmlFor="logo">Logo URL / Path</Label>
+                        <Label htmlFor="logo">Logo</Label>
                         <Input
                             id="logo"
-                            value={data.logo}
+                            type="file"
+                            accept="image/png,image/jpeg,image/jpg,image/webp"
                             onChange={(event) =>
-                                setData('logo', event.target.value)
+                                setData('logo', event.target.files?.[0] ?? null)
                             }
-                            placeholder="Contoh: /images/payments/bca.png"
                         />
                         <InputError message={errors.logo} />
                     </div>

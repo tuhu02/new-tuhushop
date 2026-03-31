@@ -109,6 +109,7 @@ export type PaymentChannel = {
     name: string;
     code: string;
     logo: string;
+    logo_url?: string;
     fee: number;
     min_amount: number | null;
     max_amount: number | null;
