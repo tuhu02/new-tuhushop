@@ -1,74 +1,107 @@
-import { ChevronDown, Landmark, QrCode, Store, Wallet } from 'lucide-react';
-
+import { useState } from 'react';
 import SectionCard from './section-card';
-import { paymentLogos } from './utils';
+import type { PaymentMethod } from '@/types';
 
 type PaymentSectionProps = {
+    paymentMethods: (PaymentMethod & { logo_url?: string })[];
     selectedPayment: string;
     onSelectPayment: (payment: string) => void;
 };
 
 export default function PaymentSection({
+    paymentMethods,
     selectedPayment,
     onSelectPayment,
 }: PaymentSectionProps) {
+    const activePayments = paymentMethods.filter((method) => method.is_active);
+    const [openMethod, setOpenMethod] = useState<number | null>(null);
     return (
         <SectionCard number={4} title="Pilih Pembayaran">
             <div className="space-y-3 text-slate-900">
-                <button
-                    type="button"
-                    onClick={() => onSelectPayment('qris')}
-                    className={`flex w-full items-center justify-between rounded-lg px-4 py-3 text-left transition ${
-                        selectedPayment === 'qris'
-                            ? 'border border-slate-900 bg-white ring-2 ring-slate-900/20'
-                            : 'border border-slate-200 bg-slate-50'
-                    }`}
-                >
-                    <span className="flex items-center gap-2 text-sm font-semibold">
-                        <QrCode className="h-5 w-5 text-slate-700" />
-                        QRIS (All Payment)
-                    </span>
-                    <span className="text-xs text-slate-600">Min. 100,00</span>
-                </button>
-
-                <div className="rounded-lg border border-slate-200 bg-slate-50 px-4 py-3">
-                    <div className="flex items-center justify-between text-sm font-medium">
-                        <span className="flex items-center gap-2">
-                            <Wallet className="h-4 w-4" />
-                            E-Wallet
-                        </span>
-                        <ChevronDown className="h-4 w-4 text-slate-500" />
-                    </div>
-                    <p className="mt-2 text-[11px] text-slate-500">
-                        {paymentLogos.ewallet.join(' • ')}
+                {activePayments.length === 0 ? (
+                    <p className="text-sm text-muted-foreground">
+                        Tidak ada metode pembayaran tersedia
                     </p>
-                </div>
+                ) : (
+                    activePayments.map((method) => {
+                        const isOpen = openMethod === method.id;
 
-                <div className="rounded-lg border border-slate-200 bg-slate-50 px-4 py-3">
-                    <div className="flex items-center justify-between text-sm font-medium">
-                        <span className="flex items-center gap-2">
-                            <Landmark className="h-4 w-4" />
-                            Virtual Account
-                        </span>
-                        <ChevronDown className="h-4 w-4 text-slate-500" />
-                    </div>
-                    <p className="mt-2 text-[11px] text-slate-500">
-                        {paymentLogos.va.join(' • ')}
-                    </p>
-                </div>
+                        return (
+                            <div
+                                key={method.id}
+                                className="rounded-lg border border-slate-200"
+                            >
+                                <button
+                                    type="button"
+                                    onClick={() =>
+                                        setOpenMethod(isOpen ? null : method.id)
+                                    }
+                                    className="flex w-full items-center justify-between px-4 py-3 text-left"
+                                >
+                                    <span className="flex items-center gap-3 text-sm font-semibold">
+                                        {method.logo_url ? (
+                                            <img
+                                                src={method.logo_url}
+                                                alt={method.name}
+                                                className="h-5 w-5 rounded object-cover"
+                                            />
+                                        ) : (
+                                            <div className="h-5 w-5 rounded bg-slate-200" />
+                                        )}
+                                        {method.name}
+                                    </span>
 
-                <div className="rounded-lg border border-slate-200 bg-slate-50 px-4 py-3">
-                    <div className="flex items-center justify-between text-sm font-medium">
-                        <span className="flex items-center gap-2">
-                            <Store className="h-4 w-4" />
-                            Convenience Store
-                        </span>
-                        <ChevronDown className="h-4 w-4 text-slate-500" />
-                    </div>
-                    <p className="mt-2 text-[11px] text-slate-500">
-                        {paymentLogos.store.join(' • ')}
-                    </p>
-                </div>
+                                    <span className="text-xs text-slate-500">
+                                        {isOpen ? 'Tutup' : 'Pilih'}
+                                    </span>
+                                </button>
+
+                                {isOpen && (
+                                    <div className="grid grid-cols-2 gap-2 border-t border-slate-200 p-3 md:grid-cols-3">
+                                        {method.channels.length === 0 ? (
+                                            <p className="col-span-2 text-xs text-slate-500">
+                                                Tidak ada channel
+                                            </p>
+                                        ) : (
+                                            method.channels.map((channel) => (
+                                                <button
+                                                    key={channel.id}
+                                                    type="button"
+                                                    onClick={() =>
+                                                        onSelectPayment(
+                                                            channel.code,
+                                                        )
+                                                    }
+                                                    className={`flex h-20 items-center gap-3 rounded-lg px-3 py-2 text-left transition ${
+                                                        selectedPayment ===
+                                                        channel.code
+                                                            ? 'border border-slate-900 bg-white ring-2 ring-slate-900/20'
+                                                            : 'border border-slate-200 bg-slate-50'
+                                                    }`}
+                                                >
+                                                    {channel.logo_url ? (
+                                                        <img
+                                                            src={
+                                                                channel.logo_url
+                                                            }
+                                                            alt={channel.name}
+                                                            className="h-5 w-10 rounded object-cover"
+                                                        />
+                                                    ) : (
+                                                        <div className="h-5 w-5 rounded bg-slate-200" />
+                                                    )}
+                                                    <span className="text-sm font-medium">
+                                                        {channel.name}
+                                                    </span>
+                                                </button>
+                                            ))
+                                        )}
+                                    </div>
+                                )}
+                            </div>
+                        );
+                    })
+                )}
             </div>
         </SectionCard>
     );

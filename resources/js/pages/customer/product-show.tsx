@@ -9,7 +9,12 @@ import {
     SupportAside,
 } from '@/components/customer/product-show';
 import AppLayout from '@/layouts/app-layout';
-import type { BreadcrumbItem, PriceByCategory, User } from '@/types';
+import type {
+    BreadcrumbItem,
+    PriceByCategory,
+    User,
+    PaymentMethod,
+} from '@/types';
 import { Head } from '@inertiajs/react';
 import { useEffect, useState } from 'react';
 
@@ -31,6 +36,7 @@ type ProductShowPageProps = {
         }[];
     };
     pricesByCategory: PriceByCategory[];
+    paymentMethods: (PaymentMethod & { logo_url?: string })[];
     user: User | null;
 };
 
@@ -44,6 +50,7 @@ const breadcrumbs: BreadcrumbItem[] = [
 export default function ProductShow({
     product,
     pricesByCategory,
+    paymentMethods,
 }: ProductShowPageProps) {
     const [selectedCategoryId, setSelectedCategoryId] = useState<number | null>(
         pricesByCategory[0]?.category.id ?? null,
@@ -78,63 +85,78 @@ export default function ProductShow({
             ? (priceItems.find((price) => price.id === selectedPriceId) ?? null)
             : null;
 
+    const selectedChannel = paymentMethods
+        .flatMap((method) => method.channels)
+        .find((channel) => channel.code === selectedPayment);
+
     const categoryTitle =
         selectedCategoryGroup?.category.name ?? 'Instant Top Up';
-    const totalPrice =
+    const basePrice =
         selectedPrice !== null ? selectedPrice.price * quantity : 0;
+    const feeFlat = selectedChannel?.fee ?? 0;
+    const feePercent = selectedChannel?.fee_percent ?? 0;
+    const feePercentAmount = Math.ceil(basePrice * (feePercent / 100));
+    const totalPrice = basePrice + feeFlat + feePercentAmount;
 
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title={product.name} />
 
             <div className="px-4 pt-4">
-                <div className="mx-auto grid max-w-5xl gap-3 xl:grid-cols-[minmax(260px,300px)_minmax(0,1fr)]">
-                    <ProductInfoCard product={product} />
-                    <NominalSection
-                        categoryTitle={categoryTitle}
-                        pricesByCategory={pricesByCategory}
-                        selectedCategoryId={selectedCategoryId}
-                        onSelectCategory={setSelectedCategoryId}
-                        priceItems={priceItems}
-                        selectedPriceId={selectedPriceId}
-                        onSelectPrice={setSelectedPriceId}
-                    />
-                </div>
-            </div>
+                <div className="mx-auto grid max-w-5xl items-start gap-3 xl:grid-cols-[minmax(260px,300px)_minmax(0,1fr)]">
+                    <div className="space-y-3">
+                        <ProductInfoCard product={product} />
+                        <SupportAside instructions={product.instructions} />
+                    </div>
 
-            <div
-                className={`mt-5 px-4 ${selectedPrice !== null ? 'pb-28' : 'pb-8'}`}
-            >
-                <div className="mx-auto grid max-w-5xl gap-3 xl:grid-cols-[minmax(260px,300px)_minmax(0,1fr)]">
-                    <SupportAside instructions={product.instructions} />
+                    <div className="space-y-3">
+                        <NominalSection
+                            categoryTitle={categoryTitle}
+                            pricesByCategory={pricesByCategory}
+                            selectedCategoryId={selectedCategoryId}
+                            onSelectCategory={setSelectedCategoryId}
+                            priceItems={priceItems}
+                            selectedPriceId={selectedPriceId}
+                            onSelectPrice={setSelectedPriceId}
+                        />
 
-                    <div className="space-y-4">
-                        <QuantitySection
-                            quantity={quantity}
-                            onIncrease={() => setQuantity((prev) => prev + 1)}
-                            onDecrease={() =>
-                                setQuantity((prev) => Math.max(1, prev - 1))
-                            }
-                        />
-                        <PromoSection
-                            promoCode={promoCode}
-                            onChangePromoCode={setPromoCode}
-                        />
-                        <PaymentSection
-                            selectedPayment={selectedPayment}
-                            onSelectPayment={setSelectedPayment}
-                        />
-                        <ContactSection
-                            phoneNumber={phoneNumber}
-                            onChangePhoneNumber={setPhoneNumber}
-                        />
+                        <div
+                            className={`space-y-4 ${selectedPrice !== null ? 'pb-44 sm:pb-40' : 'pb-8'}`}
+                        >
+                            <QuantitySection
+                                quantity={quantity}
+                                onIncrease={() =>
+                                    setQuantity((prev) => prev + 1)
+                                }
+                                onDecrease={() =>
+                                    setQuantity((prev) => Math.max(1, prev - 1))
+                                }
+                            />
+                            <PromoSection
+                                promoCode={promoCode}
+                                onChangePromoCode={setPromoCode}
+                            />
+                            <PaymentSection
+                                paymentMethods={paymentMethods}
+                                selectedPayment={selectedPayment}
+                                onSelectPayment={setSelectedPayment}
+                            />
+                            <ContactSection
+                                phoneNumber={phoneNumber}
+                                onChangePhoneNumber={setPhoneNumber}
+                            />
+                        </div>
                     </div>
                 </div>
             </div>
 
             <BottomCheckoutBar
                 selectedPrice={selectedPrice}
+                selectedChannel={selectedChannel ?? null}
                 quantity={quantity}
+                feeFlat={feeFlat}
+                feePercent={feePercent}
+                feePercentAmount={feePercentAmount}
                 totalPrice={totalPrice}
             />
         </AppLayout>

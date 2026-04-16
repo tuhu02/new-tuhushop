@@ -11,7 +11,7 @@ export default function CardProduct({
     return (
         <Link
             href={show(slug).url}
-            className="group text-decoration-none relative h-64 w-48 flex-shrink-0 cursor-pointer overflow-hidden rounded-3xl"
+            className="text-decoration-none group relative block aspect-3/4 w-full cursor-pointer overflow-hidden rounded-3xl"
         >
             <div
                 className="absolute inset-0 bg-cover bg-center transition-transform duration-[600ms] ease-[cubic-bezier(0.25,0.46,0.45,0.94)] group-hover:scale-[1.08]"

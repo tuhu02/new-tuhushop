@@ -88,7 +88,12 @@ export default function PaymentChannelIndex({
                                         {paymentChannel.code}
                                     </td>
                                     <td className="px-4 py-3">
-                                        {paymentChannel.fee}
+                                        {paymentChannel.fee.toLocaleString(
+                                            'id-ID',
+                                        )}
+                                        {paymentChannel.fee_percent > 0
+                                            ? ` + ${paymentChannel.fee_percent}%`
+                                            : ''}
                                     </td>
                                     <td className="px-4 py-3">
                                         {paymentChannel.min_amount ?? '-'} -{' '}

@@ -3,7 +3,9 @@
 namespace App\Http\Controllers\Customer;
 
 use App\Http\Controllers\Controller;
+use App\Models\PaymentChannel;
 use App\Models\Product;
+use App\Models\PaymentMethod;
 use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
 
@@ -28,6 +30,33 @@ class ProductController extends Controller
                 'prices' => $prices->values(),
             ];
         })->values();
+
+        $paymentMethods = PaymentMethod::where('is_active', true)->with('channels')
+            ->get()
+            ->map(function (PaymentMethod $method) {
+                return [
+                    'id' => $method->id,
+                    'name' => $method->name,
+                    'code' => $method->code,
+                    'logo' => $method->logo,
+                    'logo_url' => $method->logo ? asset('storage/' . $method->logo) : null,
+                    'is_active' => $method->is_active,
+
+                    'channels' => $method->channels->map(function ($channel) {
+                        return [
+                            'id' => $channel->id,
+                            'name' => $channel->name,
+                            'code' => $channel->code,
+                            'logo' => $channel->logo,
+                            'logo_url' => $channel->logo ? asset('storage/' . $channel->logo) : null,
+                            'fee' => $channel->fee,
+                            'fee_percent' => $channel->fee_percent,
+                            'min_amount' => $channel->min_amount,
+                            'max_amount' => $channel->max_amount,
+                        ];
+                    }),
+                ];
+            });
 
 
         $user = Auth::user();
@@ -57,6 +86,7 @@ class ProductController extends Controller
             ],
 
             'pricesByCategory' => $pricesByCategory,
+            'paymentMethods' => $paymentMethods,
             'user' => $user,
         ]);
     }

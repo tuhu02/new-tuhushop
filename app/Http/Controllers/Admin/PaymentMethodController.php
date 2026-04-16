@@ -7,6 +7,7 @@ use App\Http\Requests\Admin\StorePaymentMethodRequest;
 use App\Http\Requests\Admin\UpdatePaymentMethodRequest;
 use App\Models\PaymentMethod;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Facades\Storage;
 use Inertia\Inertia;
 use Inertia\Response;
 
@@ -21,7 +22,18 @@ class PaymentMethodController extends Controller
             'paymentMethods' => PaymentMethod::query()
                 ->withCount('channels')
                 ->latest()
-                ->get(),
+                ->get()
+                ->map(function (PaymentMethod $method): array {
+                    return [
+                        'id' => $method->id,
+                        'name' => $method->name,
+                        'code' => $method->code,
+                        'logo' => $method->logo,
+                        'logo_url' => $method->logo ? asset('storage/' . $method->logo) : null,
+                        'is_active' => $method->is_active,
+                        'channels_count' => $method->channels_count ?? 0,
+                    ];
+                }),
         ]);
     }
 
@@ -38,7 +50,13 @@ class PaymentMethodController extends Controller
      */
     public function store(StorePaymentMethodRequest $request): RedirectResponse
     {
-        PaymentMethod::query()->create($request->validated());
+        $validated = $request->validated();
+        $logoPath = $request->file('logo')->store('payment-methods', 'public');
+
+        PaymentMethod::query()->create([
+            ...$validated,
+            'logo' => $logoPath,
+        ]);
 
         return to_route('admin.payment-methods.index');
     }
@@ -49,7 +67,14 @@ class PaymentMethodController extends Controller
     public function edit(PaymentMethod $payment_method): Response
     {
         return Inertia::render('admin/payment-methods/edit', [
-            'paymentMethod' => $payment_method,
+            'paymentMethod' => [
+                'id' => $payment_method->id,
+                'name' => $payment_method->name,
+                'code' => $payment_method->code,
+                'logo' => $payment_method->logo,
+                'logo_url' => $payment_method->logo ? asset('storage/' . $payment_method->logo) : null,
+                'is_active' => $payment_method->is_active,
+            ],
         ]);
     }
 
@@ -60,7 +85,17 @@ class PaymentMethodController extends Controller
         UpdatePaymentMethodRequest $request,
         PaymentMethod $payment_method,
     ): RedirectResponse {
-        $payment_method->update($request->validated());
+        $validated = $request->validated();
+
+        if ($request->hasFile('logo')) {
+            if ($payment_method->logo) {
+                Storage::disk('public')->delete($payment_method->logo);
+            }
+            $logoPath = $request->file('logo')->store('payment-methods', 'public');
+            $validated['logo'] = $logoPath;
+        }
+
+        $payment_method->update($validated);
 
         return to_route('admin.payment-methods.index');
     }
@@ -72,6 +107,10 @@ class PaymentMethodController extends Controller
     {
         if ($payment_method->channels()->exists()) {
             return back()->with('error', 'Payment method tidak bisa dihapus karena masih memiliki channel.');
+        }
+
+        if ($payment_method->logo) {
+            Storage::disk('public')->delete($payment_method->logo);
         }
 
         $payment_method->delete();

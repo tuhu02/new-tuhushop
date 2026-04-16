@@ -21,6 +21,7 @@ export default function PaymentChannelEdit({
         code: paymentChannel.code,
         logo: null as File | null,
         fee: paymentChannel.fee.toString(),
+        fee_percent: paymentChannel.fee_percent.toString(),
         min_amount:
             paymentChannel.min_amount === null
                 ? ''
@@ -133,7 +134,7 @@ export default function PaymentChannelEdit({
                         <InputError message={errors.logo} />
                     </div>
 
-                    <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
+                    <div className="grid grid-cols-1 gap-4 md:grid-cols-4">
                         <div className="grid gap-2">
                             <Label htmlFor="fee">Fee</Label>
                             <Input
@@ -147,6 +148,23 @@ export default function PaymentChannelEdit({
                                 placeholder="0"
                             />
                             <InputError message={errors.fee} />
+                        </div>
+
+                        <div className="grid gap-2">
+                            <Label htmlFor="fee_percent">Fee Persen (%)</Label>
+                            <Input
+                                id="fee_percent"
+                                type="number"
+                                min={0}
+                                max={100}
+                                step="0.01"
+                                value={data.fee_percent}
+                                onChange={(event) =>
+                                    setData('fee_percent', event.target.value)
+                                }
+                                placeholder="0"
+                            />
+                            <InputError message={errors.fee_percent} />
                         </div>
 
                         <div className="grid gap-2">

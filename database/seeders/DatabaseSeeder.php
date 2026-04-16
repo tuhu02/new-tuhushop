@@ -2,7 +2,6 @@
 
 namespace Database\Seeders;
 
-use App\Models\User;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -20,5 +19,10 @@ class DatabaseSeeder extends Seeder
         //     'email' => 'test@example.com',
         // ]);
         $this->call(UserSeeder::class);
+        $this->call(CustomerCatalogSeeder::class);
+        $this->call(CarouselSeeder::class);
+        $this->call(GameNominalSeeder::class);
+        $this->call(GameInstructionSeeder::class);
+        $this->call(PaymentSeeder::class);
     }
 }

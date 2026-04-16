@@ -4,6 +4,7 @@ import type { PaymentMethod } from '@/types';
 
 type PaymentMethodWithCount = PaymentMethod & {
     channels_count?: number;
+    logo_url?: string | null;
 };
 
 export default function PaymentMethodIndex({
@@ -39,6 +40,7 @@ export default function PaymentMethodIndex({
                     <table className="w-full min-w-150 text-left text-sm">
                         <thead className="bg-muted/40">
                             <tr>
+                                <th className="px-4 py-3 font-medium">Logo</th>
                                 <th className="px-4 py-3 font-medium">Nama</th>
                                 <th className="px-4 py-3 font-medium">Code</th>
                                 <th className="px-4 py-3 font-medium">
@@ -55,7 +57,7 @@ export default function PaymentMethodIndex({
                                 <tr>
                                     <td
                                         className="px-4 py-6 text-muted-foreground"
-                                        colSpan={5}
+                                        colSpan={6}
                                     >
                                         Belum ada payment method.
                                     </td>
@@ -66,6 +68,17 @@ export default function PaymentMethodIndex({
                                     key={paymentMethod.id}
                                     className="border-t border-sidebar-border/50"
                                 >
+                                    <td className="px-4 py-3">
+                                        {paymentMethod.logo_url ? (
+                                            <img
+                                                src={paymentMethod.logo_url}
+                                                alt={paymentMethod.name}
+                                                className="h-10 w-10 object-cover rounded"
+                                            />
+                                        ) : (
+                                            <div className="h-10 w-10 bg-slate-200 rounded" />
+                                        )}
+                                    </td>
                                     <td className="px-4 py-3">
                                         {paymentMethod.name}
                                     </td>
@@ -110,3 +123,4 @@ export default function PaymentMethodIndex({
         </AdminLayout>
     );
 }
+

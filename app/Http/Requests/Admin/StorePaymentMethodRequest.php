@@ -24,6 +24,7 @@ class StorePaymentMethodRequest extends FormRequest
         return [
             'name' => ['required', 'string', 'max:255'],
             'code' => ['required', 'string', 'max:100', 'alpha_dash', 'unique:payment_methods,code'],
+            'logo' => ['required', 'image', 'mimes:jpg,jpeg,png,webp', 'max:2048'],
             'is_active' => ['required', 'boolean'],
         ];
     }

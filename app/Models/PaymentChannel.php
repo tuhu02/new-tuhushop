@@ -19,6 +19,7 @@ class PaymentChannel extends Model
         'code',
         'logo',
         'fee',
+        'fee_percent',
         'min_amount',
         'max_amount',
         'is_active',
@@ -32,6 +33,7 @@ class PaymentChannel extends Model
         return [
             'payment_method_id' => 'integer',
             'fee' => 'integer',
+            'fee_percent' => 'float',
             'min_amount' => 'integer',
             'max_amount' => 'integer',
             'is_active' => 'boolean',

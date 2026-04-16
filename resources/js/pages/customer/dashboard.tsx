@@ -8,6 +8,7 @@ import {
     CarouselPrevious,
 } from '@/components/ui/carousel';
 import AppLayout from '@/layouts/app-layout';
+import { cn } from '@/lib/utils';
 import { dashboard } from '@/routes';
 import type { BreadcrumbItem } from '@/types';
 
@@ -121,18 +122,36 @@ export default function Dashboard({
                         <section key={category} className="space-y-3">
                             <h1 className="text-lg font-bold">{category}</h1>
                             <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-5">
-                                {categoryProducts.map((product) => (
-                                    <CardProduct
+                                {categoryProducts.map((product, index) => (
+                                    <div
                                         key={`${category}-${product.id}`}
-                                        title={product.name}
-                                        image={
-                                            product.thumbnail_url ??
-                                            '/favicon.svg'
-                                        }
-                                        brand={product.brand ?? 'Unknown'}
-                                        badge={product.categories[0] ?? 'New'}
-                                        slug={product.slug}
-                                    />
+                                        className={cn(
+                                            'w-full',
+                                            categoryProducts.length % 2 === 1 &&
+                                                index ===
+                                                    categoryProducts.length -
+                                                        1 &&
+                                                'col-span-2 mx-auto max-w-56 sm:col-span-1 sm:max-w-none',
+                                            categoryProducts.length % 5 === 1 &&
+                                                index ===
+                                                    categoryProducts.length -
+                                                        1 &&
+                                                'lg:col-start-3',
+                                        )}
+                                    >
+                                        <CardProduct
+                                            title={product.name}
+                                            image={
+                                                product.thumbnail_url ??
+                                                '/favicon.svg'
+                                            }
+                                            brand={product.brand ?? 'Unknown'}
+                                            badge={
+                                                product.categories[0] ?? 'New'
+                                            }
+                                            slug={product.slug}
+                                        />
+                                    </div>
                                 ))}
                             </div>
                         </section>

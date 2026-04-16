@@ -2,6 +2,7 @@
 
 namespace App\Http\Middleware;
 
+use App\Models\Product;
 use Illuminate\Http\Request;
 use Inertia\Middleware;
 
@@ -42,6 +43,21 @@ class HandleInertiaRequests extends Middleware
                 'user' => $request->user(),
             ],
             'sidebarOpen' => ! $request->hasCookie('sidebar_state') || $request->cookie('sidebar_state') === 'true',
+            'headerSearchProducts' => fn(): array => Product::query()
+                ->where('is_active', true)
+                ->latest('id')
+                ->limit(100)
+                ->get()
+                ->map(fn(Product $product): array => [
+                    'id' => $product->id,
+                    'name' => $product->name,
+                    'slug' => $product->slug,
+                    'thumbnail_url' => $product->thumbnail !== null
+                        ? asset('storage/' . $product->thumbnail)
+                        : null,
+                ])
+                ->values()
+                ->all(),
         ];
     }
 }

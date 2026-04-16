@@ -1,5 +1,6 @@
 import { Link, usePage } from '@inertiajs/react';
 import { BookOpen, Folder, LayoutGrid, Menu, Search } from 'lucide-react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import AppLogo from '@/components/ui/app-logo';
 import AppLogoIcon from '@/components/ui/app-logo-icon';
 import { Breadcrumbs } from '@/components/customer/breadcrumbs';
@@ -33,30 +34,24 @@ import { useCurrentUrl } from '@/hooks/use-current-url';
 import { useInitials } from '@/hooks/use-initials';
 import { cn, toUrl } from '@/lib/utils';
 import { dashboard } from '@/routes';
+import { show as showProduct } from '@/routes/product';
 import type { BreadcrumbItem, NavItem } from '@/types';
 
 type Props = {
     breadcrumbs?: BreadcrumbItem[];
 };
 
+type SearchProduct = {
+    id: number;
+    name: string;
+    slug: string;
+    thumbnail_url: string | null;
+};
+
 const mainNavItems: NavItem[] = [
     {
         title: 'Dashboard',
         href: dashboard(),
-        icon: LayoutGrid,
-    },
-];
-
-const rightNavItems: NavItem[] = [
-    {
-        title: 'Repository',
-        href: 'https://github.com/laravel/react-starter-kit',
-        icon: Folder,
-    },
-    {
-        title: 'Documentation',
-        href: 'https://laravel.com/docs/starter-kits#react',
-        icon: BookOpen,
     },
 ];
 
@@ -68,9 +63,45 @@ export function AppHeader({ breadcrumbs = [] }: Props) {
     const { auth } = page.props;
     const getInitials = useInitials();
     const { isCurrentUrl, whenCurrentUrl } = useCurrentUrl();
+    const searchContainerRef = useRef<HTMLDivElement | null>(null);
+    const [searchValue, setSearchValue] = useState('');
+    const [isSearchOpen, setIsSearchOpen] = useState(false);
+
+    const searchProducts =
+        (page.props.headerSearchProducts as SearchProduct[] | undefined) ?? [];
+    const normalizedQuery = searchValue.trim().toLowerCase();
+
+    const filteredProducts = useMemo(() => {
+        if (normalizedQuery === '') {
+            return [];
+        }
+
+        return searchProducts
+            .filter((product) =>
+                product.name.toLowerCase().includes(normalizedQuery),
+            )
+            .slice(0, 8);
+    }, [normalizedQuery, searchProducts]);
+
+    useEffect(() => {
+        function handleClickOutside(event: MouseEvent): void {
+            if (
+                searchContainerRef.current !== null &&
+                !searchContainerRef.current.contains(event.target as Node)
+            ) {
+                setIsSearchOpen(false);
+            }
+        }
+
+        document.addEventListener('mousedown', handleClickOutside);
+
+        return () => {
+            document.removeEventListener('mousedown', handleClickOutside);
+        };
+    }, []);
 
     return (
-        <>
+        <div className="sticky top-0 z-40 bg-background/95 backdrop-blur supports-backdrop-filter:bg-background/80">
             <div className="border-b border-sidebar-border/80">
                 <div className="mx-auto flex h-16 items-center px-4 md:max-w-7xl">
                     {/* Mobile Menu */}
@@ -80,7 +111,7 @@ export function AppHeader({ breadcrumbs = [] }: Props) {
                                 <Button
                                     variant="ghost"
                                     size="icon"
-                                    className="mr-2 h-[34px] w-[34px]"
+                                    className="mr-2 h-8.5 w-8.5"
                                 >
                                     <Menu className="h-5 w-5" />
                                 </Button>
@@ -109,23 +140,6 @@ export function AppHeader({ breadcrumbs = [] }: Props) {
                                                     )}
                                                     <span>{item.title}</span>
                                                 </Link>
-                                            ))}
-                                        </div>
-
-                                        <div className="flex flex-col space-y-4">
-                                            {rightNavItems.map((item) => (
-                                                <a
-                                                    key={item.title}
-                                                    href={toUrl(item.href)}
-                                                    target="_blank"
-                                                    rel="noopener noreferrer"
-                                                    className="flex items-center space-x-2 font-medium"
-                                                >
-                                                    {item.icon && (
-                                                        <item.icon className="h-5 w-5" />
-                                                    )}
-                                                    <span>{item.title}</span>
-                                                </a>
                                             ))}
                                         </div>
                                     </div>
@@ -177,39 +191,113 @@ export function AppHeader({ breadcrumbs = [] }: Props) {
                     </div>
 
                     <div className="ml-auto flex items-center space-x-2">
-                        <div className="relative flex items-center space-x-1">
-                            <Button
-                                variant="ghost"
-                                size="icon"
-                                className="group h-9 w-9 cursor-pointer"
-                            >
-                                <Search className="!size-5 opacity-80 group-hover:opacity-100" />
-                            </Button>
-                            <div className="ml-1 hidden gap-1 lg:flex">
-                                {rightNavItems.map((item) => (
-                                    <Tooltip key={item.title}>
-                                        <TooltipTrigger>
-                                            <a
-                                                href={toUrl(item.href)}
-                                                target="_blank"
-                                                rel="noopener noreferrer"
-                                                className="group inline-flex h-9 w-9 items-center justify-center rounded-md bg-transparent p-0 text-sm font-medium text-accent-foreground ring-offset-background transition-colors hover:bg-accent hover:text-accent-foreground focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:outline-none disabled:pointer-events-none disabled:opacity-50"
-                                            >
-                                                <span className="sr-only">
-                                                    {item.title}
-                                                </span>
-                                                {item.icon && (
-                                                    <item.icon className="size-5 opacity-80 group-hover:opacity-100" />
-                                                )}
-                                            </a>
-                                        </TooltipTrigger>
-                                        <TooltipContent>
-                                            <p>{item.title}</p>
-                                        </TooltipContent>
-                                    </Tooltip>
-                                ))}
+                        <div ref={searchContainerRef} className="relative">
+                            <div className="hidden items-center md:flex">
+                                <div className="relative">
+                                    <Search className="pointer-events-none absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2 text-slate-500" />
+                                    <input
+                                        value={searchValue}
+                                        onChange={(event) => {
+                                            setSearchValue(event.target.value);
+                                            setIsSearchOpen(true);
+                                        }}
+                                        onFocus={() => setIsSearchOpen(true)}
+                                        type="text"
+                                        placeholder="Cari produk..."
+                                        className="h-10 w-72 rounded-full border border-slate-300 bg-white pl-10 pr-4 text-sm outline-none transition focus:border-slate-500"
+                                    />
+                                </div>
                             </div>
+
+                            <div className="md:hidden">
+                                <Button
+                                    variant="ghost"
+                                    size="icon"
+                                    onClick={() => setIsSearchOpen((open) => !open)}
+                                    className="group h-9 w-9 cursor-pointer"
+                                >
+                                    <Search className="size-5! opacity-80 group-hover:opacity-100" />
+                                </Button>
+                            </div>
+
+                            {isSearchOpen && (
+                                <>
+                                    <button
+                                        type="button"
+                                        onClick={() => setIsSearchOpen(false)}
+                                        className="fixed inset-0 z-40 bg-black/10 md:hidden"
+                                        aria-label="Tutup pencarian"
+                                    />
+
+                                    <div className="fixed inset-x-3 top-16 z-50 overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-xl md:absolute md:inset-x-auto md:top-full md:right-auto md:left-0 md:mt-2 md:w-full">
+                                        <div className="border-b border-slate-100 p-3 md:hidden">
+                                            <div className="relative">
+                                                <Search className="pointer-events-none absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2 text-slate-500" />
+                                                <input
+                                                    value={searchValue}
+                                                    onChange={(event) =>
+                                                        setSearchValue(
+                                                            event.target.value,
+                                                        )
+                                                    }
+                                                    autoFocus
+                                                    type="text"
+                                                    placeholder="Cari produk..."
+                                                    className="h-10 w-full rounded-full border border-slate-300 bg-white pl-10 pr-4 text-sm outline-none transition focus:border-slate-500"
+                                                />
+                                            </div>
+                                        </div>
+
+                                        {normalizedQuery === '' ? (
+                                            <p className="px-4 py-4 text-sm text-slate-500">
+                                                Ketik nama game atau produk untuk mencari.
+                                            </p>
+                                        ) : filteredProducts.length > 0 ? (
+                                            <div className="max-h-[min(60vh,20rem)] overflow-y-auto py-2 md:max-h-80">
+                                                {filteredProducts.map((product) => (
+                                                    <Link
+                                                        key={product.id}
+                                                        href={showProduct(product.slug).url}
+                                                        onClick={() => {
+                                                            setIsSearchOpen(false);
+                                                            setSearchValue('');
+                                                        }}
+                                                        className="flex items-center gap-3 px-4 py-2.5 transition hover:bg-slate-50"
+                                                    >
+                                                        {product.thumbnail_url !== null ? (
+                                                            <img
+                                                                src={
+                                                                    product.thumbnail_url
+                                                                }
+                                                                alt={product.name}
+                                                                className="h-12 w-12 rounded-md object-cover"
+                                                            />
+                                                        ) : (
+                                                            <div className="flex h-12 w-12 items-center justify-center rounded-md bg-slate-100 text-xs font-semibold text-slate-500">
+                                                                IMG
+                                                            </div>
+                                                        )}
+                                                        <p className="text-sm font-semibold text-slate-800">
+                                                            {product.name}
+                                                        </p>
+                                                    </Link>
+                                                ))}
+                                            </div>
+                                        ) : (
+                                            <div className="px-4 py-4">
+                                                <p className="text-sm text-slate-500">
+                                                    Game yang dicari tidak tersedia
+                                                </p>
+                                                <p className="mt-1 text-sm font-semibold text-blue-700">
+                                                    Kasih saran game atau produk
+                                                </p>
+                                            </div>
+                                        )}
+                                    </div>
+                                </>
+                            )}
                         </div>
+
                         <DropdownMenu>
                             <DropdownMenuTrigger asChild>
                                 <Button
@@ -241,6 +329,6 @@ export function AppHeader({ breadcrumbs = [] }: Props) {
                     </div>
                 </div>
             )}
-        </>
+        </div>
     );
 }

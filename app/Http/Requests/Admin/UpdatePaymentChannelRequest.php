@@ -57,6 +57,7 @@ class UpdatePaymentChannelRequest extends FormRequest
             ],
             'logo' => ['nullable', 'image', 'mimes:jpg,jpeg,png,webp', 'max:2048'],
             'fee' => ['required', 'integer', 'min:0'],
+            'fee_percent' => ['nullable', 'numeric', 'min:0', 'max:100'],
             'min_amount' => ['nullable', 'integer', 'min:0'],
             'max_amount' => ['nullable', 'integer', 'min:0', 'gte:min_amount'],
             'is_active' => ['required', 'boolean'],

@@ -19,6 +19,7 @@ export default function PaymentChannelCreate({
         code: '',
         logo: null as File | null,
         fee: '0',
+        fee_percent: '0',
         min_amount: '',
         max_amount: '',
         is_active: true,
@@ -118,7 +119,7 @@ export default function PaymentChannelCreate({
                         <InputError message={errors.logo} />
                     </div>
 
-                    <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
+                    <div className="grid grid-cols-1 gap-4 md:grid-cols-4">
                         <div className="grid gap-2">
                             <Label htmlFor="fee">Fee</Label>
                             <Input
@@ -132,6 +133,23 @@ export default function PaymentChannelCreate({
                                 placeholder="0"
                             />
                             <InputError message={errors.fee} />
+                        </div>
+
+                        <div className="grid gap-2">
+                            <Label htmlFor="fee_percent">Fee Persen (%)</Label>
+                            <Input
+                                id="fee_percent"
+                                type="number"
+                                min={0}
+                                max={100}
+                                step="0.01"
+                                value={data.fee_percent}
+                                onChange={(event) =>
+                                    setData('fee_percent', event.target.value)
+                                }
+                                placeholder="0"
+                            />
+                            <InputError message={errors.fee_percent} />
                         </div>
 
                         <div className="grid gap-2">

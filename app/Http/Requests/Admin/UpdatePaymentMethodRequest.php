@@ -35,6 +35,7 @@ class UpdatePaymentMethodRequest extends FormRequest
                 'alpha_dash',
                 Rule::unique('payment_methods', 'code')->ignore($paymentMethod->id),
             ],
+            'logo' => ['nullable', 'image', 'mimes:jpg,jpeg,png,webp', 'max:2048'],
             'is_active' => ['required', 'boolean'],
         ];
     }

@@ -4,13 +4,29 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import AdminLayout from '@/layouts/admin-layout';
+import { useState } from 'react';
 
 export default function PaymentMethodCreate() {
     const { data, setData, post, processing, errors } = useForm({
         name: '',
         code: '',
+        logo: null as File | null,
         is_active: true,
     });
+
+    const [logoPreview, setLogoPreview] = useState<string | null>(null);
+
+    const handleLogoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const file = e.target.files?.[0];
+        if (file) {
+            setData('logo', file);
+            const reader = new FileReader();
+            reader.onloadend = () => {
+                setLogoPreview(reader.result as string);
+            };
+            reader.readAsDataURL(file);
+        }
+    };
 
     const submit = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
@@ -39,6 +55,7 @@ export default function PaymentMethodCreate() {
                 <form
                     onSubmit={submit}
                     className="max-w-2xl space-y-4 rounded-xl border p-4"
+                    encType="multipart/form-data"
                 >
                     <div className="grid gap-2">
                         <Label htmlFor="name">Nama Payment Method</Label>
@@ -64,6 +81,26 @@ export default function PaymentMethodCreate() {
                             placeholder="Contoh: virtual_account"
                         />
                         <InputError message={errors.code} />
+                    </div>
+
+                    <div className="grid gap-2">
+                        <Label htmlFor="logo">Logo</Label>
+                        <Input
+                            id="logo"
+                            type="file"
+                            accept="image/jpeg,image/png,image/webp"
+                            onChange={handleLogoChange}
+                        />
+                        <InputError message={errors.logo} />
+                        {logoPreview && (
+                            <div className="mt-2">
+                                <img
+                                    src={logoPreview}
+                                    alt="Logo Preview"
+                                    className="h-24 w-24 rounded-lg object-cover"
+                                />
+                            </div>
+                        )}
                     </div>
 
                     <div className="flex items-center gap-2">
