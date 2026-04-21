@@ -1,4 +1,4 @@
-import { Link, router } from '@inertiajs/react';
+import { Link, router, usePage } from '@inertiajs/react';
 import AdminLayout from '@/layouts/admin-layout';
 import type { PaymentChannel } from '@/types';
 
@@ -7,6 +7,13 @@ export default function PaymentChannelIndex({
 }: {
     paymentChannels: PaymentChannel[];
 }) {
+    const { flash } = usePage<{
+        flash?: {
+            success?: string;
+            error?: string;
+        };
+    }>().props;
+
     const handleDelete = (paymentChannelId: number) => {
         if (!window.confirm('Hapus payment channel ini?')) {
             return;
@@ -15,20 +22,55 @@ export default function PaymentChannelIndex({
         router.delete(`/admin/payment-channels/${paymentChannelId}`);
     };
 
+    const handleSyncTripay = () => {
+        if (
+            !window.confirm('Sinkronkan payment channel dari Tripay sekarang?')
+        ) {
+            return;
+        }
+
+        router.post(
+            '/admin/payment-channels/sync-tripay',
+            {},
+            { preserveScroll: true },
+        );
+    };
+
     return (
         <AdminLayout
             title="Admin Payment Channels"
             headerTitle="Payment Channels"
         >
             <div className="space-y-4 p-4">
+                {flash?.success && (
+                    <div className="rounded-md border border-emerald-300 bg-emerald-50 px-4 py-3 text-sm text-emerald-800">
+                        {flash.success}
+                    </div>
+                )}
+
+                {flash?.error && (
+                    <div className="rounded-md border border-red-300 bg-red-50 px-4 py-3 text-sm text-red-700">
+                        {flash.error}
+                    </div>
+                )}
+
                 <div className="flex items-center justify-between">
                     <h1 className="text-xl font-semibold">Payment Channels</h1>
-                    <Link
-                        href="/admin/payment-channels/create"
-                        className="inline-flex h-9 items-center rounded-md bg-primary px-4 text-sm font-medium text-primary-foreground"
-                    >
-                        Tambah Payment Channel
-                    </Link>
+                    <div className="flex items-center gap-2">
+                        <button
+                            type="button"
+                            onClick={handleSyncTripay}
+                            className="inline-flex h-9 items-center rounded-md border px-4 text-sm font-medium"
+                        >
+                            Sync Tripay
+                        </button>
+                        <Link
+                            href="/admin/payment-channels/create"
+                            className="inline-flex h-9 items-center rounded-md bg-primary px-4 text-sm font-medium text-primary-foreground"
+                        >
+                            Tambah Payment Channel
+                        </Link>
+                    </div>
                 </div>
 
                 <div className="overflow-x-auto rounded-xl border border-sidebar-border/70">

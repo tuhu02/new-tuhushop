@@ -50,7 +50,7 @@ type SearchProduct = {
 
 const mainNavItems: NavItem[] = [
     {
-        title: 'Dashboard',
+        title: 'Home',
         href: dashboard(),
     },
 ];

@@ -12,6 +12,7 @@ use App\Http\Controllers\Admin\PaymentMethodController;
 use App\Http\Controllers\Admin\PaymentChannelController;
 use App\Http\Controllers\Customer\DashboardController;
 use App\Http\Controllers\Customer\ProductController as CustomerProductController;
+use App\Http\Controllers\PaymentController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use Laravel\Fortify\Features;
@@ -27,6 +28,11 @@ Route::prefix('product')->name('product.')->group(function () {
     Route::get('{slug}', [CustomerProductController::class, 'index'])->name('show');
 });
 
+// route payment
+Route::post('/checkout', [PaymentController::class, 'checkout'])->name('checkout');
+Route::get('/checkout/{reference}', [PaymentController::class, 'showCheckout'])->name('checkout.show');
+Route::get('/payment/success', fn() => redirect()->route('home'))->name('payment.success');
+
 Route::middleware([])->prefix('admin')->name('admin.')->group(function () {
     Route::get('dashboard', function () {
         return Inertia::render('admin/dashboard');
@@ -40,6 +46,8 @@ Route::middleware([])->prefix('admin')->name('admin.')->group(function () {
     Route::resource('product-instructions', ProductInstructionController::class)->except('show');
     Route::resource('price-list-categories', PriceListCategoryController::class)->except('show');
     Route::resource('payment-methods', PaymentMethodController::class)->except('show');
+    Route::post('payment-channels/sync-tripay', [PaymentChannelController::class, 'syncTripay'])
+        ->name('payment-channels.sync-tripay');
     Route::resource('payment-channels', PaymentChannelController::class)->except('show');
 
     // Nested routes for product prices

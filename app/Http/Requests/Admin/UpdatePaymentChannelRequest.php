@@ -22,6 +22,7 @@ class UpdatePaymentChannelRequest extends FormRequest
     protected function prepareForValidation(): void
     {
         $this->merge([
+            'code' => strtoupper(trim((string) $this->input('code', ''))),
             'min_amount' => $this->input('min_amount') === '' ? null : $this->input('min_amount'),
             'max_amount' => $this->input('max_amount') === '' ? null : $this->input('max_amount'),
         ]);

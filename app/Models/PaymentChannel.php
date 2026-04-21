@@ -22,6 +22,7 @@ class PaymentChannel extends Model
         'fee_percent',
         'min_amount',
         'max_amount',
+        'instructions',
         'is_active',
     ];
 
@@ -36,6 +37,7 @@ class PaymentChannel extends Model
             'fee_percent' => 'float',
             'min_amount' => 'integer',
             'max_amount' => 'integer',
+            'instructions' => 'array',
             'is_active' => 'boolean',
         ];
     }

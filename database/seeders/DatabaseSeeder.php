@@ -23,6 +23,5 @@ class DatabaseSeeder extends Seeder
         $this->call(CarouselSeeder::class);
         $this->call(GameNominalSeeder::class);
         $this->call(GameInstructionSeeder::class);
-        $this->call(PaymentSeeder::class);
     }
 }

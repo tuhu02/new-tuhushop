@@ -101,7 +101,7 @@ export default function PaymentChannelCreate({
                             onChange={(event) =>
                                 setData('code', event.target.value)
                             }
-                            placeholder="Contoh: bca_va"
+                            placeholder="Contoh: BRIVA"
                         />
                         <InputError message={errors.code} />
                     </div>

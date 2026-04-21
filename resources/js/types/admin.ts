@@ -115,6 +115,10 @@ export type PaymentChannel = {
     fee_percent: number;
     min_amount: number | null;
     max_amount: number | null;
+    instructions?: Array<{
+        title: string;
+        steps: string[];
+    }>;
     is_active: boolean;
     payment_method?: PaymentMethodOption | null;
 };

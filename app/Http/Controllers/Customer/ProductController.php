@@ -53,6 +53,7 @@ class ProductController extends Controller
                             'fee_percent' => $channel->fee_percent,
                             'min_amount' => $channel->min_amount,
                             'max_amount' => $channel->max_amount,
+                            'instructions' => $channel->instructions,
                         ];
                     }),
                 ];

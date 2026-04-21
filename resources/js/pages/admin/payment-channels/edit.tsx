@@ -109,7 +109,7 @@ export default function PaymentChannelEdit({
                             onChange={(event) =>
                                 setData('code', event.target.value)
                             }
-                            placeholder="Contoh: bca_va"
+                            placeholder="Contoh: BRIVA"
                         />
                         <InputError message={errors.code} />
                     </div>
@@ -196,6 +196,51 @@ export default function PaymentChannelEdit({
                             />
                             <InputError message={errors.max_amount} />
                         </div>
+                    </div>
+
+                    <div className="grid gap-3 rounded-lg border bg-muted/30 p-4">
+                        <div>
+                            <h2 className="text-sm font-semibold">
+                                Instruksi Pembayaran Tripay
+                            </h2>
+                            <p className="text-xs text-muted-foreground">
+                                Ini diambil otomatis dari Tripay saat sync dan
+                                hanya untuk dibaca.
+                            </p>
+                        </div>
+
+                        {paymentChannel.instructions?.length ? (
+                            <div className="space-y-4">
+                                {paymentChannel.instructions.map(
+                                    (instruction, index) => (
+                                        <div
+                                            key={`${instruction.title}-${index}`}
+                                            className="rounded-md border bg-background p-3"
+                                        >
+                                            <p className="text-sm font-medium">
+                                                {instruction.title}
+                                            </p>
+                                            <ol className="mt-2 list-decimal space-y-1 pl-5 text-sm text-muted-foreground">
+                                                {instruction.steps.map(
+                                                    (step, stepIndex) => (
+                                                        <li
+                                                            key={`${index}-${stepIndex}`}
+                                                        >
+                                                            {step}
+                                                        </li>
+                                                    ),
+                                                )}
+                                            </ol>
+                                        </div>
+                                    ),
+                                )}
+                            </div>
+                        ) : (
+                            <p className="text-sm text-muted-foreground">
+                                Belum ada instruksi tersinkron. Jalankan Sync
+                                Tripay untuk mengambil instruksi terbaru.
+                            </p>
+                        )}
                     </div>
 
                     <div className="flex items-center gap-2">

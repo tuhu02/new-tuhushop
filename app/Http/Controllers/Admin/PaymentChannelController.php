@@ -7,8 +7,10 @@ use App\Http\Requests\Admin\StorePaymentChannelRequest;
 use App\Http\Requests\Admin\UpdatePaymentChannelRequest;
 use App\Models\PaymentChannel;
 use App\Models\PaymentMethod;
+use App\Services\TripayService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Storage;
+use Throwable;
 use Inertia\Inertia;
 use Inertia\Response;
 
@@ -35,6 +37,7 @@ class PaymentChannelController extends Controller
                     'fee_percent' => $paymentChannel->fee_percent,
                     'min_amount' => $paymentChannel->min_amount,
                     'max_amount' => $paymentChannel->max_amount,
+                    'instructions' => $paymentChannel->instructions,
                     'is_active' => $paymentChannel->is_active,
                     'payment_method' => $paymentChannel->paymentMethod,
                 ];
@@ -56,6 +59,25 @@ class PaymentChannelController extends Controller
                 ->orderBy('name')
                 ->get(),
         ]);
+    }
+
+    /**
+     * Sync payment channels from Tripay API.
+     */
+    public function syncTripay(TripayService $tripay): RedirectResponse
+    {
+        try {
+            $result = $tripay->syncPaymentChannels();
+
+            return back()->with(
+                'success',
+                "Sinkronisasi Tripay selesai. {$result['created']} channel baru, {$result['updated']} channel diperbarui, {$result['skipped']} dilewati.",
+            );
+        } catch (Throwable $exception) {
+            report($exception);
+
+            return back()->with('error', 'Sinkronisasi Tripay gagal: ' . $exception->getMessage());
+        }
     }
 
     /**
@@ -91,6 +113,7 @@ class PaymentChannelController extends Controller
                 'fee_percent' => $payment_channel->fee_percent,
                 'min_amount' => $payment_channel->min_amount,
                 'max_amount' => $payment_channel->max_amount,
+                'instructions' => $payment_channel->instructions,
                 'is_active' => $payment_channel->is_active,
                 'payment_method' => $payment_channel->paymentMethod,
             ],

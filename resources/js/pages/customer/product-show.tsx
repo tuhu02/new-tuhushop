@@ -158,6 +158,9 @@ export default function ProductShow({
                 feePercent={feePercent}
                 feePercentAmount={feePercentAmount}
                 totalPrice={totalPrice}
+                productId={product.id}
+                phoneNumber={phoneNumber}
+                promoCode={promoCode}
             />
         </AppLayout>
     );

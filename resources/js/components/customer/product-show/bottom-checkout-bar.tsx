@@ -1,5 +1,5 @@
 import { ShoppingBag } from 'lucide-react';
-
+import { useState } from 'react';
 import type { PaymentChannel, ProductPriceItem } from '@/types';
 import { formatRupiah } from './utils';
 
@@ -11,6 +11,9 @@ type BottomCheckoutBarProps = {
     feePercent: number;
     feePercentAmount: number;
     totalPrice: number;
+    productId: number;
+    phoneNumber: string;
+    promoCode: string;
 };
 
 export default function BottomCheckoutBar({
@@ -21,7 +24,12 @@ export default function BottomCheckoutBar({
     feePercent,
     feePercentAmount,
     totalPrice,
+    productId,
+    phoneNumber,
+    promoCode,
 }: BottomCheckoutBarProps) {
+    const [loading, setLoading] = useState(false);
+
     const feeLabel =
         selectedChannel === null
             ? 'Biaya layanan: Rp0'
@@ -30,6 +38,60 @@ export default function BottomCheckoutBar({
                       ? ` + ${feePercent}% (${formatRupiah(feePercentAmount)})`
                       : ''
               }`;
+
+    const handleCheckout = async () => {
+        if (selectedPrice === null) return;
+
+        if (selectedChannel === null) {
+            alert('Pilih metode pembayaran terlebih dahulu');
+            return;
+        }
+        if (phoneNumber.trim() === '') {
+            alert('Masukkan nomor HP / ID akun terlebih dahulu');
+            return;
+        }
+
+        setLoading(true);
+
+        try {
+            const csrfToken = (
+                document.querySelector(
+                    'meta[name="csrf-token"]',
+                ) as HTMLMetaElement
+            )?.content;
+
+            const response = await fetch('/checkout', {
+                method: 'POST',
+                credentials: 'same-origin',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': csrfToken ?? '',
+                    Accept: 'application/json',
+                },
+                body: JSON.stringify({
+                    product_id: productId,
+                    price_id: selectedPrice.id,
+                    quantity: quantity,
+                    payment_code: selectedChannel.code,
+                    phone_number: phoneNumber,
+                    promo_code: promoCode,
+                }),
+            });
+
+            const data = await response.json();
+
+            if (data.redirect_url) {
+                window.location.href = data.redirect_url;
+            } else {
+                alert(data.message ?? 'Terjadi kesalahan, coba lagi');
+            }
+        } catch (err) {
+            console.error(err);
+            alert('Terjadi kesalahan, coba lagi');
+        } finally {
+            setLoading(false);
+        }
+    };
 
     return (
         <div
@@ -58,13 +120,14 @@ export default function BottomCheckoutBar({
                                 : ''}
                         </p>
                     </div>
-
                     <button
                         type="button"
-                        className="flex w-full shrink-0 items-center justify-center gap-2 rounded-lg bg-slate-900 px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-slate-800 sm:w-auto"
+                        onClick={handleCheckout}
+                        disabled={loading}
+                        className="flex w-full shrink-0 items-center justify-center gap-2 rounded-lg bg-slate-900 px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-slate-800 disabled:cursor-not-allowed disabled:opacity-50 sm:w-auto"
                     >
                         <ShoppingBag className="h-4 w-4" />
-                        Beli Sekarang
+                        {loading ? 'Memproses...' : 'Beli Sekarang'}
                     </button>
                 </div>
             </div>
