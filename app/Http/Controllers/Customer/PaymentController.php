@@ -1,8 +1,9 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Customer;
 
 use App\Events\TransactionStatusUpdated;
+use App\Http\Controllers\Controller;
 use App\Models\PaymentChannel;
 use App\Models\Transaction;
 use App\Services\TripayService;

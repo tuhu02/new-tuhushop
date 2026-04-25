@@ -1,0 +1,10 @@
+---
+description: Auto commit after completed change with clear summary
+---
+
+# Auto Commit Perubahan
+
+- Setiap selesai melakukan perubahan kode, selalu cek diff terlebih dahulu.
+- Lakukan `git add` hanya untuk file yang relevan dengan tugas.
+- Buat commit message singkat yang menjelaskan tujuan perubahan.
+- Push commit ke remote branch aktif setelah commit berhasil.

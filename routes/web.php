@@ -13,7 +13,7 @@ use App\Http\Controllers\Admin\PaymentChannelController;
 use App\Http\Controllers\Admin\DigiflazzSyncController;
 use App\Http\Controllers\Customer\DashboardController;
 use App\Http\Controllers\Customer\ProductController as CustomerProductController;
-use App\Http\Controllers\PaymentController;
+use App\Http\Controllers\Customer\PaymentController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 Route::get('/', [DashboardController::class, 'index'])->name('home');
