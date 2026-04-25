@@ -21,6 +21,8 @@ class ProductPrice extends Model
         'price',
         'order',
         'is_active',
+        'digiflazz_code',
+        'synced_at',
     ];
 
     /**
@@ -31,6 +33,7 @@ class ProductPrice extends Model
         return [
             'price' => 'decimal:2',
             'is_active' => 'boolean',
+            'synced_at' => 'datetime',
         ];
     }
 

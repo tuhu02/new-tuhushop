@@ -41,7 +41,7 @@ export default function Dashboard({
     carousels: DashboardCarousel[];
     products: DashboardProduct[];
 }) {
-    const categoryOrder = ['Populer', 'Topup', 'PPOB'];
+    const categoryOrder = ['🔥 Lagi Populer', 'Top Up Langsung', 'PPOB'];
 
     const groupedProducts = products.reduce<Record<string, DashboardProduct[]>>(
         (groups, product) => {
@@ -89,19 +89,22 @@ export default function Dashboard({
 
             <div className="space-y-6 p-4">
                 {carousels.length > 0 && (
-                    <div className="px-1">
-                        <Carousel className="w-full">
-                            <CarouselContent>
+                    <div className="flex justify-center px-1">
+                        <Carousel className="mx-auto w-full">
+                            <CarouselContent className="items-stretch">
                                 {carousels.map((item) => (
-                                    <CarouselItem key={item.id}>
-                                        <div className="overflow-hidden rounded-xl border border-sidebar-border/70">
+                                    <CarouselItem
+                                        key={item.id}
+                                        className="h-60 md:h-80 lg:h-96"
+                                    >
+                                        <div className="h-full overflow-hidden rounded-xl border border-sidebar-border/70">
                                             <img
                                                 src={item.image_url}
                                                 alt={
                                                     item.title ??
                                                     'carousel image'
                                                 }
-                                                className="h-52 w-full object-cover md:h-72"
+                                                className="h-full w-full object-cover"
                                             />
                                         </div>
                                     </CarouselItem>
@@ -120,7 +123,9 @@ export default function Dashboard({
                 ) : (
                     sortedGroups.map(([category, categoryProducts]) => (
                         <section key={category} className="space-y-3">
-                            <h1 className="text-lg font-bold">{category}</h1>
+                            <h1 className="mt-16 mb-10 text-3xl font-bold">
+                                {category}
+                            </h1>
                             <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-5">
                                 {categoryProducts.map((product, index) => (
                                     <div

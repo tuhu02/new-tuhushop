@@ -24,6 +24,8 @@ class Product extends Model
         'thumbnail',
         'banner',
         'is_active',
+        'digiflazz_code',
+        'digiflazz_synced_at',
     ];
 
     /**
@@ -35,6 +37,7 @@ class Product extends Model
             'brand_id' => 'integer',
             'is_active' => 'boolean',
             'price' => 'decimal:2',
+            'digiflazz_synced_at' => 'datetime',
         ];
     }
 

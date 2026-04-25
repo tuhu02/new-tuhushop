@@ -10,6 +10,7 @@ use App\Http\Controllers\Admin\ProductInstructionController;
 use App\Http\Controllers\Admin\PriceListCategoryController;
 use App\Http\Controllers\Admin\PaymentMethodController;
 use App\Http\Controllers\Admin\PaymentChannelController;
+use App\Http\Controllers\Admin\DigiflazzSyncController;
 use App\Http\Controllers\Customer\DashboardController;
 use App\Http\Controllers\Customer\ProductController as CustomerProductController;
 use App\Http\Controllers\PaymentController;
@@ -49,6 +50,12 @@ Route::middleware([])->prefix('admin')->name('admin.')->group(function () {
     Route::post('payment-channels/sync-tripay', [PaymentChannelController::class, 'syncTripay'])
         ->name('payment-channels.sync-tripay');
     Route::resource('payment-channels', PaymentChannelController::class)->except('show');
+
+    // Digiflazz sync routes
+    Route::get('digiflazz/sync', [DigiflazzSyncController::class, 'index'])->name('digiflazz.index');
+    Route::post('digiflazz/sync', [DigiflazzSyncController::class, 'sync'])->name('digiflazz.sync');
+    Route::post('digiflazz/validate', [DigiflazzSyncController::class, 'validateCredentials'])->name('digiflazz.validate');
+    Route::get('digiflazz/stats', [DigiflazzSyncController::class, 'getStats'])->name('digiflazz.stats');
 
     // Nested routes for product prices
     Route::resource('products.prices', ProductPriceController::class)->except('show');

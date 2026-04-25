@@ -17,7 +17,7 @@ class CustomerCatalogSeeder extends Seeder
      */
     public function run(): void
     {
-        $categoryNames = ['Populer', 'Topup', 'PPOB'];
+        $categoryNames = ['🔥 Lagi Populer', 'Top Up Langsung', 'PPOB'];
 
         $categories = collect($categoryNames)
             ->mapWithKeys(function (string $name): array {
@@ -38,49 +38,49 @@ class CustomerCatalogSeeder extends Seeder
                 'slug' => 'mobile-legends-bang-bang',
                 'brand' => 'Moonton',
                 'logo' => 'MLBB_icon.webp',
-                'categories' => ['Populer', 'Topup'],
+                'categories' => ['🔥 Lagi Populer', 'Top Up Langsung'],
             ],
             [
                 'name' => 'Free Fire',
                 'slug' => 'free-fire',
                 'brand' => 'Garena',
                 'logo' => 'free-fire.jpg',
-                'categories' => ['Populer', 'Topup'],
+                'categories' => ['🔥 Lagi Populer', 'Top Up Langsung'],
             ],
             [
                 'name' => 'Genshin Impact',
                 'slug' => 'genshin-impact',
                 'brand' => 'HoYoverse',
                 'logo' => 'genshin-impact.jpeg',
-                'categories' => ['Topup'],
+                'categories' => ['Top Up Langsung'],
             ],
             [
                 'name' => 'Honkai: Star Rail',
                 'slug' => 'honkai-star-rail',
                 'brand' => 'HoYoverse',
                 'logo' => 'honkai-star-rail.jpeg',
-                'categories' => ['Topup'],
+                'categories' => ['Top Up Langsung'],
             ],
             [
                 'name' => 'PUBG Mobile',
                 'slug' => 'pubg-mobile',
                 'brand' => 'KRAFTON',
                 'logo' => 'pubg-mobile.jpeg',
-                'categories' => ['Topup'],
+                'categories' => ['Top Up Langsung'],
             ],
             [
                 'name' => 'Valorant Points',
                 'slug' => 'valorant-points',
                 'brand' => 'Riot Games',
                 'logo' => 'valorant.jpeg',
-                'categories' => ['Topup'],
+                'categories' => ['Top Up Langsung'],
             ],
             [
                 'name' => 'Roblox',
                 'slug' => 'roblox',
                 'brand' => 'Roblox',
                 'logo' => 'roblox.jpg',
-                'categories' => ['Populer', 'Topup'],
+                'categories' => ['🔥 Lagi Populer', 'Top Up Langsung'],
             ],
         ];
 

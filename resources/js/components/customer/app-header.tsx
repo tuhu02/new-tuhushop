@@ -1,5 +1,5 @@
 import { Link, usePage } from '@inertiajs/react';
-import { BookOpen, Folder, LayoutGrid, Menu, Search } from 'lucide-react';
+import { BookOpen, Folder, House, LayoutGrid, Menu, Search } from 'lucide-react';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import AppLogo from '@/components/ui/app-logo';
 import AppLogoIcon from '@/components/ui/app-logo-icon';
@@ -24,11 +24,6 @@ import {
     SheetTitle,
     SheetTrigger,
 } from '@/components/ui/sheet';
-import {
-    Tooltip,
-    TooltipContent,
-    TooltipTrigger,
-} from '@/components/ui/tooltip';
 import { UserMenuContent } from '@/components/customer/user-menu-content';
 import { useCurrentUrl } from '@/hooks/use-current-url';
 import { useInitials } from '@/hooks/use-initials';
@@ -52,6 +47,7 @@ const mainNavItems: NavItem[] = [
     {
         title: 'Home',
         href: dashboard(),
+        icon: House,
     },
 ];
 

@@ -1,0 +1,29 @@
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+return new class extends Migration
+{
+    /**
+     * Run the migrations.
+     */
+    public function up(): void
+    {
+        Schema::table('product_prices', function (Blueprint $table) {
+            $table->string('digiflazz_code')->nullable()->comment('Digiflazz product code');
+            $table->timestamp('synced_at')->nullable()->comment('Last sync time from Digiflazz');
+        });
+    }
+
+    /**
+     * Reverse the migrations.
+     */
+    public function down(): void
+    {
+        Schema::table('product_prices', function (Blueprint $table) {
+            $table->dropColumn(['digiflazz_code', 'synced_at']);
+        });
+    }
+};
