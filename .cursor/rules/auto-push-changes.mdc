@@ -1,0 +1,13 @@
+---
+description: Auto commit and push every completed change with clear summary
+alwaysApply: true
+---
+
+# Auto Push Perubahan
+
+- Setiap selesai melakukan perubahan kode, selalu cek diff terlebih dahulu.
+- Lakukan `git add` hanya untuk file yang relevan dengan tugas.
+- Buat commit message singkat yang menjelaskan tujuan perubahan.
+- Push commit ke remote branch aktif setelah commit berhasil.
+- Setelah push, laporkan ringkasan perubahan dan hash commit agar mudah dilacak.
+- Jika push gagal (misalnya konflik atau autentikasi), laporkan error dan langkah perbaikannya.

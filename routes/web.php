@@ -16,11 +16,7 @@ use App\Http\Controllers\Customer\ProductController as CustomerProductController
 use App\Http\Controllers\PaymentController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
-use Laravel\Fortify\Features;
-
-Route::inertia('/', 'welcome', [
-    'canRegister' => Features::enabled(Features::registration()),
-])->name('home');
+Route::get('/', [DashboardController::class, 'index'])->name('home');
 
 // Route Customer
 Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');
