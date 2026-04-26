@@ -26,6 +26,8 @@ class Product extends Model
         'is_active',
         'digiflazz_code',
         'digiflazz_synced_at',
+        'input_fields',
+        'customer_no_template',
     ];
 
     /**
@@ -38,6 +40,7 @@ class Product extends Model
             'is_active' => 'boolean',
             'price' => 'decimal:2',
             'digiflazz_synced_at' => 'datetime',
+            'input_fields' => 'array',
         ];
     }
 

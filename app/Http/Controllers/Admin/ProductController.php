@@ -71,11 +71,14 @@ class ProductController extends Controller
         $count = Product::where('slug', 'LIKE', "{$slug}%")->count();
         $slug = $count ? "{$slug}-{$count}" : $slug;
 
+
         $payload = [
             'name' => $validated['name'],
             'brand_id' => $validated['brand_id'],
             'slug' => $slug,
             'is_active' => $validated['is_active'],
+            'input_fields' => $validated['input_fields'] ?? null,
+            'customer_no_template' => $validated['customer_no_template'] ?? null,
         ];
 
         if ($request->hasFile('thumbnail')) {
@@ -107,6 +110,7 @@ class ProductController extends Controller
                 'slug' => $product->slug,
                 'brand_id' => $product->brand_id,
                 'thumbnail' => $product->thumbnail,
+                'description' => $product->description,
                 'thumbnail_url' => $product->thumbnail !== null
                     ? asset('storage/' . $product->thumbnail)
                     : null,
@@ -117,6 +121,8 @@ class ProductController extends Controller
                 'is_active' => $product->is_active,
                 'brand' => $product->brand,
                 'categories' => $product->categories,
+                'input_fields' => $product->input_fields,
+                'customer_no_template' => $product->customer_no_template,
             ],
             'brands' => Brand::query()->select('id', 'name')->orderBy('name')->get(),
             'categories' => Category::query()->select('id', 'name')->orderBy('name')->get(),
@@ -132,7 +138,17 @@ class ProductController extends Controller
 
         $payload = [];
 
-        foreach (['name', 'description', 'slug', 'brand_id', 'is_active'] as $field) {
+        foreach (
+            [
+                'name',
+                'description',
+                'slug',
+                'brand_id',
+                'is_active',
+                'input_fields',
+                'customer_no_template',
+            ] as $field
+        ) {
             if (array_key_exists($field, $validated)) {
                 $payload[$field] = $validated[$field];
             }

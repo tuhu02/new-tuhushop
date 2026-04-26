@@ -5,20 +5,23 @@ namespace App\Http\Controllers\Customer;
 use App\Events\TransactionStatusUpdated;
 use App\Http\Controllers\Controller;
 use App\Models\PaymentChannel;
+use App\Models\Product;
 use App\Models\ProductPrice;
 use App\Models\Transaction;
+use App\Services\DigiflazzService;
 use App\Services\TripayService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
+use App\Events\DigiflazzStatusUpdated;
 
 class PaymentController extends Controller
 {
     public function __construct(private TripayService $tripay) {}
 
-    // Handle callback dari Tripay
     public function callback(Request $request)
     {
         Log::info('CALLBACK MASUK', $request->all());
+
         $signature = $request->server('HTTP_X_CALLBACK_SIGNATURE', '');
 
         if (!$this->tripay->verifyCallback($signature)) {
@@ -26,16 +29,11 @@ class PaymentController extends Controller
         }
 
         $data = $request->all();
-        Log::info('DATA CALLBACK', $data);
 
         $transaction = Transaction::query()
             ->where('reference', $data['reference'] ?? null)
             ->orWhere('merchant_ref', $data['merchant_ref'] ?? null)
             ->first();
-
-        Log::info('TRANSACTION', [
-            'found' => $transaction !== null,
-        ]);
 
         if ($transaction !== null) {
             $previousStatus = (string) $transaction->status;
@@ -64,16 +62,11 @@ class PaymentController extends Controller
         if (($data['status'] ?? null) === 'PAID' && $transaction !== null) {
             Log::info('STATUS PAID MASUK');
 
-            // Cegah transaksi Digiflazz terkirim 2x
             if ($transaction->digiflazz_processed_at !== null) {
                 return response()->json(['success' => true]);
             }
 
-
             $price = ProductPrice::find($transaction->price_id);
-
-            $price = ProductPrice::find($transaction->price_id);
-
             $buyerSkuCode = $price?->digiflazz_code ?: $price?->code;
 
             if (!$price || !$buyerSkuCode) {
@@ -85,19 +78,26 @@ class PaymentController extends Controller
                 return response()->json(['success' => true]);
             }
 
+            if (!$transaction->digiflazz_customer_no) {
+                Log::error('Digiflazz customer no kosong', [
+                    'transaction_id' => $transaction->id,
+                    'merchant_ref' => $transaction->merchant_ref,
+                ]);
+
+                return response()->json(['success' => true]);
+            }
+
             Log::info('MASUK DIGIFLAZZ', [
                 'buyer_sku_code' => $buyerSkuCode,
-                'customer_no' => $transaction->customer_phone,
+                'customer_no' => $transaction->digiflazz_customer_no,
                 'ref_id' => $transaction->merchant_ref,
             ]);
 
-            dd(config('services.digiflazz'));
-            
-            $digiflazz = app(\App\Services\DigiflazzService::class);
+            $digiflazz = app(DigiflazzService::class);
 
             $result = $digiflazz->createTransaction([
                 'buyer_sku_code' => $buyerSkuCode,
-                'customer_no' => $transaction->customer_phone,
+                'customer_no' => $transaction->digiflazz_customer_no,
                 'ref_id' => $transaction->merchant_ref,
             ]);
 
@@ -109,6 +109,15 @@ class PaymentController extends Controller
                 'digiflazz_response' => $result,
                 'digiflazz_processed_at' => now(),
             ]);
+
+            $transaction->refresh();
+
+            broadcast(new DigiflazzStatusUpdated(
+                reference: (string) $transaction->reference,
+                merchantRef: (string) $transaction->merchant_ref,
+                digiflazzStatus: $transaction->digiflazz_status,
+                digiflazzSn: $transaction->digiflazz_sn,
+            ));
         }
 
         return response()->json(['success' => true]);
@@ -134,15 +143,15 @@ class PaymentController extends Controller
         ]);
     }
 
-
     public function checkout(Request $request)
     {
         $validated = $request->validate([
-            'product_id'   => 'required|integer',
-            'price_id'     => 'required|integer',
-            'quantity'     => 'required|integer|min:1',
+            'product_id' => 'required|integer',
+            'price_id' => 'required|integer',
+            'quantity' => 'required|integer|min:1',
             'payment_code' => 'required|string',
             'phone_number' => 'required|string',
+            'customer_inputs' => 'required|array',
         ]);
 
         $normalizedPaymentCode = strtoupper(trim((string) $validated['payment_code']));
@@ -158,24 +167,41 @@ class PaymentController extends Controller
             ], 422);
         }
 
-        $price = \App\Models\ProductPrice::findOrFail($request->price_id);
+        $price = ProductPrice::findOrFail($validated['price_id']);
+        $product = Product::findOrFail($validated['product_id']);
+
+        $customerInputs = $validated['customer_inputs'];
+
+        $template = $product->customer_no_template ?? '{customer_no}';
+
+        $digiflazzCustomerNo = preg_replace_callback(
+            '/\{(.+?)\}/',
+            fn($matches) => $customerInputs[$matches[1]] ?? '',
+            $template
+        );
+
+        if (trim($digiflazzCustomerNo) === '') {
+            return response()->json([
+                'message' => 'Data tujuan tidak valid.',
+            ], 422);
+        }
 
         $merchantRef = 'ORDER-' . time() . '-' . ($request->user()?->id ?? 'guest');
-        $amount      = (int) ($price->price * $request->quantity);
+        $amount = (int) ($price->price * $validated['quantity']);
 
         $result = $this->tripay->createTransaction([
-            'method'         => $normalizedPaymentCode,
-            'merchant_ref'   => $merchantRef,
-            'amount'         => $amount,
-            'customer_name'  => $request->user()?->name ?? 'Customer',
+            'method' => $normalizedPaymentCode,
+            'merchant_ref' => $merchantRef,
+            'amount' => $amount,
+            'customer_name' => $request->user()?->name ?? 'Customer',
             'customer_email' => $request->user()?->email ?? 'customer@email.com',
-            'customer_phone' => $request->phone_number,
-            'order_items'    => [
+            'customer_phone' => $validated['phone_number'],
+            'order_items' => [
                 [
-                    'name'     => $price->display_name,
-                    'price'    => (int) $price->price,
-                    'quantity' => $request->quantity,
-                ]
+                    'name' => $price->display_name,
+                    'price' => (int) $price->price,
+                    'quantity' => $validated['quantity'],
+                ],
             ],
             'return_url' => route('checkout.show', ['reference' => $merchantRef]),
         ]);
@@ -197,7 +223,16 @@ class PaymentController extends Controller
                 'payment_method_name' => $channel->paymentMethod?->name,
                 'customer_name' => $request->user()?->name ?? 'Customer',
                 'customer_email' => $request->user()?->email ?? 'customer@email.com',
-                'customer_phone' => $request->phone_number,
+
+                // Nomor WhatsApp / kontak user
+                'customer_phone' => $validated['phone_number'],
+
+                // Data input asli dari user
+                'customer_inputs' => $customerInputs,
+
+                // Format final yang dikirim ke Digiflazz
+                'digiflazz_customer_no' => $digiflazzCustomerNo,
+
                 'product_id' => $price->product_id,
                 'price_id' => $price->id,
                 'quantity' => (int) $validated['quantity'],
@@ -245,5 +280,57 @@ class PaymentController extends Controller
                 'instructions' => $transaction->instructions ?? [],
             ],
         ]);
+    }
+
+
+    public function digiflazzCallback(Request $request)
+    {
+        // ✅ 1. LOG MASUK
+        Log::info('DIGIFLAZZ CALLBACK MASUK', $request->all());
+
+        // ✅ 2. VALIDASI SIGNATURE (TARUH DI SINI)
+        $signature = $request->header('X-Hub-Signature');
+
+        $expected = md5(
+            config('services.digiflazz.username') .
+                config('services.digiflazz.api_key')
+        );
+
+        if ($signature !== $expected) {
+            Log::error('Signature Digiflazz tidak valid', [
+                'received' => $signature,
+                'expected' => $expected,
+            ]);
+
+            return response()->json(['message' => 'Invalid signature'], 403);
+        }
+
+        // ✅ 3. BARU PROSES DATA
+        $data = $request->all();
+
+        $refId = data_get($data, 'data.ref_id');
+
+        if (!$refId) {
+            return response()->json(['message' => 'Invalid ref_id'], 400);
+        }
+
+        $transaction = Transaction::where('merchant_ref', $refId)->first();
+
+        if (!$transaction) {
+            Log::error('Transaksi tidak ditemukan', [
+                'ref_id' => $refId,
+            ]);
+
+            return response()->json(['success' => false]);
+        }
+
+        // update data
+        $transaction->update([
+            'digiflazz_status' => data_get($data, 'data.status'),
+            'digiflazz_sn' => data_get($data, 'data.sn'),
+            'digiflazz_response' => $data,
+        ]);
+
+        return response()->json(['success' => true]);
     }
 }

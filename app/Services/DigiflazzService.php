@@ -13,9 +13,15 @@ class DigiflazzService
 
     public function __construct()
     {
-        $this->username = config('services.digiflazz.username');
-        $this->apiKey = config('services.digiflazz.api_key');
-        $this->baseUrl = config('services.digiflazz.base_url', 'https://api.digiflazz.com/v1');
+        $this->username = (string) env('DIGIFLAZZ_USERNAME');
+        $this->apiKey = (string) env('DIGIFLAZZ_API_KEY');
+        $this->baseUrl = 'https://api.digiflazz.com/v1';
+
+        Log::info('DIGIFLAZZ CONFIG CHECK', [
+            'username_exists' => $this->username !== '',
+            'api_key_exists' => $this->apiKey !== '',
+            'base_url' => $this->baseUrl,
+        ]);
     }
 
     /**
@@ -31,6 +37,7 @@ class DigiflazzService
             'customer_no' => $data['customer_no'],
             'ref_id' => $refId,
             'sign' => $this->makeTransactionSignature($refId),
+            'testing' => true,
         ];
 
         Log::info('Digiflazz request', [

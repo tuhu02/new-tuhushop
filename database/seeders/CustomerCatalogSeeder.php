@@ -39,6 +39,13 @@ class CustomerCatalogSeeder extends Seeder
                 'brand' => 'Moonton',
                 'logo' => 'MLBB_icon.webp',
                 'categories' => ['🔥 Lagi Populer', 'Top Up Langsung'],
+                'input_fields' => [
+                    'fields' => [
+                        ['name' => 'user_id', 'label' => 'User ID', 'type' => 'text', 'required' => true],
+                        ['name' => 'zone_id', 'label' => 'Zone ID', 'type' => 'text', 'required' => true],
+                    ],
+                ],
+                'customer_no_template' => '{user_id}|{zone_id}',
             ],
             [
                 'name' => 'Free Fire',
@@ -46,6 +53,12 @@ class CustomerCatalogSeeder extends Seeder
                 'brand' => 'Garena',
                 'logo' => 'free-fire.jpg',
                 'categories' => ['🔥 Lagi Populer', 'Top Up Langsung'],
+                'input_fields' => [
+                    'fields' => [
+                        ['name' => 'user_id', 'label' => 'Player ID', 'type' => 'text', 'required' => true],
+                    ],
+                ],
+                'customer_no_template' => '{user_id}',
             ],
             [
                 'name' => 'Genshin Impact',
@@ -53,6 +66,13 @@ class CustomerCatalogSeeder extends Seeder
                 'brand' => 'HoYoverse',
                 'logo' => 'genshin-impact.jpeg',
                 'categories' => ['Top Up Langsung'],
+                'input_fields' => [
+                    'fields' => [
+                        ['name' => 'user_id', 'label' => 'UID', 'type' => 'text', 'required' => true],
+                        ['name' => 'server', 'label' => 'Server', 'type' => 'text', 'required' => true],
+                    ],
+                ],
+                'customer_no_template' => '{user_id}|{server}',
             ],
             [
                 'name' => 'Honkai: Star Rail',
@@ -60,6 +80,13 @@ class CustomerCatalogSeeder extends Seeder
                 'brand' => 'HoYoverse',
                 'logo' => 'honkai-star-rail.jpeg',
                 'categories' => ['Top Up Langsung'],
+                'input_fields' => [
+                    'fields' => [
+                        ['name' => 'user_id', 'label' => 'UID', 'type' => 'text', 'required' => true],
+                        ['name' => 'server', 'label' => 'Server', 'type' => 'text', 'required' => true],
+                    ],
+                ],
+                'customer_no_template' => '{user_id}|{server}',
             ],
             [
                 'name' => 'PUBG Mobile',
@@ -67,6 +94,12 @@ class CustomerCatalogSeeder extends Seeder
                 'brand' => 'KRAFTON',
                 'logo' => 'pubg-mobile.jpeg',
                 'categories' => ['Top Up Langsung'],
+                'input_fields' => [
+                    'fields' => [
+                        ['name' => 'user_id', 'label' => 'Player ID', 'type' => 'text', 'required' => true],
+                    ],
+                ],
+                'customer_no_template' => '{user_id}',
             ],
             [
                 'name' => 'Valorant Points',
@@ -74,6 +107,12 @@ class CustomerCatalogSeeder extends Seeder
                 'brand' => 'Riot Games',
                 'logo' => 'valorant.jpeg',
                 'categories' => ['Top Up Langsung'],
+                'input_fields' => [
+                    'fields' => [
+                        ['name' => 'riot_id', 'label' => 'Riot ID', 'type' => 'text', 'required' => true],
+                    ],
+                ],
+                'customer_no_template' => '{riot_id}',
             ],
             [
                 'name' => 'Roblox',
@@ -81,6 +120,12 @@ class CustomerCatalogSeeder extends Seeder
                 'brand' => 'Roblox',
                 'logo' => 'roblox.jpg',
                 'categories' => ['🔥 Lagi Populer', 'Top Up Langsung'],
+                'input_fields' => [
+                    'fields' => [
+                        ['name' => 'username', 'label' => 'Username Roblox', 'type' => 'text', 'required' => true],
+                    ],
+                ],
+                'customer_no_template' => '{username}',
             ],
         ];
 
@@ -112,6 +157,8 @@ class CustomerCatalogSeeder extends Seeder
                     'thumbnail' => $thumbnailPath,
                     'banner' => $thumbnailPath,
                     'is_active' => true,
+                    'input_fields' => $item['input_fields'],
+                    'customer_no_template' => $item['customer_no_template'],
                 ],
             );
 

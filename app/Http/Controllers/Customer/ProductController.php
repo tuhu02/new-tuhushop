@@ -67,6 +67,7 @@ class ProductController extends Controller
                 'id' => $product->id,
                 'name' => $product->name,
                 'slug' => $product->slug,
+
                 'description' => $product->description,
                 'brand' => $product->brand?->name,
                 'categories' => $product->categories->pluck('name')->values(),
@@ -78,6 +79,8 @@ class ProductController extends Controller
                 'banner_url' => $product->banner !== null
                     ? asset('storage/' . $product->banner)
                     : null,
+                'input_fields' => $product->input_fields,
+                'customer_no_template' => $product->customer_no_template,
                 'instructions' => $product->instructions->map(function ($instruction) {
                     return [
                         'title' => $instruction->title,

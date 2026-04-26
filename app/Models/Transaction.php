@@ -42,6 +42,10 @@ class Transaction extends Model
         'digiflazz_sn',
         'digiflazz_response',
         'digiflazz_processed_at',
+        'customer_phone',
+        'customer_inputs',
+        'digiflazz_customer_no',
+        'product_id',
     ];
 
     /**
@@ -61,9 +65,8 @@ class Transaction extends Model
             'expired_at' => 'datetime',
             'instructions' => 'array',
             'raw_response' => 'array',
-            'instructions' => 'array',
+            'customer_inputs' => 'array',
             'digiflazz_response' => 'array',
-            'expired_at' => 'datetime',
             'digiflazz_processed_at' => 'datetime',
         ];
     }

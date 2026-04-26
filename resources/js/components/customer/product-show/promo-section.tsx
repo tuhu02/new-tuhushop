@@ -12,7 +12,7 @@ export default function PromoSection({
     onChangePromoCode,
 }: PromoSectionProps) {
     return (
-        <SectionCard number={3} title="Kode Promo">
+        <SectionCard number={4} title="Kode Promo">
             <div className="space-y-3">
                 <div className="flex gap-2">
                     <input

@@ -12,6 +12,7 @@ type BottomCheckoutBarProps = {
     feePercentAmount: number;
     totalPrice: number;
     productId: number;
+    customerInputs: Record<string, string>;
     phoneNumber: string;
     promoCode: string;
 };
@@ -25,6 +26,7 @@ export default function BottomCheckoutBar({
     feePercentAmount,
     totalPrice,
     productId,
+    customerInputs,
     phoneNumber,
     promoCode,
 }: BottomCheckoutBarProps) {
@@ -46,8 +48,18 @@ export default function BottomCheckoutBar({
             alert('Pilih metode pembayaran terlebih dahulu');
             return;
         }
+
+        const hasEmptyInput = Object.values(customerInputs).some(
+            (value) => value.trim() === '',
+        );
+
+        if (Object.keys(customerInputs).length === 0 || hasEmptyInput) {
+            alert('Lengkapi data tujuan terlebih dahulu');
+            return;
+        }
+
         if (phoneNumber.trim() === '') {
-            alert('Masukkan nomor HP / ID akun terlebih dahulu');
+            alert('Masukkan nomor WhatsApp terlebih dahulu');
             return;
         }
 
@@ -74,6 +86,8 @@ export default function BottomCheckoutBar({
                     quantity: quantity,
                     payment_code: selectedChannel.code,
                     phone_number: phoneNumber,
+                    customer_inputs: customerInputs,
+
                     promo_code: promoCode,
                 }),
             });

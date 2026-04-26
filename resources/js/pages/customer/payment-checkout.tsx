@@ -15,6 +15,11 @@ type PaymentInstruction = {
     steps: string[];
 };
 
+type DigiflazzStatusUpdatedEvent = {
+    digiflazz_status?: string;
+    digiflazz_sn?: string;
+};
+
 type PaymentCheckoutPageProps = {
     transaction: {
         reference: string;
@@ -131,22 +136,38 @@ export default function PaymentCheckout({
 
         const channelName = `payments.${transaction.reference}`;
 
-        echo.channel(channelName).listen(
-            '.transaction.status.updated',
-            (event: TransactionStatusUpdatedEvent) => {
-                const latestStatus = event.status;
+        echo.channel(channelName)
+            // Reverb Tripay
+            .listen(
+                '.transaction.status.updated',
+                (event: TransactionStatusUpdatedEvent) => {
+                    const latestStatus = event.status;
 
-                if (!latestStatus) {
-                    return;
-                }
+                    if (!latestStatus) return;
 
-                setCurrentStatus(latestStatus);
+                    setCurrentStatus(latestStatus);
 
-                if (terminalStatuses.has(latestStatus)) {
-                    echo.leave(channelName);
-                }
-            },
-        );
+                    if (terminalStatuses.has(latestStatus)) {
+                        echo.leave(channelName);
+                    }
+                },
+            )
+
+            // Reverb Digiflazz
+            .listen(
+                '.digiflazz.status.updated',
+                (event: DigiflazzStatusUpdatedEvent) => {
+                    console.log('DIGIFLAZZ UPDATE', event);
+
+                    if (event.digiflazz_status === 'Sukses') {
+                        alert('Topup berhasil! SN: ' + event.digiflazz_sn);
+                    }
+
+                    if (event.digiflazz_status === 'Gagal') {
+                        alert('Topup gagal');
+                    }
+                },
+            );
 
         return () => {
             echo.leave(channelName);

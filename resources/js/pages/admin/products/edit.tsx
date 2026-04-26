@@ -25,6 +25,10 @@ export default function ProductEdit({
         category_ids: string[];
         thumbnail: File | null;
         is_active: boolean;
+
+        // ✅ DITAMBAH
+        input_fields: string;
+        customer_no_template: string;
     }>({
         _method: 'put',
         name: product.name,
@@ -34,6 +38,17 @@ export default function ProductEdit({
         category_ids: product.categories.map((category) => String(category.id)),
         thumbnail: null,
         is_active: product.is_active,
+
+        // ✅ DITAMBAH
+        input_fields:
+            typeof product.input_fields === 'string'
+                ? product.input_fields
+                : JSON.stringify(
+                      product.input_fields ?? { fields: [] },
+                      null,
+                      2,
+                  ),
+        customer_no_template: product.customer_no_template ?? '',
     });
 
     const toggleCategory = (categoryId: string, checked: boolean) => {
@@ -105,6 +120,45 @@ export default function ProductEdit({
                             placeholder="Deskripsi lengkap product"
                         />
                         <InputError message={errors.description} />
+                    </div>
+
+                    {/* ✅ DITAMBAH */}
+                    <div className="grid gap-2">
+                        <Label htmlFor="input_fields">Input Fields JSON</Label>
+                        <Textarea
+                            id="input_fields"
+                            value={data.input_fields}
+                            onChange={(event) =>
+                                setData('input_fields', event.target.value)
+                            }
+                            placeholder={`{
+  "fields": [
+    { "name": "user_id", "label": "User ID", "type": "text", "required": true },
+    { "name": "zone_id", "label": "Zone ID", "type": "text", "required": true }
+  ]
+}`}
+                            className="min-h-[160px] font-mono text-sm"
+                        />
+                        <InputError message={errors.input_fields} />
+                    </div>
+
+                    {/* ✅ DITAMBAH */}
+                    <div className="grid gap-2">
+                        <Label htmlFor="customer_no_template">
+                            Template Customer No
+                        </Label>
+                        <Input
+                            id="customer_no_template"
+                            value={data.customer_no_template}
+                            onChange={(event) =>
+                                setData(
+                                    'customer_no_template',
+                                    event.target.value,
+                                )
+                            }
+                            placeholder="{user_id}|{zone_id}"
+                        />
+                        <InputError message={errors.customer_no_template} />
                     </div>
 
                     <div className="grid gap-2">

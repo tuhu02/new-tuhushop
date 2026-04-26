@@ -11,3 +11,4 @@ Route::get('/user', function (Request $request) {
 // Callback dari Tripay
 Route::post('/tripay/callback', [PaymentController::class, 'callback']);
 Route::get('/check-status/{reference}', [PaymentController::class, 'checkStatus']);
+Route::post('/digiflazz/webhook', [PaymentController::class, 'digiflazzCallback']);

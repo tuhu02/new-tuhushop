@@ -22,6 +22,8 @@ export default function ProductCreate({
         thumbnail: null as File | null,
         banner: null as File | null,
         is_active: true,
+        input_fields: '',
+        customer_no_template: '',
     });
 
     const toggleCategory = (categoryId: string, checked: boolean) => {
@@ -113,6 +115,42 @@ export default function ProductCreate({
                             ))}
                         </select>
                         <InputError message={errors.brand_id} />
+                    </div>
+
+                    <div className="grid gap-2">
+                        <Label htmlFor="input_fields">
+                            Input Fields (JSON)
+                        </Label>
+                        <Textarea
+                            id="input_fields"
+                            value={data.input_fields}
+                            onChange={(e) =>
+                                setData('input_fields', e.target.value)
+                            }
+                            placeholder={`{
+"fields": [
+    { "name": "user_id", "label": "User ID" },
+    { "name": "zone_id", "label": "Zone ID" }
+]
+}`}
+                            className="min-h-[150px]"
+                        />
+                        <InputError message={errors.input_fields} />
+                    </div>
+
+                    <div className="grid gap-2">
+                        <Label htmlFor="customer_no_template">
+                            Template Customer No
+                        </Label>
+                        <Input
+                            id="customer_no_template"
+                            value={data.customer_no_template}
+                            onChange={(e) =>
+                                setData('customer_no_template', e.target.value)
+                            }
+                            placeholder="{user_id}|{zone_id}"
+                        />
+                        <InputError message={errors.customer_no_template} />
                     </div>
 
                     <div className="grid gap-2">

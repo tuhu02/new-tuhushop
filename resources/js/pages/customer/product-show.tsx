@@ -1,6 +1,5 @@
 import {
     BottomCheckoutBar,
-    ContactSection,
     NominalSection,
     PaymentSection,
     ProductInfoCard,
@@ -8,6 +7,7 @@ import {
     QuantitySection,
     SupportAside,
 } from '@/components/customer/product-show';
+import DataTargetSection from '@/components/customer/product-show/data-target-section';
 import AppLayout from '@/layouts/app-layout';
 import type {
     BreadcrumbItem,
@@ -30,6 +30,16 @@ type ProductShowPageProps = {
         thumbnail_url: string | null;
         banner: string | null;
         banner_url: string | null;
+        input_fields: {
+            fields: {
+                name: string;
+                label: string;
+                type?: string;
+                required?: boolean;
+                placeholder?: string;
+            }[];
+        } | null;
+
         instructions: {
             title: string;
             content: string;
@@ -61,10 +71,22 @@ export default function ProductShow({
     const [selectedPayment, setSelectedPayment] = useState<string>('');
     const [phoneNumber, setPhoneNumber] = useState<string>('');
 
+    const [customerInputs, setCustomerInputs] = useState<
+        Record<string, string>
+    >({});
+
+    const handleCustomerInputChange = (name: string, value: string) => {
+        setCustomerInputs((previousInputs) => ({
+            ...previousInputs,
+            [name]: value,
+        }));
+    };
+
     const selectedCategoryGroup =
         pricesByCategory.find(
             (group) => group.category.id === selectedCategoryId,
         ) ?? pricesByCategory[0];
+
     const priceItems = selectedCategoryGroup?.prices ?? [];
 
     useEffect(() => {
@@ -91,8 +113,10 @@ export default function ProductShow({
 
     const categoryTitle =
         selectedCategoryGroup?.category.name ?? 'Instant Top Up';
+
     const basePrice =
         selectedPrice !== null ? selectedPrice.price * quantity : 0;
+
     const feeFlat = selectedChannel?.fee ?? 0;
     const feePercent = selectedChannel?.fee_percent ?? 0;
     const feePercentAmount = Math.ceil(basePrice * (feePercent / 100));
@@ -110,6 +134,11 @@ export default function ProductShow({
                     </div>
 
                     <div className="space-y-3">
+                        <DataTargetSection
+                            fields={product.input_fields?.fields}
+                            customerInputs={customerInputs}
+                            onChange={handleCustomerInputChange}
+                        />
                         <NominalSection
                             categoryTitle={categoryTitle}
                             pricesByCategory={pricesByCategory}
@@ -121,7 +150,11 @@ export default function ProductShow({
                         />
 
                         <div
-                            className={`space-y-4 ${selectedPrice !== null ? 'pb-44 sm:pb-40' : 'pb-8'}`}
+                            className={`space-y-4 ${
+                                selectedPrice !== null
+                                    ? 'pb-44 sm:pb-40'
+                                    : 'pb-8'
+                            }`}
                         >
                             <QuantitySection
                                 quantity={quantity}
@@ -132,19 +165,35 @@ export default function ProductShow({
                                     setQuantity((prev) => Math.max(1, prev - 1))
                                 }
                             />
+
                             <PromoSection
                                 promoCode={promoCode}
                                 onChangePromoCode={setPromoCode}
                             />
+
                             <PaymentSection
                                 paymentMethods={paymentMethods}
                                 selectedPayment={selectedPayment}
                                 onSelectPayment={setSelectedPayment}
                             />
-                            <ContactSection
-                                phoneNumber={phoneNumber}
-                                onChangePhoneNumber={setPhoneNumber}
-                            />
+                            <div className="rounded-xl border border-slate-200 bg-white p-3.5 shadow-sm">
+                                <div className="mb-3 flex gap-2 text-sm font-semibold">
+                                    <div className="flex h-6 w-6 items-center justify-center rounded-full bg-accent-foreground text-accent">
+                                        5
+                                    </div>
+                                    <span>Nomor WhatsApp</span>
+                                </div>
+
+                                <input
+                                    type="text"
+                                    value={phoneNumber}
+                                    onChange={(e) =>
+                                        setPhoneNumber(e.target.value)
+                                    }
+                                    placeholder="08xxxxxxxxxx"
+                                    className="h-10 w-full rounded-md border px-3"
+                                />
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -160,6 +209,7 @@ export default function ProductShow({
                 totalPrice={totalPrice}
                 productId={product.id}
                 phoneNumber={phoneNumber}
+                customerInputs={customerInputs}
                 promoCode={promoCode}
             />
         </AppLayout>

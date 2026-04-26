@@ -16,7 +16,6 @@ type NominalSectionProps = {
 };
 
 export default function NominalSection({
-    categoryTitle,
     pricesByCategory,
     selectedCategoryId,
     onSelectCategory,
@@ -28,7 +27,7 @@ export default function NominalSection({
         <section className="rounded-xl border border-slate-200 bg-white p-3.5 shadow-sm">
             <div className="mb-2 flex gap-2 rounded-md bg-white p-0.5 text-sm font-semibold">
                 <div className="flex h-6 w-6 items-center justify-center rounded-full bg-accent-foreground text-accent">
-                    1
+                    2
                 </div>
                 <span>Pilih Nominal</span>
             </div>
