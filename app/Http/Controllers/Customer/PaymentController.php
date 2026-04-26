@@ -5,9 +5,11 @@ namespace App\Http\Controllers\Customer;
 use App\Events\TransactionStatusUpdated;
 use App\Http\Controllers\Controller;
 use App\Models\PaymentChannel;
+use App\Models\ProductPrice;
 use App\Models\Transaction;
 use App\Services\TripayService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class PaymentController extends Controller
 {
@@ -16,6 +18,7 @@ class PaymentController extends Controller
     // Handle callback dari Tripay
     public function callback(Request $request)
     {
+        Log::info('CALLBACK MASUK', $request->all());
         $signature = $request->server('HTTP_X_CALLBACK_SIGNATURE', '');
 
         if (!$this->tripay->verifyCallback($signature)) {
@@ -23,11 +26,16 @@ class PaymentController extends Controller
         }
 
         $data = $request->all();
+        Log::info('DATA CALLBACK', $data);
 
         $transaction = Transaction::query()
             ->where('reference', $data['reference'] ?? null)
             ->orWhere('merchant_ref', $data['merchant_ref'] ?? null)
             ->first();
+
+        Log::info('TRANSACTION', [
+            'found' => $transaction !== null,
+        ]);
 
         if ($transaction !== null) {
             $previousStatus = (string) $transaction->status;
@@ -53,9 +61,54 @@ class PaymentController extends Controller
             }
         }
 
-        if ($data['status'] === 'PAID') {
-            // Update status order di database kamu
-            // Order::where('ref', $data['merchant_ref'])->update(['status' => 'paid']);
+        if (($data['status'] ?? null) === 'PAID' && $transaction !== null) {
+            Log::info('STATUS PAID MASUK');
+
+            // Cegah transaksi Digiflazz terkirim 2x
+            if ($transaction->digiflazz_processed_at !== null) {
+                return response()->json(['success' => true]);
+            }
+
+
+            $price = ProductPrice::find($transaction->price_id);
+
+            $price = ProductPrice::find($transaction->price_id);
+
+            $buyerSkuCode = $price?->digiflazz_code ?: $price?->code;
+
+            if (!$price || !$buyerSkuCode) {
+                Log::error('Kode Digiflazz tidak ditemukan', [
+                    'transaction_id' => $transaction->id,
+                    'price_id' => $transaction->price_id,
+                ]);
+
+                return response()->json(['success' => true]);
+            }
+
+            Log::info('MASUK DIGIFLAZZ', [
+                'buyer_sku_code' => $buyerSkuCode,
+                'customer_no' => $transaction->customer_phone,
+                'ref_id' => $transaction->merchant_ref,
+            ]);
+
+            dd(config('services.digiflazz'));
+            
+            $digiflazz = app(\App\Services\DigiflazzService::class);
+
+            $result = $digiflazz->createTransaction([
+                'buyer_sku_code' => $buyerSkuCode,
+                'customer_no' => $transaction->customer_phone,
+                'ref_id' => $transaction->merchant_ref,
+            ]);
+
+            Log::info('RESULT DIGIFLAZZ', $result);
+
+            $transaction->update([
+                'digiflazz_status' => data_get($result, 'data.status'),
+                'digiflazz_sn' => data_get($result, 'data.sn'),
+                'digiflazz_response' => $result,
+                'digiflazz_processed_at' => now(),
+            ]);
         }
 
         return response()->json(['success' => true]);

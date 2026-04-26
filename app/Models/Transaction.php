@@ -38,6 +38,10 @@ class Transaction extends Model
         'expired_at',
         'instructions',
         'raw_response',
+        'digiflazz_status',
+        'digiflazz_sn',
+        'digiflazz_response',
+        'digiflazz_processed_at',
     ];
 
     /**
@@ -57,6 +61,10 @@ class Transaction extends Model
             'expired_at' => 'datetime',
             'instructions' => 'array',
             'raw_response' => 'array',
+            'instructions' => 'array',
+            'digiflazz_response' => 'array',
+            'expired_at' => 'datetime',
+            'digiflazz_processed_at' => 'datetime',
         ];
     }
 

@@ -12,30 +12,83 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('transactions', function (Blueprint $table) {
-            $table->string('reference')->nullable()->unique()->after('id');
-            $table->string('merchant_ref')->nullable()->unique()->after('reference');
-            $table->foreignId('payment_channel_id')->nullable()->constrained('payment_channels')->nullOnDelete()->after('merchant_ref');
-            $table->string('payment_channel_code')->nullable()->after('payment_channel_id');
-            $table->string('payment_channel_name')->nullable()->after('payment_channel_code');
-            $table->string('payment_method_code')->nullable()->after('payment_channel_name');
-            $table->string('payment_method_name')->nullable()->after('payment_method_code');
-            $table->string('customer_name')->nullable()->after('payment_method_name');
-            $table->string('customer_email')->nullable()->after('customer_name');
-            $table->string('customer_phone')->nullable()->after('customer_email');
-            $table->unsignedBigInteger('product_id')->nullable()->after('customer_phone');
-            $table->unsignedBigInteger('price_id')->nullable()->after('product_id');
-            $table->unsignedInteger('quantity')->default(1)->after('price_id');
-            $table->unsignedBigInteger('amount')->default(0)->after('quantity');
-            $table->unsignedBigInteger('fee_merchant')->nullable()->after('amount');
-            $table->unsignedBigInteger('fee_customer')->nullable()->after('fee_merchant');
-            $table->unsignedBigInteger('amount_received')->nullable()->after('fee_customer');
-            $table->string('pay_code')->nullable()->after('amount_received');
-            $table->text('pay_url')->nullable()->after('pay_code');
-            $table->text('checkout_url')->nullable()->after('pay_url');
-            $table->string('status')->default('UNPAID')->after('checkout_url');
-            $table->timestamp('expired_at')->nullable()->after('status');
-            $table->json('instructions')->nullable()->after('expired_at');
-            $table->json('raw_response')->nullable()->after('instructions');
+            Schema::table('transactions', function (Blueprint $table) {
+                // Kode transaksi dari payment gateway, biasanya untuk tracking pembayaran
+                $table->string('reference')->nullable()->unique()->after('id');
+
+                // Kode transaksi dari sistem kita sendiri, dikirim ke payment gateway
+                $table->string('merchant_ref')->nullable()->unique()->after('reference');
+
+                // Relasi ke tabel payment_channels, misalnya VA BCA, QRIS, e-wallet, dll
+                $table->foreignId('payment_channel_id')
+                    ->nullable()
+                    ->constrained('payment_channels')
+                    ->nullOnDelete()
+                    ->after('merchant_ref');
+
+                // Kode channel pembayaran, contoh: BCA, BRI, QRIS
+                $table->string('payment_channel_code')->nullable()->after('payment_channel_id');
+
+                // Nama channel pembayaran, contoh: BCA Virtual Account
+                $table->string('payment_channel_name')->nullable()->after('payment_channel_code');
+
+                // Kode metode pembayaran, contoh: BANK_TRANSFER, QRIS, EWALLET
+                $table->string('payment_method_code')->nullable()->after('payment_channel_name');
+
+                // Nama metode pembayaran, contoh: Bank Transfer, QRIS, E-Wallet
+                $table->string('payment_method_name')->nullable()->after('payment_method_code');
+
+                // Nama pelanggan yang melakukan transaksi
+                $table->string('customer_name')->nullable()->after('payment_method_name');
+
+                // Email pelanggan
+                $table->string('customer_email')->nullable()->after('customer_name');
+
+                // Nomor HP pelanggan
+                $table->string('customer_phone')->nullable()->after('customer_email');
+
+                // ID produk yang dibeli
+                $table->unsignedBigInteger('product_id')->nullable()->after('customer_phone');
+
+                // ID harga/varian harga produk
+                $table->unsignedBigInteger('price_id')->nullable()->after('product_id');
+
+                // Jumlah produk yang dibeli
+                $table->unsignedInteger('quantity')->default(1)->after('price_id');
+
+                // Total nominal transaksi sebelum biaya admin
+                $table->unsignedBigInteger('amount')->default(0)->after('quantity');
+
+                // Biaya admin yang ditanggung merchant/toko
+                $table->unsignedBigInteger('fee_merchant')->nullable()->after('amount');
+
+                // Biaya admin yang ditanggung customer
+                $table->unsignedBigInteger('fee_customer')->nullable()->after('fee_merchant');
+
+                // Nominal bersih yang diterima merchant setelah dipotong fee
+                $table->unsignedBigInteger('amount_received')->nullable()->after('fee_customer');
+
+                // Kode pembayaran, contoh nomor Virtual Account atau kode bayar retail
+                $table->string('pay_code')->nullable()->after('amount_received');
+
+                // URL pembayaran langsung dari payment gateway
+                $table->text('pay_url')->nullable()->after('pay_code');
+
+                // URL halaman checkout payment gateway
+                $table->text('checkout_url')->nullable()->after('pay_url');
+
+                // Status transaksi, contoh: UNPAID, PAID, EXPIRED, FAILED
+                $table->string('status')->default('UNPAID')->after('checkout_url');
+
+                // Batas waktu pembayaran
+                $table->timestamp('expired_at')->nullable()->after('status');
+
+                // Instruksi pembayaran dari payment gateway, biasanya array/json
+                $table->json('instructions')->nullable()->after('expired_at');
+
+                // Response asli dari payment gateway untuk kebutuhan debugging/log
+                $table->json('raw_response')->nullable()->after('instructions');
+            });
         });
     }
 
