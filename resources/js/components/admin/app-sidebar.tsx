@@ -12,6 +12,7 @@ import {
     IconTag,
     IconUsers,
     IconPhoto,
+    IconReceipt,
 } from '@tabler/icons-react';
 
 import { NavMain } from '@/components/admin/nav-main';
@@ -34,64 +35,89 @@ const data = {
     },
     navMain: [
         {
-            title: 'Dashboard',
-            url: '/admin/dashboard',
-            icon: IconDashboard,
+            title: 'Overview',
+            items: [
+                {
+                    title: 'Dashboard',
+                    url: '/admin/dashboard',
+                    icon: IconDashboard,
+                },
+                {
+                    title: 'Transaksi',
+                    url: '/admin/transactions',
+                    icon: IconReceipt,
+                },
+                {
+                    title: 'Customers',
+                    url: '/admin/customers',
+                    icon: IconUsers,
+                },
+            ],
         },
         {
-            title: 'Customers',
-            url: '/admin/customers',
-            icon: IconUsers,
+            title: 'Katalog',
+            items: [
+                {
+                    title: 'Products',
+                    url: '/admin/products',
+                    icon: IconPackage,
+                },
+                {
+                    title: 'Categories',
+                    url: '/admin/categories',
+                    icon: IconCategory,
+                },
+                {
+                    title: 'Brands',
+                    url: '/admin/brands',
+                    icon: IconTag,
+                },
+                {
+                    title: 'Product Instructions',
+                    url: '/admin/product-instructions',
+                    icon: IconList,
+                },
+            ],
         },
         {
-            title: 'Carousels',
-            url: '/admin/carousels',
-            icon: IconCarouselHorizontal,
+            title: 'Pengaturan Pembayaran',
+            items: [
+                {
+                    title: 'Price List Categories',
+                    url: '/admin/price-list-categories',
+                    icon: IconTag,
+                },
+                {
+                    title: 'Payment Methods',
+                    url: '/admin/payment-methods',
+                    icon: IconListDetails,
+                },
+                {
+                    title: 'Payment Channels',
+                    url: '/admin/payment-channels',
+                    icon: IconChartBar,
+                },
+            ],
         },
         {
-            title: 'Products',
-            url: '/admin/products',
-            icon: IconPackage,
-        },
-        {
-            title: 'Product Instructions',
-            url: '/admin/product-instructions',
-            icon: IconList,
-        },
-        {
-            title: 'Brands',
-            url: '/admin/brands',
-            icon: IconTag,
-        },
-        {
-            title: 'Categories',
-            url: '/admin/categories',
-            icon: IconCategory,
-        },
-        {
-            title: 'Price List Categories',
-            url: '/admin/price-list-categories',
-            icon: IconTag,
-        },
-        {
-            title: 'Payment Methods',
-            url: '/admin/payment-methods',
-            icon: IconListDetails,
-        },
-        {
-            title: 'Payment Channels',
-            url: '/admin/payment-channels',
-            icon: IconChartBar,
-        },
-        {
-            title: 'Digiflazz Sync',
-            url: '/admin/digiflazz/sync',
-            icon: IconRefresh,
-        },
-        {
-            title: 'Galeri Icon',
-            url: '/admin/icons',
-            icon: IconPhoto,
+            title: 'Pengaturan Aplikasi',
+            items: [
+                {
+                    title: 'Carousels',
+                    url: '/admin/carousels',
+                    icon: IconCarouselHorizontal,
+                },
+                {
+                    title: 'Digiflazz Sync',
+                    url: '/admin/digiflazz/sync',
+                    icon: IconRefresh,
+                },
+                {
+                    title: 'Galeri Icon',
+                    url: '/admin/icons',
+                    icon: IconPhoto,
+                },
+            ],
         },
     ],
 };
@@ -117,7 +143,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
                 </SidebarMenu>
             </SidebarHeader>
             <SidebarContent>
-                <NavMain items={data.navMain} />
+                <NavMain groups={data.navMain} />
             </SidebarContent>
             <SidebarFooter>
                 <NavUser user={data.user} />

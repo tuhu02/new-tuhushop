@@ -41,41 +41,51 @@ export default function NominalSection({
     const hasMoreItems = visibleCount < priceItems.length;
 
     return (
-        <section className="rounded-xl border border-slate-200 bg-white p-3.5 shadow-sm">
-            <div className="mb-2 flex gap-2 rounded-md bg-white p-0.5 text-sm font-semibold">
-                <div className="flex h-6 w-6 items-center justify-center rounded-full bg-accent-foreground text-accent">
+        <section className="rounded-2xl border border-slate-200 bg-white p-3 shadow-sm sm:p-4">
+            <div className="mb-3 flex items-center gap-2">
+                <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-slate-900 text-xs font-bold text-white">
                     2
                 </div>
-                <span>Pilih Nominal</span>
+
+                <div className="min-w-0">
+                    <h2 className="text-sm font-bold text-slate-900">
+                        Pilih Nominal
+                    </h2>
+                    <p className="text-xs text-slate-500">
+                        Pilih produk yang ingin dibeli
+                    </p>
+                </div>
             </div>
 
             {pricesByCategory.length > 0 && (
-                <div className="mt-2.5 flex flex-wrap gap-1.5">
-                    {pricesByCategory.map((group) => {
-                        const isActive =
-                            group.category.id === selectedCategoryId;
+                <div className="-mx-3 overflow-x-auto px-3 pb-1 sm:mx-0 sm:px-0">
+                    <div className="flex w-max gap-1.5 sm:w-auto sm:flex-wrap">
+                        {pricesByCategory.map((group) => {
+                            const isActive =
+                                group.category.id === selectedCategoryId;
 
-                        return (
-                            <button
-                                key={group.category.id}
-                                type="button"
-                                onClick={() =>
-                                    onSelectCategory(group.category.id)
-                                }
-                                className={`rounded-full border px-2.5 py-1 text-[11px] font-semibold transition ${
-                                    isActive
-                                        ? 'border-blue-600 text-blue-600'
-                                        : 'border-slate-300 bg-white text-slate-700 hover:border-slate-500'
-                                }`}
-                            >
-                                {group.category.name}
-                            </button>
-                        );
-                    })}
+                            return (
+                                <button
+                                    key={group.category.id}
+                                    type="button"
+                                    onClick={() =>
+                                        onSelectCategory(group.category.id)
+                                    }
+                                    className={`shrink-0 rounded-full border px-3 py-1.5 text-[11px] font-semibold transition ${
+                                        isActive
+                                            ? 'border-blue-600 bg-blue-50 text-blue-700'
+                                            : 'border-slate-200 bg-white text-slate-600 hover:border-slate-400'
+                                    }`}
+                                >
+                                    {group.category.name}
+                                </button>
+                            );
+                        })}
+                    </div>
                 </div>
             )}
 
-            <div className="mt-2.5 grid gap-1.5 sm:grid-cols-2 lg:grid-cols-3">
+            <div className="mt-3 grid grid-cols-2 gap-2 sm:grid-cols-2 lg:grid-cols-3">
                 {visiblePriceItems.map((price) => {
                     const isSelected = selectedPriceId === price.id;
 
@@ -84,46 +94,49 @@ export default function NominalSection({
                             key={price.id}
                             type="button"
                             onClick={() => onSelectPrice(price.id)}
-                            className={`overflow-hidden rounded-lg border transition hover:-translate-y-px hover:border-blue-600 ${
+                            className={`group relative overflow-hidden rounded-xl border bg-white text-left transition active:scale-[0.98] sm:hover:-translate-y-px ${
                                 isSelected
-                                    ? 'border-blue-600 bg-white ring-2 ring-blue-200'
-                                    : 'border-slate-200 bg-white'
+                                    ? 'border-blue-600 ring-2 ring-blue-100'
+                                    : 'border-slate-200 hover:border-blue-500'
                             }`}
                         >
-                            <div className="flex items-center justify-between gap-2 px-2.5 py-2">
-                                <div className="min-w-0 text-left">
-                                    <p className="truncate text-[12px] font-semibold text-slate-900">
+                            {isSelected && (
+                                <div className="absolute top-2 right-2 h-2.5 w-2.5 rounded-full bg-blue-600" />
+                            )}
+
+                            <div className="flex min-h-[86px] flex-col justify-between p-2.5 sm:min-h-[92px] sm:p-3">
+                                <div className="flex items-start justify-between gap-2">
+                                    <p className="line-clamp-2 pr-2 text-[14px] leading-snug font-bold text-slate-900 sm:text-base">
                                         {price.display_name}
                                     </p>
-
-                                    <p className="mt-0.5 pt-2 text-sm leading-tight text-slate-900">
-                                        {formatRupiah(price.price)}
-                                    </p>
+                                    <img
+                                        src={
+                                            price.icon?.file_path ||
+                                            DIAMOND_LOGO_URL
+                                        }
+                                        alt={price.icon?.name || 'Diamond'}
+                                        className="h-8 w-8 shrink-0 object-contain sm:h-9 sm:w-9"
+                                        loading="lazy"
+                                    />
                                 </div>
 
-                                <img
-                                    src={
-                                        price.icon?.file_path ||
-                                        DIAMOND_LOGO_URL
-                                    }
-                                    alt={price.icon?.name || 'Diamond'}
-                                    className="h-5 w-5 shrink-0 object-contain"
-                                    loading="lazy"
-                                />
+                                <p className="mt-3 text-[13px] leading-tight text-slate-900 sm:text-sm">
+                                    {formatRupiah(price.price)}
+                                </p>
                             </div>
                         </button>
                     );
                 })}
 
                 {priceItems.length === 0 && (
-                    <div className="col-span-full rounded-xl border border-dashed border-slate-300 p-4 text-sm text-slate-600">
+                    <div className="col-span-full rounded-xl border border-dashed border-slate-300 p-4 text-center text-sm text-slate-600">
                         Belum ada pilihan diamond untuk produk ini.
                     </div>
                 )}
             </div>
 
             {hasMoreItems && (
-                <div className="mt-3 flex justify-center">
+                <div className="mt-4 flex justify-center">
                     <button
                         type="button"
                         onClick={() =>
@@ -134,10 +147,10 @@ export default function NominalSection({
                                 ),
                             )
                         }
-                        className="rounded-lg border border-slate-300 bg-white px-4 py-2 text-xs font-semibold text-slate-700 transition hover:border-blue-600 hover:text-blue-600"
+                        className="w-full rounded-xl border border-slate-300 bg-white px-4 py-2.5 text-xs font-bold text-slate-700 transition hover:border-blue-600 hover:text-blue-600 sm:w-auto"
                     >
-Tampilkan Lebih Banyak
-</button>
+                        Tampilkan Lebih Banyak
+                    </button>
                 </div>
             )}
         </section>

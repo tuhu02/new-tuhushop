@@ -87,7 +87,6 @@ export default function BottomCheckoutBar({
                     payment_code: selectedChannel.code,
                     phone_number: phoneNumber,
                     customer_inputs: customerInputs,
-
                     promo_code: promoCode,
                 }),
             });
@@ -117,32 +116,42 @@ export default function BottomCheckoutBar({
             aria-hidden={selectedPrice === null}
         >
             <div className="mx-auto w-full max-w-5xl rounded-2xl border border-slate-200 bg-white/95 shadow-lg backdrop-blur">
-                <div className="flex flex-col gap-3 p-3 sm:flex-row sm:items-center sm:justify-between sm:p-4">
-                    <div className="min-w-0">
-                        <p className="text-[11px] text-slate-500">
-                            Total pembayaran
-                        </p>
+                <div className="grid grid-cols-1 gap-3 p-3 sm:grid-cols-3 sm:items-center sm:p-4">
+                    <div className="min-w-0 text-center sm:text-left">
+                        <p className="text-[11px] text-slate-500">Produk</p>
+
                         <p className="truncate text-sm font-semibold text-slate-900">
                             {selectedPrice !== null
                                 ? `${selectedPrice.display_name} x${quantity}`
                                 : ''}
                         </p>
-                        <p className="text-xs text-slate-500">{feeLabel}</p>
+                    </div>
+
+                    <div className="min-w-0 text-center">
+                        <p className="text-[11px] text-slate-500">
+                            Total pembayaran
+                        </p>
+
                         <p className="text-lg font-bold text-slate-900">
                             {selectedPrice !== null
                                 ? formatRupiah(totalPrice)
                                 : ''}
                         </p>
+
+                        <p className="text-xs text-slate-500">{feeLabel}</p>
                     </div>
-                    <button
-                        type="button"
-                        onClick={handleCheckout}
-                        disabled={loading}
-                        className="flex w-full shrink-0 items-center justify-center gap-2 rounded-lg bg-slate-900 px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-slate-800 disabled:cursor-not-allowed disabled:opacity-50 sm:w-auto"
-                    >
-                        <ShoppingBag className="h-4 w-4" />
-                        {loading ? 'Memproses...' : 'Beli Sekarang'}
-                    </button>
+
+                    <div className="flex justify-end">
+                        <button
+                            type="button"
+                            onClick={handleCheckout}
+                            disabled={loading}
+                            className="flex w-full shrink-0 items-center justify-center gap-2 rounded-lg bg-slate-900 px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-slate-800 disabled:cursor-not-allowed disabled:opacity-50 sm:w-auto"
+                        >
+                            <ShoppingBag className="h-4 w-4" />
+                            {loading ? 'Memproses...' : 'Beli Sekarang'}
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>

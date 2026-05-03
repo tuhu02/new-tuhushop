@@ -37,9 +37,7 @@ Route::get('/checkout/{reference}', [PaymentController::class, 'showCheckout'])-
 Route::get('/payment/success', fn() => redirect()->route('home'))->name('payment.success');
 
 Route::middleware([])->prefix('admin')->name('admin.')->group(function () {
-    Route::get('dashboard', function () {
-        return Inertia::render('admin/dashboard');
-    })->name('dashboard');
+    Route::get('dashboard', [\App\Http\Controllers\Admin\DashboardController::class, 'index'])->name('dashboard');
 
     Route::resource('customers', CustomerController::class)->except('show');
     Route::resource('carousels', CarouselController::class)->except('show');
@@ -61,6 +59,9 @@ Route::middleware([])->prefix('admin')->name('admin.')->group(function () {
 
     // Icons
     Route::resource('icons', \App\Http\Controllers\Admin\IconController::class)->only(['index', 'store', 'destroy']);
+
+    // Transactions
+    Route::resource('transactions', \App\Http\Controllers\Admin\TransactionController::class)->only('index');
 
     // Nested routes for product prices
     Route::post('products/{product}/prices/import', [ProductPriceController::class, 'import'])->name('products.prices.import');
