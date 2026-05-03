@@ -1,9 +1,14 @@
+import { useEffect, useMemo, useState } from 'react';
+
 import type { PriceByCategory, ProductPriceItem } from '@/types';
 
 import { formatRupiah } from './utils';
 
 const DIAMOND_LOGO_URL =
     'https://sin1.contabostorage.com/b1d79b8bbee7475eab6c15cd3d13cd4d:knock/p/17066126930981670143.webp';
+
+const INITIAL_VISIBLE_ITEMS = 12;
+const LOAD_MORE_ITEMS = 12;
 
 type NominalSectionProps = {
     categoryTitle: string;
@@ -23,6 +28,18 @@ export default function NominalSection({
     selectedPriceId,
     onSelectPrice,
 }: NominalSectionProps) {
+    const [visibleCount, setVisibleCount] = useState(INITIAL_VISIBLE_ITEMS);
+
+    useEffect(() => {
+        setVisibleCount(INITIAL_VISIBLE_ITEMS);
+    }, [selectedCategoryId, priceItems]);
+
+    const visiblePriceItems = useMemo(() => {
+        return priceItems.slice(0, visibleCount);
+    }, [priceItems, visibleCount]);
+
+    const hasMoreItems = visibleCount < priceItems.length;
+
     return (
         <section className="rounded-xl border border-slate-200 bg-white p-3.5 shadow-sm">
             <div className="mb-2 flex gap-2 rounded-md bg-white p-0.5 text-sm font-semibold">
@@ -57,8 +74,9 @@ export default function NominalSection({
                     })}
                 </div>
             )}
+
             <div className="mt-2.5 grid gap-1.5 sm:grid-cols-2 lg:grid-cols-3">
-                {priceItems.map((price) => {
+                {visiblePriceItems.map((price) => {
                     const isSelected = selectedPriceId === price.id;
 
                     return (
@@ -78,14 +96,17 @@ export default function NominalSection({
                                         {price.display_name}
                                     </p>
 
-                                    <p className="mt-0.5 text-sm pt-2 leading-tight text-slate-900">
+                                    <p className="mt-0.5 pt-2 text-sm leading-tight text-slate-900">
                                         {formatRupiah(price.price)}
                                     </p>
                                 </div>
 
                                 <img
-                                    src={price.icon?.file_path || DIAMOND_LOGO_URL}
-                                    alt={price.icon?.name || "Diamond"}
+                                    src={
+                                        price.icon?.file_path ||
+                                        DIAMOND_LOGO_URL
+                                    }
+                                    alt={price.icon?.name || 'Diamond'}
                                     className="h-5 w-5 shrink-0 object-contain"
                                     loading="lazy"
                                 />
@@ -100,6 +121,25 @@ export default function NominalSection({
                     </div>
                 )}
             </div>
+
+            {hasMoreItems && (
+                <div className="mt-3 flex justify-center">
+                    <button
+                        type="button"
+                        onClick={() =>
+                            setVisibleCount((current) =>
+                                Math.min(
+                                    current + LOAD_MORE_ITEMS,
+                                    priceItems.length,
+                                ),
+                            )
+                        }
+                        className="rounded-lg border border-slate-300 bg-white px-4 py-2 text-xs font-semibold text-slate-700 transition hover:border-blue-600 hover:text-blue-600"
+                    >
+Tampilkan Lebih Banyak
+</button>
+                </div>
+            )}
         </section>
     );
 }
