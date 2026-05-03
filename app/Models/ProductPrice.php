@@ -16,6 +16,7 @@ class ProductPrice extends Model
     protected $fillable = [
         'product_id',
         'price_list_category_id',
+        'icon_id',
         'display_name',
         'code',
         'price',
@@ -51,5 +52,13 @@ class ProductPrice extends Model
     public function category(): BelongsTo
     {
         return $this->belongsTo(PriceListCategory::class, 'price_list_category_id');
+    }
+
+    /**
+     * Get the icon for this price
+     */
+    public function icon(): BelongsTo
+    {
+        return $this->belongsTo(Icon::class);
     }
 }

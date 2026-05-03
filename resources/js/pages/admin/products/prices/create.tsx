@@ -14,17 +14,26 @@ interface PriceListCategory {
     slug: string;
 }
 
+interface IconData {
+    id: number;
+    name: string;
+    file_path: string;
+}
+
 interface ProductPriceCreateProps {
     product: Product;
     categories: PriceListCategory[];
+    icons: IconData[];
 }
 
 export default function ProductPriceCreate({
     product,
     categories,
+    icons,
 }: ProductPriceCreateProps) {
     const { data, setData, post, errors, processing } = useForm({
         price_list_category_id: '',
+        icon_id: '' as string | number,
         display_name: '',
         code: '',
         price: '',
@@ -97,6 +106,41 @@ export default function ProductPriceCreate({
                                         {errors.price_list_category_id && (
                                             <p className="text-sm text-red-600">
                                                 {errors.price_list_category_id}
+                                            </p>
+                                        )}
+                                    </div>
+
+                                    {/* Icon Picker */}
+                                    <div className="space-y-2">
+                                        <div className="flex items-center justify-between">
+                                            <Label>Icon Produk (Opsional)</Label>
+                                            <Link href="/admin/icons" className="text-xs text-primary hover:underline">
+                                                Kelola Galeri Icon
+                                            </Link>
+                                        </div>
+                                        
+                                        <div className="grid grid-cols-4 sm:grid-cols-6 md:grid-cols-8 gap-2 max-h-48 overflow-y-auto p-2 border rounded-md bg-muted/20">
+                                            <div 
+                                                className={`cursor-pointer border-2 rounded-md flex flex-col items-center justify-center p-2 h-16 ${data.icon_id === '' ? 'border-primary bg-primary/10' : 'border-transparent hover:bg-muted'}`}
+                                                onClick={() => setData('icon_id', '')}
+                                            >
+                                                <span className="text-xs text-center text-muted-foreground">Tanpa Icon</span>
+                                            </div>
+                                            
+                                            {icons.map(icon => (
+                                                <div 
+                                                    key={icon.id}
+                                                    className={`cursor-pointer border-2 rounded-md flex items-center justify-center p-1 h-16 ${data.icon_id === icon.id ? 'border-primary bg-primary/10' : 'border-transparent hover:bg-muted'}`}
+                                                    onClick={() => setData('icon_id', icon.id)}
+                                                    title={icon.name}
+                                                >
+                                                    <img src={icon.file_path} alt={icon.name} className="max-w-full max-h-full object-contain" />
+                                                </div>
+                                            ))}
+                                        </div>
+                                        {errors.icon_id && (
+                                            <p className="text-sm text-red-600">
+                                                {errors.icon_id}
                                             </p>
                                         )}
                                     </div>

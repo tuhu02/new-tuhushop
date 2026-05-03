@@ -84,8 +84,8 @@ export default function NominalSection({
                                 </div>
 
                                 <img
-                                    src={DIAMOND_LOGO_URL}
-                                    alt="Diamond"
+                                    src={price.icon?.file_path || DIAMOND_LOGO_URL}
+                                    alt={price.icon?.name || "Diamond"}
                                     className="h-5 w-5 shrink-0 object-contain"
                                     loading="lazy"
                                 />

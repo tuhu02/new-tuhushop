@@ -14,16 +14,24 @@ export type CardProductProps = {
     variant?: 'default' | 'popular';
 };
 
+export type IconData = {
+    id: number;
+    name: string;
+    file_path: string;
+}
+
 export type ProductPrice = {
     id: number;
     product_id: number;
     price_list_category_id: number;
+    icon_id?: number | null;
     display_name: string;
     code: string;
     price: number;
     order: number;
     is_active: boolean;
     category: PriceListCategory;
+    icon?: IconData | null;
 }
 
 export type CursorPaginator<T> = {
@@ -54,10 +62,12 @@ export type ProductPriceItem = {
     id: number;
     product_id: number;
     price_list_category_id: number;
+    icon_id?: number | null;
     display_name: string;
     code: string;
     price: number;
     category: PriceListCategory;
+    icon?: IconData | null;
 }
 
 export type PriceByCategory = {

@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Product;
 use App\Models\ProductPrice;
 use App\Models\PriceListCategory;
+use App\Models\Icon;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
@@ -47,6 +48,7 @@ class ProductPriceController extends Controller
                 ->orderBy('order')
                 ->select('id', 'name', 'slug')
                 ->get(),
+            'icons' => Icon::latest()->get(),
         ]);
     }
 
@@ -62,6 +64,7 @@ class ProductPriceController extends Controller
             'price' => 'required|numeric|min:0',
             'order' => 'nullable|integer|min:0',
             'is_active' => 'boolean',
+            'icon_id' => 'nullable|exists:icons,id',
         ]);
 
         $product->prices()->create([
@@ -93,6 +96,7 @@ class ProductPriceController extends Controller
                 ->orderBy('order')
                 ->select('id', 'name', 'slug')
                 ->get(),
+            'icons' => Icon::latest()->get(),
         ]);
     }
 
@@ -113,6 +117,7 @@ class ProductPriceController extends Controller
             'price' => 'required|numeric|min:0',
             'order' => 'nullable|integer|min:0',
             'is_active' => 'boolean',
+            'icon_id' => 'nullable|exists:icons,id',
         ]);
 
         $price->update([

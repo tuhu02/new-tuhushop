@@ -59,6 +59,9 @@ Route::middleware([])->prefix('admin')->name('admin.')->group(function () {
     Route::post('digiflazz/validate', [DigiflazzSyncController::class, 'validateCredentials'])->name('digiflazz.validate');
     Route::get('digiflazz/stats', [DigiflazzSyncController::class, 'getStats'])->name('digiflazz.stats');
 
+    // Icons
+    Route::resource('icons', \App\Http\Controllers\Admin\IconController::class)->only(['index', 'store', 'destroy']);
+
     // Nested routes for product prices
     Route::post('products/{product}/prices/import', [ProductPriceController::class, 'import'])->name('products.prices.import');
     Route::resource('products.prices', ProductPriceController::class)->except('show');

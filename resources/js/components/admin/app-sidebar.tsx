@@ -11,6 +11,7 @@ import {
     IconRefresh,
     IconTag,
     IconUsers,
+    IconPhoto,
 } from '@tabler/icons-react';
 
 import { NavMain } from '@/components/admin/nav-main';
@@ -86,6 +87,11 @@ const data = {
             title: 'Digiflazz Sync',
             url: '/admin/digiflazz/sync',
             icon: IconRefresh,
+        },
+        {
+            title: 'Galeri Icon',
+            url: '/admin/icons',
+            icon: IconPhoto,
         },
     ],
 };
