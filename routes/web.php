@@ -60,6 +60,7 @@ Route::middleware([])->prefix('admin')->name('admin.')->group(function () {
     Route::get('digiflazz/stats', [DigiflazzSyncController::class, 'getStats'])->name('digiflazz.stats');
 
     // Nested routes for product prices
+    Route::post('products/{product}/prices/import', [ProductPriceController::class, 'import'])->name('products.prices.import');
     Route::resource('products.prices', ProductPriceController::class)->except('show');
 });
 

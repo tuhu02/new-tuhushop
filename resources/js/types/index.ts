@@ -26,9 +26,20 @@ export type ProductPrice = {
     category: PriceListCategory;
 }
 
+export type CursorPaginator<T> = {
+    data: T[];
+    next_page_url: string | null;
+    prev_page_url: string | null;
+    path: string;
+    per_page: number;
+    next_cursor: string | null;
+    prev_cursor: string | null;
+}
+
 export type ProductPriceIndexProps = {
     product: Product;
-    prices: ProductPrice[];
+    prices: CursorPaginator<ProductPrice>;
+    categories: PriceListCategory[];
 }
 
 

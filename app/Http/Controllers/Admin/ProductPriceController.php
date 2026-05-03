@@ -21,11 +21,17 @@ class ProductPriceController extends Controller
         $product->load(['brand', 'prices.category']);
         return Inertia::render('admin/products/prices/index', [
             'product' => $product,
+            'categories' => PriceListCategory::query()
+                ->where('is_active', true)
+                ->orderBy('order')
+                ->select('id', 'name', 'slug')
+                ->get(),
             'prices' => $product->prices()
                 ->with('category')
                 ->orderBy('price_list_category_id')
                 ->orderBy('order')
-                ->get(),
+                ->orderBy('id')
+                ->cursorPaginate(15),
         ]);
     }
 
@@ -135,5 +141,46 @@ class ProductPriceController extends Controller
         return redirect()
             ->route('admin.products.prices.index', $product)
             ->with('success', 'Price list berhasil dihapus');
+    }
+
+    /**
+     * Import product prices from excel.
+     */
+    public function import(Product $product, Request $request): RedirectResponse
+    {
+        $validated = $request->validate([
+            'items' => 'required|array',
+            'items.*.code' => 'required|string',
+            'items.*.name' => 'required|string',
+            'items.*.price' => 'required|numeric',
+            'category_id' => 'required|exists:price_list_categories,id',
+        ]);
+
+        foreach ($validated['items'] as $item) {
+            $price = ProductPrice::where('product_id', $product->id)
+                ->where('code', $item['code'])
+                ->first();
+
+            if ($price) {
+                $price->update([
+                    'display_name' => $item['name'],
+                    'price' => $item['price'],
+                ]);
+            } else {
+                ProductPrice::create([
+                    'product_id' => $product->id,
+                    'code' => $item['code'],
+                    'display_name' => $item['name'],
+                    'price' => $item['price'],
+                    'price_list_category_id' => $validated['category_id'],
+                    'is_active' => true,
+                    'order' => 0,
+                ]);
+            }
+        }
+
+        return redirect()
+            ->route('admin.products.prices.index', $product)
+            ->with('success', 'Pricelist berhasil diimport');
     }
 }

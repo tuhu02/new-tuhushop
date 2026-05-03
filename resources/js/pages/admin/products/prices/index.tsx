@@ -2,11 +2,85 @@ import { Link, router } from '@inertiajs/react';
 import AdminLayout from '@/layouts/admin-layout';
 import { ChevronLeft } from 'lucide-react';
 import { ProductPriceIndexProps } from '@/types';
+import { useState, useRef, FormEvent } from 'react';
+import * as XLSX from 'xlsx';
 
 export default function ProductPriceIndex({
     product,
     prices,
+    categories,
 }: ProductPriceIndexProps) {
+    const [isImportModalOpen, setIsImportModalOpen] = useState(false);
+    const [importFile, setImportFile] = useState<File | null>(null);
+    const [importCategoryId, setImportCategoryId] = useState('');
+    const [isImporting, setIsImporting] = useState(false);
+    const fileInputRef = useRef<HTMLInputElement>(null);
+
+    const handleImportSubmit = async (e: FormEvent) => {
+        e.preventDefault();
+        if (!importFile || !importCategoryId) {
+            alert('Pilih file dan kategori terlebih dahulu!');
+            return;
+        }
+
+        setIsImporting(true);
+
+        try {
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                const data = e.target?.result;
+                if (!data) return;
+
+                const workbook = XLSX.read(data, { type: 'binary' });
+                const sheetName = workbook.SheetNames[0];
+                const sheet = workbook.Sheets[sheetName];
+                
+                const rows = XLSX.utils.sheet_to_json<any[]>(sheet, { header: 1 });
+                
+                const items = rows
+                    .map((row) => {
+                        const codeRaw = row[1];
+                        const nameRaw = row[2];
+                        const priceRaw = row[5];
+                        
+                        if (!codeRaw || !nameRaw || !priceRaw) return null;
+                        
+                        let price = typeof priceRaw === 'number' ? priceRaw : parseInt(String(priceRaw).replace(/[^0-9]/g, ''), 10);
+                        
+                        return {
+                            code: String(codeRaw).trim(),
+                            name: String(nameRaw).trim(),
+                            price: price || 0,
+                        };
+                    })
+                    .filter(Boolean);
+
+                if (items.length === 0) {
+                    alert('Tidak ada data valid yang ditemukan di file Excel.');
+                    setIsImporting(false);
+                    return;
+                }
+
+                router.post(`/admin/products/${product.id}/prices/import`, {
+                    items,
+                    category_id: importCategoryId
+                }, {
+                    onSuccess: () => {
+                        setIsImportModalOpen(false);
+                        setImportFile(null);
+                        setImportCategoryId('');
+                        if (fileInputRef.current) fileInputRef.current.value = '';
+                    },
+                    onFinish: () => setIsImporting(false)
+                });
+            };
+            reader.readAsBinaryString(importFile);
+        } catch (err) {
+            console.error(err);
+            alert('Terjadi kesalahan saat memproses file Excel.');
+            setIsImporting(false);
+        }
+    };
     const handleDelete = (priceId: number) => {
         if (!window.confirm('Hapus price list ini?')) {
             return;
@@ -43,18 +117,27 @@ export default function ProductPriceIndex({
                             Kelola daftar harga
                         </p>
                     </div>
-                    <Link
-                        href={`/admin/products/${product.id}/prices/create`}
-                        className="inline-flex h-9 items-center rounded-md bg-primary px-4 text-sm font-medium text-primary-foreground"
-                    >
-                        + Tambah Price List
-                    </Link>
+                    <div className="flex items-center gap-2">
+                        <button
+                            onClick={() => setIsImportModalOpen(true)}
+                            className="inline-flex h-9 items-center rounded-md border border-input bg-background px-4 text-sm font-medium hover:bg-accent hover:text-accent-foreground"
+                        >
+                            Import Excel
+                        </button>
+                        <Link
+                            href={`/admin/products/${product.id}/prices/create`}
+                            className="inline-flex h-9 items-center rounded-md bg-primary px-4 text-sm font-medium text-primary-foreground"
+                        >
+                            + Tambah Price List
+                        </Link>
+                    </div>
                 </div>
 
-                {prices.length > 0 ? (
-                    <div className="overflow-x-auto rounded-xl border border-sidebar-border/70">
-                        <table className="w-full min-w-240 text-left text-sm">
-                            <thead className="bg-muted/40">
+                {prices.data.length > 0 ? (
+                    <div className="space-y-4">
+                        <div className="overflow-x-auto rounded-xl border border-sidebar-border/70">
+                            <table className="w-full min-w-240 text-left text-sm">
+                                <thead className="bg-muted/40">
                                 <tr>
                                     <th className="px-4 py-3 font-medium">
                                         Kode
@@ -77,7 +160,7 @@ export default function ProductPriceIndex({
                                 </tr>
                             </thead>
                             <tbody>
-                                {prices.map((price) => (
+                                {prices.data.map((price) => (
                                     <tr
                                         key={price.id}
                                         className="border-t border-sidebar-border/50"
@@ -138,6 +221,22 @@ export default function ProductPriceIndex({
                             </tbody>
                         </table>
                     </div>
+                    
+                    <div className="flex items-center justify-between">
+                        <Link
+                            href={prices.prev_page_url || '#'}
+                            className={`inline-flex h-9 items-center rounded-md border border-input bg-background px-4 text-sm font-medium ${prices.prev_page_url ? 'hover:bg-accent hover:text-accent-foreground' : 'opacity-50 cursor-not-allowed pointer-events-none'}`}
+                        >
+                            Previous
+                        </Link>
+                        <Link
+                            href={prices.next_page_url || '#'}
+                            className={`inline-flex h-9 items-center rounded-md border border-input bg-background px-4 text-sm font-medium ${prices.next_page_url ? 'hover:bg-accent hover:text-accent-foreground' : 'opacity-50 cursor-not-allowed pointer-events-none'}`}
+                        >
+                            Next
+                        </Link>
+                    </div>
+                </div>
                 ) : (
                     <div className="rounded border border-dashed border-muted-foreground p-8 text-center">
                         <p className="mb-4 text-muted-foreground">
@@ -152,6 +251,65 @@ export default function ProductPriceIndex({
                     </div>
                 )}
             </div>
+
+            {isImportModalOpen && (
+                <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
+                    <div className="w-full max-w-md rounded-lg bg-background p-6 shadow-xl border border-border">
+                        <h2 className="mb-4 text-lg font-semibold">Import Price List (Excel)</h2>
+                        <form onSubmit={handleImportSubmit}>
+                            <div className="space-y-4">
+                                <div>
+                                    <label className="mb-1 block text-sm font-medium">Kategori Default</label>
+                                    <select
+                                        value={importCategoryId}
+                                        onChange={(e) => setImportCategoryId(e.target.value)}
+                                        className="w-full rounded-md border border-input bg-background px-3 py-2 text-sm"
+                                        required
+                                    >
+                                        <option value="">Pilih Kategori...</option>
+                                        {categories.map((cat) => (
+                                            <option key={cat.id} value={cat.id}>{cat.name}</option>
+                                        ))}
+                                    </select>
+                                    <p className="mt-1 text-xs text-muted-foreground">
+                                        Digunakan jika produk baru ditemukan.
+                                    </p>
+                                </div>
+                                <div>
+                                    <label className="mb-1 block text-sm font-medium">File Excel (.xlsx, .xls)</label>
+                                    <input
+                                        type="file"
+                                        accept=".xlsx, .xls, .csv"
+                                        ref={fileInputRef}
+                                        onChange={(e) => setImportFile(e.target.files?.[0] || null)}
+                                        className="w-full text-sm file:mr-4 file:rounded-md file:border-0 file:bg-primary/10 file:px-4 file:py-2 file:text-sm file:font-semibold file:text-primary hover:file:bg-primary/20"
+                                        required
+                                    />
+                                    <p className="mt-1 text-xs text-muted-foreground">
+                                        Kolom B: Kode, Kolom C: Nama, Kolom F: Harga
+                                    </p>
+                                </div>
+                            </div>
+                            <div className="mt-6 flex justify-end gap-2">
+                                <button
+                                    type="button"
+                                    onClick={() => setIsImportModalOpen(false)}
+                                    className="rounded-md border px-4 py-2 text-sm font-medium hover:bg-accent"
+                                >
+                                    Batal
+                                </button>
+                                <button
+                                    type="submit"
+                                    disabled={isImporting}
+                                    className="rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground hover:bg-primary/90 disabled:opacity-50"
+                                >
+                                    {isImporting ? 'Memproses...' : 'Import'}
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            )}
         </AdminLayout>
     );
 }
