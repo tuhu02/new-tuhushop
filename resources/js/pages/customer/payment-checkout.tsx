@@ -33,6 +33,8 @@ type PaymentCheckoutPageProps = {
         status: string;
         expired_at: string | null;
         instructions: PaymentInstruction[];
+        digiflazz_status: string | null;
+        digiflazz_sn: string | null;
     };
 };
 
@@ -44,13 +46,13 @@ const breadcrumbs: BreadcrumbItem[] = [
 ];
 
 const statusLabelMap: Record<string, string> = {
-    UNPAID: 'Menunggu pembayaran',
-    PAID: 'Lunas',
+    UNPAID: 'Menunggu Pembayaran',
+    PAID: 'Pembayaran Berhasil',
     EXPIRED: 'Kedaluwarsa',
     FAILED: 'Gagal',
 };
 
-const terminalStatuses = new Set(['PAID', 'EXPIRED', 'FAILED']);
+const terminalStatuses = new Set(['EXPIRED', 'FAILED']);
 
 type TransactionStatusUpdatedEvent = {
     status?: string;
@@ -64,6 +66,14 @@ export default function PaymentCheckout({
     const [copied, setCopied] = useState(false);
     const [modalOpen, setModalOpen] = useState(false);
     const [currentStatus, setCurrentStatus] = useState(transaction.status);
+
+    const [digiflazzStatus, setDigiflazzStatus] = useState<string | null>(
+        transaction.digiflazz_status,
+    );
+
+    const [digiflazzSn, setDigiflazzSn] = useState<string | null>(
+        transaction.digiflazz_sn,
+    );
 
     const expiredAtDate = transaction.expired_at
         ? new Date(transaction.expired_at)
@@ -134,7 +144,7 @@ export default function PaymentCheckout({
             return;
         }
 
-        const channelName = `payments.${transaction.reference}`;
+        const channelName = `transaction.${transaction.reference}`;
 
         echo.channel(channelName)
             // Reverb Tripay
@@ -157,15 +167,8 @@ export default function PaymentCheckout({
             .listen(
                 '.digiflazz.status.updated',
                 (event: DigiflazzStatusUpdatedEvent) => {
-                    console.log('DIGIFLAZZ UPDATE', event);
-
-                    if (event.digiflazz_status === 'Sukses') {
-                        alert('Topup berhasil! SN: ' + event.digiflazz_sn);
-                    }
-
-                    if (event.digiflazz_status === 'Gagal') {
-                        alert('Topup gagal');
-                    }
+                    setDigiflazzStatus(event.digiflazz_status ?? null);
+                    setDigiflazzSn(event.digiflazz_sn ?? null);
                 },
             );
 
@@ -248,19 +251,34 @@ export default function PaymentCheckout({
         .filter(Boolean)
         .join(' ');
 
-    const checkoutStage = useMemo<CheckoutStage>(() => {
-        if (currentStatus === 'PAID') {
-            return 2;
+    // ✅ DITAMBAH: label status utama mengikuti status Digiflazz
+    const finalStatusLabel = useMemo(() => {
+        if (digiflazzStatus === 'Sukses') {
+            return 'Transaksi Suskes';
         }
 
-        if (
-            ['COMPLETED', 'SUCCESS', 'DONE', 'FINISHED'].includes(currentStatus)
-        ) {
+        if (digiflazzStatus === 'Gagal') {
+            return 'Transaksi Gagal';
+        }
+
+        if (digiflazzStatus === 'Pending') {
+            return 'Transaksi Pending';
+        }
+
+        return statusLabelMap[currentStatus] ?? currentStatus;
+    }, [currentStatus, digiflazzStatus]);
+
+    const checkoutStage = useMemo<CheckoutStage>(() => {
+        if (digiflazzStatus === 'Sukses') {
             return 3;
         }
 
+        if (currentStatus === 'PAID' || digiflazzStatus === 'Pending') {
+            return 2;
+        }
+
         return 1;
-    }, [currentStatus]);
+    }, [currentStatus, digiflazzStatus]);
 
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
@@ -279,14 +297,15 @@ export default function PaymentCheckout({
                     <section className="overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-sm">
                         <div className="border-b border-slate-100 bg-linear-to-r from-slate-900 via-slate-800 to-slate-900 px-6 py-6 text-white">
                             <p className="text-xs tracking-[0.28em] text-slate-300 uppercase">
-                                Pembayaran Custom
+                                Pembayaran
                             </p>
                             <h1 className="mt-2 text-2xl font-semibold">
-                                Selesaikan pembayaran tanpa keluar ke Tripay
+                                Selesaikan Pembayaran Anda
                             </h1>
                             <p className="mt-2 max-w-2xl text-sm text-slate-300">
-                                Gunakan kode bayar di bawah ini dan ikuti
-                                instruksi untuk menyelesaikan transaksi.
+                                Silakan lakukan pembayaran menggunakan metode
+                                yang dipilih. Ikuti instruksi yang tersedia
+                                untuk menyelesaikan transaksi dengan aman.
                             </p>
                         </div>
 
@@ -294,18 +313,30 @@ export default function PaymentCheckout({
                             <CheckoutStageBar checkoutStage={checkoutStage} />
 
                             <TransactionInfoCard
-                                statusLabel={
-                                    statusLabelMap[currentStatus] ??
-                                    currentStatus
-                                }
+                                statusLabel={finalStatusLabel}
                                 showCountdown={
                                     Boolean(transaction.expired_at) &&
-                                    !terminalStatuses.has(currentStatus)
+                                    !terminalStatuses.has(currentStatus) &&
+                                    digiflazzStatus !== 'Sukses'
                                 }
                                 countdown={countdown}
                                 reference={transaction.reference}
                                 formattedAmount={formattedAmount}
                             />
+
+                            {digiflazzStatus && (
+                                <div className="rounded-2xl border border-slate-200 bg-slate-50 p-4 text-sm">
+                                    <p className="font-semibold text-slate-900">
+                                        Status Top Up: {digiflazzStatus}
+                                    </p>
+
+                                    {digiflazzSn && (
+                                        <p className="mt-1 text-slate-600">
+                                            SN: {digiflazzSn}
+                                        </p>
+                                    )}
+                                </div>
+                            )}
 
                             <PayCodeSection
                                 paymentMethodName={

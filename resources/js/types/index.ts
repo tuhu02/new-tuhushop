@@ -11,6 +11,7 @@ export type CardProductProps = {
     brand: string;  
     badge: string;
     slug: string;
+    variant?: 'default' | 'popular';
 };
 
 export type ProductPrice = {

@@ -155,6 +155,11 @@ export default function Dashboard({
                                                 product.categories[0] ?? 'New'
                                             }
                                             slug={product.slug}
+                                            variant={
+                                                category === '🔥 Lagi Populer'
+                                                    ? 'popular'
+                                                    : 'default'
+                                            }
                                         />
                                     </div>
                                 ))}

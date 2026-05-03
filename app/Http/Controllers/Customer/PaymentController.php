@@ -51,10 +51,11 @@ class PaymentController extends Controller
             $transaction->refresh();
 
             if ($previousStatus !== (string) $transaction->status) {
-                broadcast(new TransactionStatusUpdated(
+                broadcast(new DigiflazzStatusUpdated(
                     reference: (string) $transaction->reference,
-                    status: (string) $transaction->status,
                     merchantRef: (string) $transaction->merchant_ref,
+                    digiflazzStatus: $transaction->digiflazz_status,
+                    digiflazzSn: $transaction->digiflazz_sn,
                 ));
             }
         }
@@ -62,7 +63,10 @@ class PaymentController extends Controller
         if (($data['status'] ?? null) === 'PAID' && $transaction !== null) {
             Log::info('STATUS PAID MASUK');
 
-            if ($transaction->digiflazz_processed_at !== null) {
+            if (
+                $transaction->digiflazz_processed_at !== null ||
+                $transaction->digiflazz_status === 'Sukses'
+            ) {
                 return response()->json(['success' => true]);
             }
 
@@ -112,11 +116,10 @@ class PaymentController extends Controller
 
             $transaction->refresh();
 
-            broadcast(new DigiflazzStatusUpdated(
+            broadcast(new TransactionStatusUpdated(
                 reference: (string) $transaction->reference,
+                status: (string) $transaction->status,
                 merchantRef: (string) $transaction->merchant_ref,
-                digiflazzStatus: $transaction->digiflazz_status,
-                digiflazzSn: $transaction->digiflazz_sn,
             ));
         }
 
@@ -276,6 +279,8 @@ class PaymentController extends Controller
                 'pay_code' => $transaction->pay_code,
                 'pay_url' => $transaction->pay_url,
                 'status' => $transaction->status,
+                'digiflazz_status' => $transaction->digiflazz_status,
+                'digiflazz_sn' => $transaction->digiflazz_sn,
                 'expired_at' => optional($transaction->expired_at)?->toIso8601String(),
                 'instructions' => $transaction->instructions ?? [],
             ],
@@ -330,6 +335,13 @@ class PaymentController extends Controller
             'digiflazz_sn' => data_get($data, 'data.sn'),
             'digiflazz_response' => $data,
         ]);
+
+        broadcast(new DigiflazzStatusUpdated(
+            reference: (string) $transaction->reference,
+            merchantRef: (string) $transaction->merchant_ref,
+            digiflazzStatus: $transaction->digiflazz_status,
+            digiflazzSn: $transaction->digiflazz_sn,
+        ));
 
         return response()->json(['success' => true]);
     }

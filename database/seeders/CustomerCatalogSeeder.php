@@ -74,20 +74,20 @@ class CustomerCatalogSeeder extends Seeder
                 ],
                 'customer_no_template' => '{user_id}|{server}',
             ],
-            [
-                'name' => 'Honkai: Star Rail',
-                'slug' => 'honkai-star-rail',
-                'brand' => 'HoYoverse',
-                'logo' => 'honkai-star-rail.jpeg',
-                'categories' => ['Top Up Langsung'],
-                'input_fields' => [
-                    'fields' => [
-                        ['name' => 'user_id', 'label' => 'UID', 'type' => 'text', 'required' => true],
-                        ['name' => 'server', 'label' => 'Server', 'type' => 'text', 'required' => true],
-                    ],
-                ],
-                'customer_no_template' => '{user_id}|{server}',
-            ],
+            // [
+            //     'name' => 'Honkai: Star Rail',
+            //     'slug' => 'honkai-star-rail',
+            //     'brand' => 'HoYoverse',
+            //     'logo' => 'honkai-star-rail.jpeg',
+            //     'categories' => ['Top Up Langsung'],
+            //     'input_fields' => [
+            //         'fields' => [
+            //             ['name' => 'user_id', 'label' => 'UID', 'type' => 'text', 'required' => true],
+            //             ['name' => 'server', 'label' => 'Server', 'type' => 'text', 'required' => true],
+            //         ],
+            //     ],
+            //     'customer_no_template' => '{user_id}|{server}',
+            // ],
             [
                 'name' => 'PUBG Mobile',
                 'slug' => 'pubg-mobile',
@@ -114,19 +114,19 @@ class CustomerCatalogSeeder extends Seeder
                 ],
                 'customer_no_template' => '{riot_id}',
             ],
-            [
-                'name' => 'Roblox',
-                'slug' => 'roblox',
-                'brand' => 'Roblox',
-                'logo' => 'roblox.jpg',
-                'categories' => ['🔥 Lagi Populer', 'Top Up Langsung'],
-                'input_fields' => [
-                    'fields' => [
-                        ['name' => 'username', 'label' => 'Username Roblox', 'type' => 'text', 'required' => true],
-                    ],
-                ],
-                'customer_no_template' => '{username}',
-            ],
+            // [
+            //     'name' => 'Roblox',
+            //     'slug' => 'roblox',
+            //     'brand' => 'Roblox',
+            //     'logo' => 'roblox.jpg',
+            //     'categories' => ['🔥 Lagi Populer', 'Top Up Langsung'],
+            //     'input_fields' => [
+            //         'fields' => [
+            //             ['name' => 'username', 'label' => 'Username Roblox', 'type' => 'text', 'required' => true],
+            //         ],
+            //     ],
+            //     'customer_no_template' => '{username}',
+            // ],
         ];
 
         $logoSourceDir = public_path('logo game');

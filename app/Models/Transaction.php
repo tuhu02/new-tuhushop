@@ -75,4 +75,14 @@ class Transaction extends Model
     {
         return $this->belongsTo(PaymentChannel::class);
     }
+
+    public function product(): BelongsTo
+    {
+        return $this->belongsTo(Product::class);
+    }
+
+    public function productPrice(): BelongsTo
+    {
+        return $this->belongsTo(ProductPrice::class, 'price_id');
+    }
 }
