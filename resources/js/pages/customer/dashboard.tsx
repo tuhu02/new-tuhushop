@@ -1,12 +1,6 @@
 import { Head } from '@inertiajs/react';
 import CardProduct from '@/components/customer/card-product';
-import {
-    Carousel,
-    CarouselContent,
-    CarouselItem,
-    CarouselNext,
-    CarouselPrevious,
-} from '@/components/ui/carousel';
+import CarouselHero from '@/components/customer/carousel-hero';
 import AppLayout from '@/layouts/app-layout';
 import { cn } from '@/lib/utils';
 import { dashboard } from '@/routes';
@@ -15,6 +9,7 @@ import type { BreadcrumbItem } from '@/types';
 type DashboardCarousel = {
     id: number;
     title: string | null;
+    description: string | null;
     image_url: string;
 };
 
@@ -104,34 +99,7 @@ export default function Dashboard({
             <Head title="Dashboard" />
 
             <div className="space-y-6 p-4">
-                {carousels.length > 0 && (
-                    <div className="flex justify-center px-1">
-                        <Carousel className="mx-auto w-full">
-                            <CarouselContent className="items-stretch">
-                                {carousels.map((item) => (
-                                    <CarouselItem
-                                        key={item.id}
-                                        className="h-60 md:h-80 lg:h-96"
-                                    >
-                                        <div className="h-full overflow-hidden rounded-xl border border-sidebar-border/70">
-                                            <img
-                                                src={item.image_url}
-                                                alt={
-                                                    item.title ??
-                                                    'carousel image'
-                                                }
-                                                className="h-full w-full object-cover"
-                                            />
-                                        </div>
-                                    </CarouselItem>
-                                ))}
-                            </CarouselContent>
-
-                            <CarouselPrevious className="top-1/2 left-3 z-10 -translate-y-1/2 bg-background/90 hover:bg-background" />
-                            <CarouselNext className="top-1/2 right-3 z-10 -translate-y-1/2 bg-background/90 hover:bg-background" />
-                        </Carousel>
-                    </div>
-                )}
+                <CarouselHero carousels={carousels} />
 
                 {products.length > 0 && (
                     <div className="flex gap-2 overflow-x-auto pb-1">
@@ -140,7 +108,7 @@ export default function Dashboard({
                                 key={category}
                                 type="button"
                                 onClick={() => handleClickCategory(category)}
-                                className="shrink-0 rounded-full bg-slate-100 px-4 py-2 text-sm font-semibold text-slate-700 transition hover:bg-blue-50 hover:text-blue-600 dark:bg-slate-800 dark:text-slate-200 dark:hover:bg-slate-700"
+                                className="shrink-0 rounded-full border bg-slate-100 px-4 py-2 text-sm font-semibold text-slate-700 transition hover:bg-blue-50 hover:text-blue-600 dark:bg-slate-800 dark:text-slate-200 dark:hover:bg-slate-700"
                             >
                                 {category}
                             </button>
@@ -166,24 +134,7 @@ export default function Dashboard({
 
                                 <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-5">
                                     {categoryProducts.map((product, index) => (
-                                        <div
-                                            key={`${category}-${product.id}`}
-                                            className={cn(
-                                                'w-full',
-                                                categoryProducts.length % 2 ===
-                                                    1 &&
-                                                    index ===
-                                                        categoryProducts.length -
-                                                            1 &&
-                                                    'col-span-2 mx-auto max-w-56 sm:col-span-1 sm:max-w-none',
-                                                categoryProducts.length % 5 ===
-                                                    1 &&
-                                                    index ===
-                                                        categoryProducts.length -
-                                                            1 &&
-                                                    'lg:col-start-3',
-                                            )}
-                                        >
+                                        <div key={`${category}-${product.id}`}>
                                             <CardProduct
                                                 title={product.name}
                                                 image={

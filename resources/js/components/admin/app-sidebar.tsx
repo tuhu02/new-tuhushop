@@ -48,6 +48,11 @@ const data = {
                     icon: IconReceipt,
                 },
                 {
+                    title: 'Transaksi Manual',
+                    url: '/admin/transactions/manual',
+                    icon: IconListDetails,
+                },
+                {
                     title: 'Customers',
                     url: '/admin/customers',
                     icon: IconUsers,

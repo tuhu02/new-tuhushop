@@ -72,13 +72,14 @@ class ProductController extends Controller
         $slug = $count ? "{$slug}-{$count}" : $slug;
 
 
-        $payload = [
+       $payload = [
             'name' => $validated['name'],
             'brand_id' => $validated['brand_id'],
             'slug' => $slug,
             'is_active' => $validated['is_active'],
             'input_fields' => $validated['input_fields'] ?? null,
             'customer_no_template' => $validated['customer_no_template'] ?? null,
+            'fulfillment_type' => $validated['fulfillment_type'] ?? 'digiflazz',
         ];
 
         if ($request->hasFile('thumbnail')) {
@@ -123,6 +124,7 @@ class ProductController extends Controller
                 'categories' => $product->categories,
                 'input_fields' => $product->input_fields,
                 'customer_no_template' => $product->customer_no_template,
+                'fulfillment_type' => $product->fulfillment_type,
             ],
             'brands' => Brand::query()->select('id', 'name')->orderBy('name')->get(),
             'categories' => Category::query()->select('id', 'name')->orderBy('name')->get(),
@@ -145,12 +147,30 @@ class ProductController extends Controller
                 'slug',
                 'brand_id',
                 'is_active',
-                'input_fields',
                 'customer_no_template',
+                'fulfillment_type',
             ] as $field
         ) {
             if (array_key_exists($field, $validated)) {
                 $payload[$field] = $validated[$field];
+            }
+        }
+
+        if (array_key_exists('input_fields', $validated)) {
+            if (!empty($validated['input_fields'])) {
+                $decodedInputFields = json_decode($validated['input_fields'], true);
+
+                if (json_last_error() !== JSON_ERROR_NONE) {
+                    return back()
+                        ->withErrors([
+                            'input_fields' => 'Format Input Fields JSON tidak valid.',
+                        ])
+                        ->withInput();
+                }
+
+                $payload['input_fields'] = $decodedInputFields;
+            } else {
+                $payload['input_fields'] = null;
             }
         }
 

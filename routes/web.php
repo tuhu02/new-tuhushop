@@ -11,6 +11,9 @@ use App\Http\Controllers\Admin\PriceListCategoryController;
 use App\Http\Controllers\Admin\PaymentMethodController;
 use App\Http\Controllers\Admin\PaymentChannelController;
 use App\Http\Controllers\Admin\DigiflazzSyncController;
+use App\Http\Controllers\Admin\IconController;
+use App\Http\Controllers\Admin\ManualTransactionController;
+use App\Http\Controllers\Admin\TransactionController;
 use App\Http\Controllers\Customer\DashboardController;
 use App\Http\Controllers\Customer\ProductController as CustomerProductController;
 use App\Http\Controllers\Customer\PaymentController;
@@ -58,10 +61,14 @@ Route::middleware([])->prefix('admin')->name('admin.')->group(function () {
     Route::get('digiflazz/stats', [DigiflazzSyncController::class, 'getStats'])->name('digiflazz.stats');
 
     // Icons
-    Route::resource('icons', \App\Http\Controllers\Admin\IconController::class)->only(['index', 'store', 'destroy']);
+    Route::resource('icons', IconController::class)->only(['index', 'store', 'destroy']);
+
+    // Manual Transactions (must be before resource routes to avoid conflict)
+    Route::get('transactions/manual', [ManualTransactionController::class, 'index'])->name('transactions.manual');
+    Route::post('transactions/manual/{id}/process', [ManualTransactionController::class, 'process'])->name('transactions.manual.process');
 
     // Transactions
-    Route::resource('transactions', \App\Http\Controllers\Admin\TransactionController::class)->only('index');
+    Route::resource('transactions', TransactionController::class)->only('index');
 
     // Nested routes for product prices
     Route::post('products/{product}/prices/import', [ProductPriceController::class, 'import'])->name('products.prices.import');

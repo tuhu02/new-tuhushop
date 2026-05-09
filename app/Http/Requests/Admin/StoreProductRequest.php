@@ -30,6 +30,7 @@ class StoreProductRequest extends FormRequest
             'thumbnail' => ['nullable', 'image', 'mimes:jpg,jpeg,png,webp', 'max:2048'],
             'banner' => ['nullable', 'image', 'mimes:jpg,jpeg,png,webp', 'max:4096'],
             'is_active' => ['required', 'boolean'],
+            'fulfillment_type' => ['sometimes', 'required', Rule::in(['digiflazz', 'manual'])],
         ];
     }
 }

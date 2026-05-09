@@ -70,6 +70,18 @@ class PaymentController extends Controller
                 return response()->json(['success' => true]);
             }
 
+            $product = Product::find($transaction->product_id);
+
+            if ($product?->fulfillment_type === 'manual') {
+                Log::info('Produk manual, tidak dikirim ke Digiflazz', [
+                    'transaction_id' => $transaction->id,
+                    'merchant_ref' => $transaction->merchant_ref,
+                    'product_id' => $transaction->product_id,
+                ]);
+
+                return response()->json(['success' => true]);
+            }
+
             $price = ProductPrice::find($transaction->price_id);
             $buyerSkuCode = $price?->digiflazz_code ?: $price?->code;
 
@@ -244,7 +256,8 @@ class PaymentController extends Controller
                 'fee_customer' => data_get($tripayData, 'fee_customer'),
                 'amount_received' => data_get($tripayData, 'amount_received'),
                 'pay_code' => $tripayData['pay_code'] ?? null,
-                'pay_url' => $tripayData['pay_url'] ?? null,
+                // Untuk QRIS, pay_url null tapi ada qr_url
+                'pay_url' => $tripayData['pay_url'] ?? $tripayData['qr_url'] ?? null,
                 'checkout_url' => $tripayData['checkout_url'] ?? null,
                 'status' => $tripayData['status'] ?? 'UNPAID',
                 'expired_at' => isset($tripayData['expired_time'])
@@ -277,7 +290,10 @@ class PaymentController extends Controller
                 'payment_method_name' => $transaction->payment_method_name,
                 'amount' => $transaction->amount,
                 'pay_code' => $transaction->pay_code,
-                'pay_url' => $transaction->pay_url,
+                'pay_url' => $transaction->pay_url
+                    ?? data_get($transaction->raw_response, 'qr_url')
+                    ?? null,
+                'qr_string' => data_get($transaction->raw_response, 'qr_string'),
                 'status' => $transaction->status,
                 'digiflazz_status' => $transaction->digiflazz_status,
                 'digiflazz_sn' => $transaction->digiflazz_sn,

@@ -34,6 +34,9 @@ export default function CarouselIndex({
                             <tr>
                                 <th className="px-4 py-3 font-medium">Image</th>
                                 <th className="px-4 py-3 font-medium">Title</th>
+                                <th className="px-4 py-3 font-medium">
+                                    Deskripsi
+                                </th>
                                 <th className="px-4 py-3 font-medium">Order</th>
                                 <th className="px-4 py-3 font-medium">
                                     Status
@@ -46,7 +49,7 @@ export default function CarouselIndex({
                                 <tr>
                                     <td
                                         className="px-4 py-6 text-muted-foreground"
-                                        colSpan={5}
+                                        colSpan={6}
                                     >
                                         Belum ada slide carousel.
                                     </td>
@@ -66,6 +69,11 @@ export default function CarouselIndex({
                                     </td>
                                     <td className="px-4 py-3">
                                         {item.title ?? '-'}
+                                    </td>
+                                    <td className="max-w-xs px-4 py-3 text-muted-foreground">
+                                        {item.description
+                                            ? `${item.description.slice(0, 80)}${item.description.length > 80 ? '…' : ''}`
+                                            : '—'}
                                     </td>
                                     <td className="px-4 py-3">
                                         {item.sort_order}

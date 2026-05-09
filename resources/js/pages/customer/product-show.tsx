@@ -23,6 +23,7 @@ type ProductShowPageProps = {
         id: number;
         name: string;
         slug: string;
+        fulfillment_type: string | null;
         description: string | null;
         brand: string | null;
         categories: string[];
@@ -34,9 +35,14 @@ type ProductShowPageProps = {
             fields: {
                 name: string;
                 label: string;
-                type?: string;
+                type?: 'text' | 'number' | 'select';
                 required?: boolean;
                 placeholder?: string;
+                default?: string;
+                options?: {
+                    label: string;
+                    value: string;
+                }[];
             }[];
         } | null;
 
@@ -74,6 +80,14 @@ export default function ProductShow({
     const [customerInputs, setCustomerInputs] = useState<
         Record<string, string>
     >({});
+
+    const isManualProduct = product.fulfillment_type === 'manual';
+
+    useEffect(() => {
+        if (isManualProduct && quantity !== 1) {
+            setQuantity(1);
+        }
+    }, [isManualProduct, quantity]);
 
     const handleCustomerInputChange = (name: string, value: string) => {
         setCustomerInputs((previousInputs) => ({
@@ -139,6 +153,7 @@ export default function ProductShow({
                             customerInputs={customerInputs}
                             onChange={handleCustomerInputChange}
                         />
+
                         <NominalSection
                             categoryTitle={categoryTitle}
                             pricesByCategory={pricesByCategory}
@@ -158,13 +173,25 @@ export default function ProductShow({
                         >
                             <QuantitySection
                                 quantity={quantity}
-                                onIncrease={() =>
-                                    setQuantity((prev) => prev + 1)
-                                }
-                                onDecrease={() =>
-                                    setQuantity((prev) => Math.max(1, prev - 1))
-                                }
+                                disabled={isManualProduct}
+                                onIncrease={() => {
+                                    if (isManualProduct) return;
+                                    setQuantity((prev) => prev + 1);
+                                }}
+                                onDecrease={() => {
+                                    if (isManualProduct) return;
+                                    setQuantity((prev) =>
+                                        Math.max(1, prev - 1),
+                                    );
+                                }}
                             />
+
+                            {isManualProduct && (
+                                <p className="-mt-2 text-xs text-slate-500">
+                                    Produk manual hanya bisa dibeli 1 item per
+                                    transaksi.
+                                </p>
+                            )}
 
                             <PromoSection
                                 promoCode={promoCode}
@@ -176,6 +203,7 @@ export default function ProductShow({
                                 selectedPayment={selectedPayment}
                                 onSelectPayment={setSelectedPayment}
                             />
+
                             <div className="rounded-xl border border-slate-200 bg-white p-3.5 shadow-sm">
                                 <div className="mb-3 flex gap-2 text-sm font-semibold">
                                     <div className="flex h-6 w-6 items-center justify-center rounded-full bg-accent-foreground text-accent">

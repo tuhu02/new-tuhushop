@@ -21,6 +21,7 @@ class DashboardController extends Controller
                 return [
                     'id' => $carousel->id,
                     'title' => $carousel->title,
+                    'description' => $carousel->description,
                     'image_url' => asset('storage/' . $carousel->image_path),
                 ];
             });

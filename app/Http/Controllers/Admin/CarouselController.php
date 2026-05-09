@@ -26,6 +26,7 @@ class CarouselController extends Controller
                 return [
                     'id' => $carousel->id,
                     'title' => $carousel->title,
+                    'description' => $carousel->description,
                     'image_path' => $carousel->image_path,
                     'image_url' => asset('storage/' . $carousel->image_path),
                     'sort_order' => $carousel->sort_order,
@@ -57,6 +58,9 @@ class CarouselController extends Controller
 
         Carousel::query()->create([
             'title' => $validated['title'] ?? null,
+            'description' => filled($validated['description'] ?? null)
+                ? $validated['description']
+                : null,
             'image_path' => $imagePath,
             'sort_order' => $validated['sort_order'],
             'is_active' => $validated['is_active'],
@@ -74,6 +78,7 @@ class CarouselController extends Controller
             'carousel' => [
                 'id' => $carousel->id,
                 'title' => $carousel->title,
+                'description' => $carousel->description,
                 'image_path' => $carousel->image_path,
                 'image_url' => asset('storage/' . $carousel->image_path),
                 'sort_order' => $carousel->sort_order,
@@ -91,6 +96,9 @@ class CarouselController extends Controller
 
         $payload = [
             'title' => $validated['title'] ?? null,
+            'description' => filled($validated['description'] ?? null)
+                ? $validated['description']
+                : null,
             'sort_order' => $validated['sort_order'],
             'is_active' => $validated['is_active'],
         ];

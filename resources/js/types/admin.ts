@@ -25,6 +25,28 @@ export type Product = {
     is_active: boolean;
     brand: Brand | null;
     categories: CategoryOption[];
+
+    input_fields: ProductInputFields | string | null;
+    customer_no_template: string | null;
+    fulfillment_type: string | null;
+};
+
+export type ProductInputFields = {
+    fields: ProductInputField[];
+};
+
+export type ProductInputField = {
+    name: string;
+    label: string;
+    type: 'text' | 'number' | 'select';
+    required?: boolean;
+    default?: string;
+    options?: ProductInputFieldOption[];
+};
+
+export type ProductInputFieldOption = {
+    label: string;
+    value: string;
 };
 
 export type ProductOption = {
@@ -59,6 +81,7 @@ export type Customer = {
 export type CarouselItem = {
     id: number;
     title: string | null;
+    description: string | null;
     image_path: string;
     image_url: string;
     sort_order: number;

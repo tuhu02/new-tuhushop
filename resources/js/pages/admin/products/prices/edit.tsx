@@ -128,28 +128,46 @@ export default function ProductPriceEdit({
                                     {/* Icon Picker */}
                                     <div className="space-y-2">
                                         <div className="flex items-center justify-between">
-                                            <Label>Icon Produk (Opsional)</Label>
-                                            <Link href="/admin/icons" className="text-xs text-primary hover:underline">
+                                            <Label>
+                                                Icon Produk (Opsional)
+                                            </Label>
+                                            <Link
+                                                href="/admin/icons"
+                                                className="text-xs text-primary hover:underline"
+                                            >
                                                 Kelola Galeri Icon
                                             </Link>
                                         </div>
-                                        
-                                        <div className="grid grid-cols-4 sm:grid-cols-6 md:grid-cols-8 gap-2 max-h-48 overflow-y-auto p-2 border rounded-md bg-muted/20">
-                                            <div 
-                                                className={`cursor-pointer border-2 rounded-md flex flex-col items-center justify-center p-2 h-16 ${data.icon_id === '' ? 'border-primary bg-primary/10' : 'border-transparent hover:bg-muted'}`}
-                                                onClick={() => setData('icon_id', '')}
+
+                                        <div className="grid max-h-48 grid-cols-4 gap-2 overflow-y-auto rounded-md border bg-muted/20 p-2 sm:grid-cols-6 md:grid-cols-8">
+                                            <div
+                                                className={`flex h-16 cursor-pointer flex-col items-center justify-center rounded-md border-2 p-2 ${data.icon_id === '' ? 'border-primary bg-primary/10' : 'border-transparent hover:bg-muted'}`}
+                                                onClick={() =>
+                                                    setData('icon_id', '')
+                                                }
                                             >
-                                                <span className="text-xs text-center text-muted-foreground">Tanpa Icon</span>
+                                                <span className="text-center text-xs text-muted-foreground">
+                                                    Tanpa Icon
+                                                </span>
                                             </div>
-                                            
-                                            {icons.map(icon => (
-                                                <div 
+
+                                            {icons.map((icon) => (
+                                                <div
                                                     key={icon.id}
-                                                    className={`cursor-pointer border-2 rounded-md flex items-center justify-center p-1 h-16 ${data.icon_id === icon.id ? 'border-primary bg-primary/10' : 'border-transparent hover:bg-muted'}`}
-                                                    onClick={() => setData('icon_id', icon.id)}
+                                                    className={`flex h-16 cursor-pointer items-center justify-center rounded-md border-2 p-1 ${data.icon_id === icon.id ? 'border-primary bg-primary/10' : 'border-transparent hover:bg-muted'}`}
+                                                    onClick={() =>
+                                                        setData(
+                                                            'icon_id',
+                                                            icon.id,
+                                                        )
+                                                    }
                                                     title={icon.name}
                                                 >
-                                                    <img src={icon.file_path} alt={icon.name} className="max-w-full max-h-full object-contain" />
+                                                    <img
+                                                        src={icon.file_path}
+                                                        alt={icon.name}
+                                                        className="max-h-full max-w-full object-contain"
+                                                    />
                                                 </div>
                                             ))}
                                         </div>
@@ -222,7 +240,6 @@ export default function ProductPriceEdit({
                                             onChange={(e) =>
                                                 setData('price', e.target.value)
                                             }
-                                            step="100"
                                             min="0"
                                             required
                                         />
@@ -275,7 +292,10 @@ export default function ProductPriceEdit({
 
                                     {/* Submit */}
                                     <div className="flex gap-2">
-                                        <Button type="submit" disabled={processing}>
+                                        <Button
+                                            type="submit"
+                                            disabled={processing}
+                                        >
                                             {processing
                                                 ? 'Menyimpan...'
                                                 : 'Update Price List'}

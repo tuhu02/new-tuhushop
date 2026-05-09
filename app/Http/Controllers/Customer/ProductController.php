@@ -54,6 +54,7 @@ class ProductController extends Controller
                             'min_amount' => $channel->min_amount,
                             'max_amount' => $channel->max_amount,
                             'instructions' => $channel->instructions,
+                            
                         ];
                     }),
                 ];
@@ -62,36 +63,37 @@ class ProductController extends Controller
 
         $user = Auth::user();
 
-        return Inertia::render('customer/product-show', [
-            'product' => [
-                'id' => $product->id,
-                'name' => $product->name,
-                'slug' => $product->slug,
+    return Inertia::render('customer/product-show', [
+        'product' => [
+            'id' => $product->id,
+            'name' => $product->name,
+            'slug' => $product->slug,
+            'fulfillment_type' => $product->fulfillment_type,
 
-                'description' => $product->description,
-                'brand' => $product->brand?->name,
-                'categories' => $product->categories->pluck('name')->values(),
-                'thumbnail' => $product->thumbnail,
-                'thumbnail_url' => $product->thumbnail !== null
-                    ? asset('storage/' . $product->thumbnail)
-                    : null,
-                'banner' => $product->banner,
-                'banner_url' => $product->banner !== null
-                    ? asset('storage/' . $product->banner)
-                    : null,
-                'input_fields' => $product->input_fields,
-                'customer_no_template' => $product->customer_no_template,
-                'instructions' => $product->instructions->map(function ($instruction) {
-                    return [
-                        'title' => $instruction->title,
-                        'content' => $instruction->content,
-                    ];
-                })->values(),
-            ],
+            'description' => $product->description,
+            'brand' => $product->brand?->name,
+            'categories' => $product->categories->pluck('name')->values(),
+            'thumbnail' => $product->thumbnail,
+            'thumbnail_url' => $product->thumbnail !== null
+                ? asset('storage/' . $product->thumbnail)
+                : null,
+            'banner' => $product->banner,
+            'banner_url' => $product->banner !== null
+                ? asset('storage/' . $product->banner)
+                : null,
+            'input_fields' => $product->input_fields,
+            'customer_no_template' => $product->customer_no_template,
+            'instructions' => $product->instructions->map(function ($instruction) {
+                return [
+                    'title' => $instruction->title,
+                    'content' => $instruction->content,
+                ];
+            })->values(),
+        ],
 
-            'pricesByCategory' => $pricesByCategory,
-            'paymentMethods' => $paymentMethods,
-            'user' => $user,
-        ]);
+        'pricesByCategory' => $pricesByCategory,
+        'paymentMethods' => $paymentMethods,
+        'user' => $user,
+    ]);
     }
 }

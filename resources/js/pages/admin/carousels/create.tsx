@@ -3,11 +3,13 @@ import InputError from '@/components/ui/input-error';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import { Textarea } from '@/components/ui/textarea';
 import AdminLayout from '@/layouts/admin-layout';
 
 export default function CarouselCreate() {
     const { data, setData, post, processing, errors } = useForm({
         title: '',
+        description: '',
         image: null as File | null,
         sort_order: '0',
         is_active: true,
@@ -51,6 +53,20 @@ export default function CarouselCreate() {
                             placeholder="Slide promo utama"
                         />
                         <InputError message={errors.title} />
+                    </div>
+
+                    <div className="grid gap-2">
+                        <Label htmlFor="description">Deskripsi</Label>
+                        <Textarea
+                            id="description"
+                            value={data.description}
+                            onChange={(event) =>
+                                setData('description', event.target.value)
+                            }
+                            placeholder="Teks singkat di navigasi carousel (opsional)"
+                            rows={3}
+                        />
+                        <InputError message={errors.description} />
                     </div>
 
                     <div className="grid gap-2">

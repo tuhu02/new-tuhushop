@@ -195,11 +195,10 @@ export function AppHeader({ breadcrumbs = [] }: Props) {
                                             <Link
                                                 href={item.href}
                                                 className={cn(
-                                                    navigationMenuTriggerStyle(),
+                                                    'flex h-9 cursor-pointer items-center px-3 text-sm font-medium transition-colors hover:text-neutral-900 dark:hover:text-neutral-100',
                                                     isActive
-                                                        ? activeItemStyles
-                                                        : '',
-                                                    'h-9 cursor-pointer px-3',
+                                                        ? 'text-neutral-900 dark:text-neutral-100'
+                                                        : 'text-neutral-500 dark:text-neutral-400',
                                                 )}
                                             >
                                                 {item.icon && (

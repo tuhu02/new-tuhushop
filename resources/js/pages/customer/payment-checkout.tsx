@@ -30,6 +30,7 @@ type PaymentCheckoutPageProps = {
         amount: number;
         pay_code: string | null;
         pay_url: string | null;
+        qr_string: string | null;
         status: string;
         expired_at: string | null;
         instructions: PaymentInstruction[];
@@ -345,7 +346,12 @@ export default function PaymentCheckout({
                                 paymentChannelName={
                                     transaction.payment_channel_name
                                 }
+                                paymentChannelCode={
+                                    transaction.payment_channel_code
+                                }
                                 payCode={transaction.pay_code}
+                                payUrl={transaction.pay_url}
+                                qrString={transaction.qr_string}
                                 copied={copied}
                                 onCopy={handleCopy}
                                 hasInstructions={

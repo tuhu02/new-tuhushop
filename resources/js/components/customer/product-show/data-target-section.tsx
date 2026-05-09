@@ -1,9 +1,16 @@
+type InputFieldOption = {
+    label: string;
+    value: string;
+};
+
 type InputField = {
     name: string;
     label: string;
-    type?: string;
+    type?: 'text' | 'number' | 'select';
     required?: boolean;
     placeholder?: string;
+    default?: string;
+    options?: InputFieldOption[];
 };
 
 type DataTargetSectionProps = {
@@ -17,18 +24,18 @@ export default function DataTargetSection({
     customerInputs,
     onChange,
 }: DataTargetSectionProps) {
-    const inputFields =
-        fields && fields.length > 0
-            ? fields
-            : [
-                  {
-                      name: 'customer_no',
-                      label: 'Nomor Tujuan',
-                      type: 'text',
-                      required: true,
-                      placeholder: 'Masukkan nomor tujuan',
-                  },
-              ];
+    const defaultFields: InputField[] = [
+        {
+            name: 'customer_no',
+            label: 'Nomor Tujuan',
+            type: 'text',
+            required: true,
+            placeholder: 'Masukkan nomor tujuan',
+        },
+    ];
+
+    const inputFields: InputField[] =
+        fields && fields.length > 0 ? fields : defaultFields;
 
     return (
         <section className="rounded-xl border border-slate-200 bg-white p-3.5 shadow-sm">
@@ -40,30 +47,63 @@ export default function DataTargetSection({
             </div>
 
             <div className="space-y-3">
-                {inputFields.map((field) => (
-                    <div key={field.name} className="grid gap-1.5">
-                        <label
-                            htmlFor={field.name}
-                            className="text-xs font-medium text-slate-700"
-                        >
-                            {field.label}
-                            {field.required ? (
-                                <span className="ml-1 text-red-500">*</span>
-                            ) : null}
-                        </label>
+                {inputFields.map((field) => {
+                    const value =
+                        customerInputs[field.name] ?? field.default ?? '';
 
-                        <input
-                            id={field.name}
-                            type={field.type ?? 'text'}
-                            value={customerInputs[field.name] ?? ''}
-                            onChange={(event) =>
-                                onChange(field.name, event.target.value)
-                            }
-                            placeholder={field.placeholder ?? field.label}
-                            className="h-10 rounded-md border border-slate-300 bg-white px-3 text-sm transition outline-none focus:border-blue-600 focus:ring-2 focus:ring-blue-100"
-                        />
-                    </div>
-                ))}
+                    return (
+                        <div key={field.name} className="grid gap-1.5">
+                            <label
+                                htmlFor={field.name}
+                                className="text-xs font-medium text-slate-700"
+                            >
+                                {field.label}
+                                {field.required ? (
+                                    <span className="ml-1 text-red-500">*</span>
+                                ) : null}
+                            </label>
+
+                            {field.type === 'select' ? (
+                                <select
+                                    id={field.name}
+                                    value={value}
+                                    onChange={(event) =>
+                                        onChange(field.name, event.target.value)
+                                    }
+                                    required={field.required}
+                                    className="h-10 rounded-md border border-slate-300 bg-white px-3 text-sm transition outline-none focus:border-blue-600 focus:ring-2 focus:ring-blue-100"
+                                >
+                                    <option value="">
+                                        Pilih {field.label}
+                                    </option>
+
+                                    {field.options?.map((option) => (
+                                        <option
+                                            key={option.value}
+                                            value={option.value}
+                                        >
+                                            {option.label}
+                                        </option>
+                                    ))}
+                                </select>
+                            ) : (
+                                <input
+                                    id={field.name}
+                                    type={field.type ?? 'text'}
+                                    value={value}
+                                    onChange={(event) =>
+                                        onChange(field.name, event.target.value)
+                                    }
+                                    required={field.required}
+                                    placeholder={
+                                        field.placeholder ?? field.label
+                                    }
+                                    className="h-10 rounded-md border border-slate-300 bg-white px-3 text-sm transition outline-none focus:border-blue-600 focus:ring-2 focus:ring-blue-100"
+                                />
+                            )}
+                        </div>
+                    );
+                })}
             </div>
         </section>
     );

@@ -25,21 +25,18 @@ export default function ProductEdit({
         category_ids: string[];
         thumbnail: File | null;
         is_active: boolean;
-
-        // ✅ DITAMBAH
         input_fields: string;
         customer_no_template: string;
+        fulfillment_type: string;
     }>({
         _method: 'put',
         name: product.name,
         description: product.description ?? '',
         slug: product.slug,
-        brand_id: String(product.brand_id),
+        brand_id: product.brand_id ? String(product.brand_id) : '',
         category_ids: product.categories.map((category) => String(category.id)),
         thumbnail: null,
         is_active: product.is_active,
-
-        // ✅ DITAMBAH
         input_fields:
             typeof product.input_fields === 'string'
                 ? product.input_fields
@@ -49,6 +46,7 @@ export default function ProductEdit({
                       2,
                   ),
         customer_no_template: product.customer_no_template ?? '',
+        fulfillment_type: product.fulfillment_type ?? 'digiflazz',
     });
 
     const toggleCategory = (categoryId: string, checked: boolean) => {
@@ -84,6 +82,7 @@ export default function ProductEdit({
             <div className="p-4">
                 <div className="mb-4 flex items-center justify-between">
                     <h1 className="text-xl font-semibold">Edit Product</h1>
+
                     <Link
                         href="/admin/products"
                         className="text-sm text-muted-foreground underline"
@@ -122,7 +121,6 @@ export default function ProductEdit({
                         <InputError message={errors.description} />
                     </div>
 
-                    {/* ✅ DITAMBAH */}
                     <div className="grid gap-2">
                         <Label htmlFor="input_fields">Input Fields JSON</Label>
                         <Textarea
@@ -142,7 +140,6 @@ export default function ProductEdit({
                         <InputError message={errors.input_fields} />
                     </div>
 
-                    {/* ✅ DITAMBAH */}
                     <div className="grid gap-2">
                         <Label htmlFor="customer_no_template">
                             Template Customer No
@@ -159,6 +156,35 @@ export default function ProductEdit({
                             placeholder="{user_id}|{zone_id}"
                         />
                         <InputError message={errors.customer_no_template} />
+                    </div>
+
+                    <div className="grid gap-2">
+                        <Label htmlFor="fulfillment_type">
+                            Tipe Fulfillment
+                        </Label>
+
+                        <select
+                            id="fulfillment_type"
+                            value={data.fulfillment_type}
+                            onChange={(event) =>
+                                setData('fulfillment_type', event.target.value)
+                            }
+                            className="h-10 rounded-md border bg-background px-3"
+                        >
+                            <option value="digiflazz">
+                                Otomatis Digiflazz
+                            </option>
+                            <option value="manual">
+                                Manual / Diproses Admin
+                            </option>
+                        </select>
+
+                        <p className="text-xs text-muted-foreground">
+                            Pilih Manual untuk produk seperti YouTube Premium
+                            yang kamu invite sendiri.
+                        </p>
+
+                        <InputError message={errors.fulfillment_type} />
                     </div>
 
                     <div className="grid gap-2">
@@ -183,6 +209,7 @@ export default function ProductEdit({
 
                     <div className="grid gap-2">
                         <Label htmlFor="thumbnail">Thumbnail</Label>
+
                         {product.thumbnail_url && (
                             <img
                                 src={product.thumbnail_url}
@@ -190,6 +217,7 @@ export default function ProductEdit({
                                 className="h-24 w-24 rounded-md object-cover"
                             />
                         )}
+
                         <Input
                             id="thumbnail"
                             type="file"
@@ -201,11 +229,13 @@ export default function ProductEdit({
                                 )
                             }
                         />
+
                         <InputError message={errors.thumbnail} />
                     </div>
 
                     <div className="grid gap-2">
                         <Label>Kategori</Label>
+
                         <div className="grid grid-cols-1 gap-2 rounded-md border p-3 md:grid-cols-2">
                             {categories.map((category) => {
                                 const id = String(category.id);
@@ -228,11 +258,13 @@ export default function ProductEdit({
                                             }
                                             className="size-4"
                                         />
+
                                         <span>{category.name}</span>
                                     </label>
                                 );
                             })}
                         </div>
+
                         <InputError message={errors.category_ids} />
                     </div>
 
@@ -259,6 +291,7 @@ export default function ProductEdit({
                             }
                             className="size-4"
                         />
+
                         <Label htmlFor="is_active" className="cursor-pointer">
                             Product aktif
                         </Label>

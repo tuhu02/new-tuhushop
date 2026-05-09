@@ -28,7 +28,7 @@ class UpdateProductRequest extends FormRequest
 
         return [
             'name' => ['sometimes', 'required', 'string', 'max:255'],
-            'description' => ['sometimes', 'required', 'string', 'max:255'],
+            'description' => ['sometimes', 'nullable', 'string', 'max:255'],
             'slug' => [
                 'sometimes',
                 'required',
@@ -43,6 +43,11 @@ class UpdateProductRequest extends FormRequest
             'thumbnail' => ['nullable', 'image', 'mimes:jpg,jpeg,png,webp', 'max:2048'],
             'banner' => ['nullable', 'image', 'mimes:jpg,jpeg,png,webp', 'max:4096'],
             'is_active' => ['sometimes', 'required', 'boolean'],
+
+            // tambahan
+            'input_fields' => ['nullable', 'string'],
+            'customer_no_template' => ['nullable', 'string', 'max:255'],
+            'fulfillment_type' => ['sometimes', 'required', Rule::in(['digiflazz', 'manual'])],
         ];
     }
 }

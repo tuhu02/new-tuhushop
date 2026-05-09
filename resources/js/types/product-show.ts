@@ -9,4 +9,5 @@ export type ProductSummary = {
     thumbnail_url: string | null;
     banner: string | null;
     banner_url: string | null;
+    fulfillment_type: string | null;
 };

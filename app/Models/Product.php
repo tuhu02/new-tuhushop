@@ -28,6 +28,7 @@ class Product extends Model
         'digiflazz_synced_at',
         'input_fields',
         'customer_no_template',
+        'fulfillment_type',
     ];
 
     /**
@@ -41,6 +42,7 @@ class Product extends Model
             'price' => 'decimal:2',
             'digiflazz_synced_at' => 'datetime',
             'input_fields' => 'array',
+            'fulfillment_type' => 'string',
         ];
     }
 
