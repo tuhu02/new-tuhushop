@@ -19,6 +19,7 @@ import {
 } from '@/components/ui/navigation-menu';
 import {
     Sheet,
+    SheetClose,
     SheetContent,
     SheetHeader,
     SheetTitle,
@@ -105,7 +106,7 @@ export function AppHeader({ breadcrumbs = [] }: Props) {
     }, []);
 
     return (
-        <div className="sticky top-0 z-40 bg-background/95 backdrop-blur supports-backdrop-filter:bg-background/80">
+        <div className="sticky top-0 z-50 w-full min-w-0 bg-background/95 backdrop-blur supports-backdrop-filter:bg-background/80">
             <div className="border-b border-sidebar-border/80">
                 <div className="mx-auto flex h-16 items-center px-4 md:max-w-7xl">
                     {/* Mobile Menu */}
@@ -123,19 +124,21 @@ export function AppHeader({ breadcrumbs = [] }: Props) {
 
                             <SheetContent
                                 side="left"
-                                className="flex h-full w-64 flex-col items-stretch justify-between bg-sidebar"
+                                className="flex h-full w-[82vw] max-w-xs flex-col bg-sidebar p-0 text-sidebar-foreground"
                             >
                                 <SheetTitle className="sr-only">
                                     Navigation menu
                                 </SheetTitle>
 
-                                <SheetHeader className="flex justify-start text-left">
-                                    <AppLogoIcon className="h-6 w-6 fill-current text-black dark:text-white" />
+                                <SheetHeader className="border-b border-sidebar-border/80 px-4 py-4 text-left">
+                                    <div className="flex items-center gap-2">
+                                        <AppLogoIcon className="h-14 w-14 fill-current text-black dark:text-white" />
+                                    </div>
                                 </SheetHeader>
 
-                                <div className="flex h-full flex-1 flex-col space-y-4 p-4">
+                                <div className="flex flex-1 flex-col px-3 py-4">
                                     <div className="flex h-full flex-col justify-between text-sm">
-                                        <div className="flex flex-col space-y-4">
+                                        <div className="flex flex-col gap-1">
                                             {mainNavItems.map((item) => {
                                                 const isActive =
                                                     isCurrentUrl(item.href) ||
@@ -143,23 +146,27 @@ export function AppHeader({ breadcrumbs = [] }: Props) {
                                                         isCurrentUrl('/'));
 
                                                 return (
-                                                    <Link
+                                                    <SheetClose
+                                                        asChild
                                                         key={item.title}
-                                                        href={item.href}
-                                                        className={cn(
-                                                            'flex items-center space-x-2 font-medium',
-                                                            isActive
-                                                                ? 'text-primary'
-                                                                : 'text-neutral-600 dark:text-neutral-400',
-                                                        )}
                                                     >
-                                                        {item.icon && (
-                                                            <item.icon className="h-5 w-5" />
-                                                        )}
-                                                        <span>
-                                                            {item.title}
-                                                        </span>
-                                                    </Link>
+                                                        <Link
+                                                            href={item.href}
+                                                            className={cn(
+                                                                'flex items-center gap-3 rounded-lg px-3 py-2.5 font-medium transition',
+                                                                isActive
+                                                                    ? 'bg-primary/10 text-primary'
+                                                                    : 'text-neutral-600 hover:bg-sidebar-accent dark:text-neutral-300 dark:hover:bg-sidebar-accent/70',
+                                                            )}
+                                                        >
+                                                            {item.icon && (
+                                                                <item.icon className="h-5 w-5 shrink-0" />
+                                                            )}
+                                                            <span>
+                                                                {item.title}
+                                                            </span>
+                                                        </Link>
+                                                    </SheetClose>
                                                 );
                                             })}
                                         </div>
@@ -263,7 +270,7 @@ export function AppHeader({ breadcrumbs = [] }: Props) {
                                         aria-label="Tutup pencarian"
                                     />
 
-                                    <div className="fixed inset-x-3 top-16 z-50 overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-xl md:absolute md:inset-x-auto md:top-full md:right-auto md:left-0 md:mt-2 md:w-full dark:border-slate-800 dark:bg-slate-950">
+                                    <div className="fixed inset-x-3 top-16 z-50 overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-xl md:absolute md:inset-x-auto md:top-full md:right-auto md:left-0 md:mt-2 md:w-full md:min-w-72 dark:border-slate-800 dark:bg-slate-950">
                                         {/* Search Input Mobile */}
                                         <div className="border-b border-slate-100 p-3 md:hidden dark:border-slate-800">
                                             <div className="relative">

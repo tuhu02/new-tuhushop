@@ -22,7 +22,7 @@ export default function PromoSection({
                             onChangePromoCode(event.target.value)
                         }
                         placeholder="Ketik Kode Promo Kamu"
-                        className="h-10 flex-1 rounded-md border border-slate-300 bg-white px-3 text-sm text-slate-900 outline-none placeholder:text-slate-400"
+                        className="h-10 flex-1 rounded-md border border-slate-300 bg-white px-3 text-sm text-slate-900 outline-none placeholder:text-slate-400 dark:border-slate-700 dark:bg-slate-950 dark:text-slate-100 dark:placeholder:text-slate-500"
                     />
                     <button
                         type="button"
@@ -33,7 +33,7 @@ export default function PromoSection({
                 </div>
                 <button
                     type="button"
-                    className="inline-flex items-center gap-2 rounded-md border border-slate-300 bg-white px-3 py-2 text-xs font-semibold text-slate-900 transition hover:bg-slate-50"
+                    className="inline-flex items-center gap-2 rounded-md border border-slate-300 bg-white px-3 py-2 text-xs font-semibold text-slate-900 transition hover:bg-slate-50 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-100 dark:hover:bg-slate-800"
                 >
                     <TicketPercent className="h-3.5 w-3.5" />
                     Pakai Promo Yang Tersedia

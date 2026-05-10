@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import SectionCard from './section-card';
 import type { PaymentMethod } from '@/types';
+import { cn } from '@/lib/utils';
 
 type PaymentSectionProps = {
     paymentMethods: (PaymentMethod & { logo_url?: string })[];
@@ -17,7 +18,7 @@ export default function PaymentSection({
     const [openMethod, setOpenMethod] = useState<number | null>(null);
     return (
         <SectionCard number={4} title="Pilih Pembayaran">
-            <div className="space-y-3 text-slate-900">
+            <div className="space-y-3 text-slate-900 dark:text-slate-100">
                 {activePayments.length === 0 ? (
                     <p className="text-sm text-muted-foreground">
                         Tidak ada metode pembayaran tersedia
@@ -29,7 +30,7 @@ export default function PaymentSection({
                         return (
                             <div
                                 key={method.id}
-                                className="rounded-lg border border-slate-200"
+                                className="rounded-lg border border-slate-200 dark:border-slate-700"
                             >
                                 <button
                                     type="button"
@@ -51,15 +52,15 @@ export default function PaymentSection({
                                         {method.name}
                                     </span>
 
-                                    <span className="text-xs text-slate-500">
+                                    <span className="text-xs text-slate-500 dark:text-slate-400">
                                         {isOpen ? 'Tutup' : 'Pilih'}
                                     </span>
                                 </button>
 
                                 {isOpen && (
-                                    <div className="grid grid-cols-2 gap-2 border-t border-slate-200 p-3 md:grid-cols-3">
+                                    <div className="grid grid-cols-2 gap-2 border-t border-slate-200 p-3 dark:border-slate-700 md:grid-cols-3">
                                         {method.channels.length === 0 ? (
-                                            <p className="col-span-2 text-xs text-slate-500">
+                                            <p className="col-span-2 text-xs text-slate-500 dark:text-slate-400">
                                                 Tidak ada channel
                                             </p>
                                         ) : (
@@ -72,12 +73,13 @@ export default function PaymentSection({
                                                             channel.code,
                                                         )
                                                     }
-                                                    className={`flex h-20 items-center gap-3 rounded-lg px-3 py-2 text-left transition ${
+                                                    className={cn(
+                                                        'flex h-20 items-center gap-3 rounded-lg px-3 py-2 text-left transition',
                                                         selectedPayment ===
-                                                        channel.code
-                                                            ? 'border border-slate-900 bg-white ring-2 ring-slate-900/20'
-                                                            : 'border border-slate-200 bg-slate-50'
-                                                    }`}
+                                                            channel.code
+                                                            ? 'border-2 border-blue-600 bg-blue-50 shadow-sm ring-2 ring-blue-200 dark:border-blue-500 dark:bg-blue-950/45 dark:text-slate-100 dark:ring-blue-500/35'
+                                                            : 'border border-slate-200 bg-slate-50 hover:border-slate-300 dark:border-slate-700 dark:bg-slate-800 dark:hover:border-slate-600',
+                                                    )}
                                                 >
                                                     {channel.logo_url ? (
                                                         <img

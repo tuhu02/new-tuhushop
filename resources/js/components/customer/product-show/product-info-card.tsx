@@ -6,8 +6,8 @@ type ProductInfoCardProps = {
 
 export default function ProductInfoCard({ product }: ProductInfoCardProps) {
     return (
-        <div className="w-full rounded-2xl border border-slate-200 bg-white p-2.5 shadow-sm">
-            <div className="overflow-hidden rounded-xl border border-slate-200 bg-slate-100">
+        <div className="w-full rounded-2xl border border-slate-200 bg-white p-2.5 shadow-sm dark:border-slate-800 dark:bg-slate-900">
+            <div className="overflow-hidden rounded-xl border border-slate-200 bg-slate-100 dark:border-slate-700 dark:bg-slate-800">
                 {product.banner_url !== null ? (
                     <img
                         src={product.banner_url}
@@ -26,10 +26,10 @@ export default function ProductInfoCard({ product }: ProductInfoCardProps) {
                     <img
                         src={product.thumbnail_url}
                         alt={`${product.name} thumbnail`}
-                        className="h-12 w-12 rounded-lg border border-slate-200 object-cover"
+                        className="h-12 w-12 rounded-lg border border-slate-200 object-cover dark:border-slate-700"
                     />
                 ) : (
-                    <div className="flex h-12 w-12 items-center justify-center rounded-lg border border-slate-200 bg-slate-100 text-xs font-semibold text-slate-500">
+                    <div className="flex h-12 w-12 items-center justify-center rounded-lg border border-slate-200 bg-slate-100 text-xs font-semibold text-slate-500 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-400">
                         IMG
                     </div>
                 )}
@@ -42,16 +42,16 @@ export default function ProductInfoCard({ product }: ProductInfoCardProps) {
                             </span>
                         </div>
                     )}
-                    <h1 className="truncate text-sm font-bold text-slate-900">
+                    <h1 className="truncate text-sm font-bold text-slate-900 dark:text-slate-100">
                         {product.name}
                     </h1>
                     {product.brand !== null && (
-                        <p className="mt-0.5 text-xs text-slate-500">
+                        <p className="mt-0.5 text-xs text-slate-500 dark:text-slate-400">
                             {product.brand}
                         </p>
                     )}
                     {product.description !== null && (
-                        <p className="mt-1 line-clamp-2 text-[11px] text-slate-600">
+                        <p className="mt-1 line-clamp-2 text-[11px] text-slate-600 dark:text-slate-300">
                             {product.description}
                         </p>
                     )}

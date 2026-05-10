@@ -2,7 +2,6 @@ import { Head } from '@inertiajs/react';
 import CardProduct from '@/components/customer/card-product';
 import CarouselHero from '@/components/customer/carousel-hero';
 import AppLayout from '@/layouts/app-layout';
-import { cn } from '@/lib/utils';
 import { dashboard } from '@/routes';
 import type { BreadcrumbItem } from '@/types';
 
@@ -49,7 +48,6 @@ export default function Dashboard({
         (groups, product) => {
             if (product.categories.length === 0) {
                 groups.Lainnya = [...(groups.Lainnya ?? []), product];
-
                 return groups;
             }
 
@@ -70,99 +68,131 @@ export default function Dashboard({
             (category) => category.toLowerCase() === b.toLowerCase(),
         );
 
-        if (aIndex !== -1 && bIndex !== -1) {
-            return aIndex - bIndex;
-        }
-
-        if (aIndex !== -1) {
-            return -1;
-        }
-
-        if (bIndex !== -1) {
-            return 1;
-        }
+        if (aIndex !== -1 && bIndex !== -1) return aIndex - bIndex;
+        if (aIndex !== -1) return -1;
+        if (bIndex !== -1) return 1;
 
         return a.localeCompare(b);
     });
 
     const handleClickCategory = (category: string) => {
         const element = document.getElementById(categoryId(category));
-
-        element?.scrollIntoView({
-            behavior: 'smooth',
-            block: 'start',
-        });
+        element?.scrollIntoView({ behavior: 'smooth', block: 'start' });
     };
 
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="Dashboard" />
 
-            <div className="space-y-6 p-4">
-                <CarouselHero carousels={carousels} />
+            <div className="w-full overflow-x-hidden">
+                <div className="space-y-6 p-4">
+                    <CarouselHero carousels={carousels} />
 
-                {products.length > 0 && (
-                    <div className="flex gap-2 overflow-x-auto pb-1">
-                        {sortedGroups.map(([category]) => (
-                            <button
-                                key={category}
-                                type="button"
-                                onClick={() => handleClickCategory(category)}
-                                className="shrink-0 rounded-full border bg-slate-100 px-4 py-2 text-sm font-semibold text-slate-700 transition hover:bg-blue-50 hover:text-blue-600 dark:bg-slate-800 dark:text-slate-200 dark:hover:bg-slate-700"
-                            >
-                                {category}
-                            </button>
-                        ))}
-                    </div>
-                )}
+                    {products.length > 0 && (
+                        <div className="w-full overflow-hidden">
+                            <div className="flex gap-2 overflow-x-auto pb-1 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+                                {sortedGroups.map(([category]) => (
+                                    <button
+                                        key={category}
+                                        type="button"
+                                        onClick={() =>
+                                            handleClickCategory(category)
+                                        }
+                                        className="shrink-0 rounded-full border bg-slate-100 px-4 py-2 text-sm font-semibold text-slate-700 transition hover:bg-blue-50 hover:text-blue-600 dark:bg-slate-800 dark:text-slate-200 dark:hover:bg-slate-700"
+                                    >
+                                        {category}
+                                    </button>
+                                ))}
+                            </div>
+                        </div>
+                    )}
 
-                {products.length === 0 ? (
-                    <div className="rounded-xl border border-sidebar-border/70 p-6 text-sm text-muted-foreground">
-                        Belum ada produk aktif.
-                    </div>
-                ) : (
-                    <div className="space-y-10">
-                        {sortedGroups.map(([category, categoryProducts]) => (
-                            <section
-                                key={category}
-                                id={categoryId(category)}
-                                className="scroll-mt-24 space-y-6"
-                            >
-                                <h1 className="text-3xl font-bold">
-                                    {category}
-                                </h1>
+                    {products.length === 0 ? (
+                        <div className="rounded-xl border border-sidebar-border/70 p-6 text-sm text-muted-foreground">
+                            Belum ada produk aktif.
+                        </div>
+                    ) : (
+                        <div className="space-y-10">
+                            {sortedGroups.map(
+                                ([category, categoryProducts]) => (
+                                    <section
+                                        key={category}
+                                        id={categoryId(category)}
+                                        className="scroll-mt-24 space-y-6"
+                                    >
+                                        <h1 className="text-3xl font-bold">
+                                            {category}
+                                        </h1>
 
-                                <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-5">
-                                    {categoryProducts.map((product, index) => (
-                                        <div key={`${category}-${product.id}`}>
-                                            <CardProduct
-                                                title={product.name}
-                                                image={
-                                                    product.thumbnail_url ??
-                                                    '/favicon.svg'
-                                                }
-                                                brand={
-                                                    product.brand ?? 'Unknown'
-                                                }
-                                                badge={
-                                                    product.categories[0] ??
-                                                    'New'
-                                                }
-                                                slug={product.slug}
-                                                variant={
-                                                    category ===
-                                                    '🔥 Lagi Populer'
-                                                        ? 'popular'
-                                                        : 'default'
-                                                }
-                                            />
+                                        <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-5">
+                                            {categoryProducts.map((product) => (
+                                                <div
+                                                    key={`${category}-${product.id}`}
+                                                >
+                                                    <CardProduct
+                                                        title={product.name}
+                                                        image={
+                                                            product.thumbnail_url ??
+                                                            '/favicon.svg'
+                                                        }
+                                                        brand={
+                                                            product.brand ??
+                                                            'Unknown'
+                                                        }
+                                                        badge={
+                                                            product
+                                                                .categories[0] ??
+                                                            'New'
+                                                        }
+                                                        slug={product.slug}
+                                                        variant={
+                                                            category ===
+                                                            '🔥 Lagi Populer'
+                                                                ? 'popular'
+                                                                : 'default'
+                                                        }
+                                                    />
+                                                </div>
+                                            ))}
                                         </div>
-                                    ))}
+                                    </section>
+                                ),
+                            )}
+
+                            <section className="w-full overflow-hidden rounded-2xl border border-gray-200 bg-white">
+                                <div className="relative flex items-center gap-8 px-8 py-10">
+                                    <div className="shrink-0">
+                                        <img
+                                            src="/images/logo/produk-tidak-ketemu.png"
+                                            alt="Produk tidak ketemu"
+                                            className="w-56"
+                                        />
+                                    </div>
+
+                                    <div>
+                                        <h2 className="text-2xl font-bold text-gray-900">
+                                            Gak nemu yang kamu cari?
+                                        </h2>
+
+                                        <p className="mt-2 text-base text-gray-700">
+                                            Kasih tau kami game atau produk yang
+                                            harusnya ada di Tuhu Shop.
+                                        </p>
+
+                                        <button className="mt-6 rounded-full border border-blue-700 px-8 py-3 font-semibold text-blue-700 transition hover:bg-blue-50">
+                                            Kasih saran game atau produk
+                                        </button>
+                                    </div>
+
+                                    <div className="pointer-events-none absolute inset-y-0 right-0 w-1/3 bg-linear-to-l from-indigo-50 to-transparent" />
+
+                                    <div className="pointer-events-none absolute right-0 bottom-0 h-40 w-72 rotate-12 rounded-xl bg-indigo-100/50" />
+                                    <div className="pointer-events-none absolute right-20 bottom-8 h-32 w-56 rotate-12 rounded-xl bg-indigo-100/40" />
                                 </div>
                             </section>
-                        ))}
-                    </div>
-                )}
+                        </div>
+                    )}
+                </div>
             </div>
         </AppLayout>
     );

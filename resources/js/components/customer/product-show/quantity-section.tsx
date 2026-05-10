@@ -22,7 +22,7 @@ export default function QuantitySection({
                     value={quantity}
                     readOnly
                     disabled={disabled}
-                    className="h-10 flex-1 rounded-md border border-slate-300 bg-white px-3 text-sm text-slate-900 outline-none disabled:cursor-not-allowed disabled:bg-slate-100 disabled:text-slate-500"
+                    className="h-10 flex-1 rounded-md border border-slate-300 bg-white px-3 text-sm text-slate-900 outline-none dark:border-slate-700 dark:bg-slate-950 dark:text-slate-100 disabled:cursor-not-allowed disabled:bg-slate-100 disabled:text-slate-500 dark:disabled:bg-slate-800 dark:disabled:text-slate-400"
                 />
 
                 <button
@@ -47,7 +47,7 @@ export default function QuantitySection({
             </div>
 
             {disabled && (
-                <p className="mt-2 text-xs text-slate-500">
+                <p className="mt-2 text-xs text-slate-500 dark:text-slate-400">
                     Produk manual hanya bisa dibeli 1 item per transaksi.
                 </p>
             )}

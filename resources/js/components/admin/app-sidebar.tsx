@@ -13,6 +13,7 @@ import {
     IconUsers,
     IconPhoto,
     IconReceipt,
+    IconNews,
 } from '@tabler/icons-react';
 
 import { NavMain } from '@/components/admin/nav-main';

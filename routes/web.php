@@ -16,6 +16,7 @@ use App\Http\Controllers\Admin\ManualTransactionController;
 use App\Http\Controllers\Admin\TransactionController;
 use App\Http\Controllers\Customer\DashboardController;
 use App\Http\Controllers\Customer\ProductController as CustomerProductController;
+use App\Http\Controllers\Customer\HistoryController;
 use App\Http\Controllers\Customer\PaymentController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -27,12 +28,13 @@ Route::get('/', [DashboardController::class, 'index'])->name('home');
 // Route Customer
 Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');
 Route::middleware(['auth'])->group(function () {
-    Route::get('history', [\App\Http\Controllers\Customer\HistoryController::class, 'index'])->name('history');
+    Route::get('history', [HistoryController::class, 'index'])->name('history');
 });
 
 Route::prefix('product')->name('product.')->group(function () {
     Route::get('{slug}', [CustomerProductController::class, 'index'])->name('show');
 });
+
 
 // route payment
 Route::post('/checkout', [PaymentController::class, 'checkout'])->name('checkout');

@@ -25,6 +25,7 @@
     <style>
         html {
             background-color: oklch(1 0 0);
+            overflow-x: clip;
         }
 
         html.dark {
@@ -46,7 +47,7 @@
     @inertiaHead
 </head>
 
-<body class="font-sans antialiased">
+<body class="font-sans antialiased overflow-x-clip">
     @inertia
 </body>
 

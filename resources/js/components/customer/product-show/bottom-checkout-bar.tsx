@@ -115,12 +115,12 @@ export default function BottomCheckoutBar({
             }`}
             aria-hidden={selectedPrice === null}
         >
-            <div className="mx-auto w-full max-w-5xl rounded-2xl border border-slate-200 bg-white/95 shadow-lg backdrop-blur">
+            <div className="mx-auto w-full max-w-5xl rounded-2xl border border-slate-200 bg-white/95 shadow-lg backdrop-blur dark:border-slate-800 dark:bg-slate-950/95">
                 <div className="grid grid-cols-1 gap-3 p-3 sm:grid-cols-3 sm:items-center sm:p-4">
                     <div className="min-w-0 text-center sm:text-left">
-                        <p className="text-[11px] text-slate-500">Produk</p>
+                        <p className="text-[11px] text-slate-500 dark:text-slate-400">Produk</p>
 
-                        <p className="truncate text-sm font-semibold text-slate-900">
+                        <p className="truncate text-sm font-semibold text-slate-900 dark:text-slate-100">
                             {selectedPrice !== null
                                 ? `${selectedPrice.display_name} x${quantity}`
                                 : ''}
@@ -128,17 +128,17 @@ export default function BottomCheckoutBar({
                     </div>
 
                     <div className="min-w-0 text-center">
-                        <p className="text-[11px] text-slate-500">
+                        <p className="text-[11px] text-slate-500 dark:text-slate-400">
                             Total pembayaran
                         </p>
 
-                        <p className="text-lg font-bold text-slate-900">
+                        <p className="text-lg font-bold text-slate-900 dark:text-slate-100">
                             {selectedPrice !== null
                                 ? formatRupiah(totalPrice)
                                 : ''}
                         </p>
 
-                        <p className="text-xs text-slate-500">{feeLabel}</p>
+                        <p className="text-xs text-slate-500 dark:text-slate-400">{feeLabel}</p>
                     </div>
 
                     <div className="flex justify-end">

@@ -187,7 +187,7 @@ export default function ProductShow({
                             />
 
                             {isManualProduct && (
-                                <p className="-mt-2 text-xs text-slate-500">
+                                <p className="-mt-2 text-xs text-slate-500 dark:text-slate-400">
                                     Produk manual hanya bisa dibeli 1 item per
                                     transaksi.
                                 </p>
@@ -204,12 +204,12 @@ export default function ProductShow({
                                 onSelectPayment={setSelectedPayment}
                             />
 
-                            <div className="rounded-xl border border-slate-200 bg-white p-3.5 shadow-sm">
+                            <div className="rounded-xl border border-slate-200 bg-white p-3.5 shadow-sm dark:border-slate-800 dark:bg-slate-900">
                                 <div className="mb-3 flex gap-2 text-sm font-semibold">
                                     <div className="flex h-6 w-6 items-center justify-center rounded-full bg-accent-foreground text-accent">
                                         5
                                     </div>
-                                    <span>Nomor WhatsApp</span>
+                                    <span className="dark:text-slate-100">Nomor WhatsApp</span>
                                 </div>
 
                                 <input
@@ -219,7 +219,7 @@ export default function ProductShow({
                                         setPhoneNumber(e.target.value)
                                     }
                                     placeholder="08xxxxxxxxxx"
-                                    className="h-10 w-full rounded-md border px-3"
+                                    className="h-10 w-full rounded-md border border-slate-300 bg-white px-3 text-slate-900 dark:border-slate-700 dark:bg-slate-950 dark:text-slate-100 dark:placeholder:text-slate-500"
                                 />
                             </div>
                         </div>
