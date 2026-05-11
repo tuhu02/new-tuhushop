@@ -13,7 +13,8 @@ class ProductController extends Controller
 {
     public function index(string $slug)
     {
-        $product = Product::where('slug', $slug)
+        $product = Product::query()
+        ->where('slug', $slug)
             ->with([
                 'brand',
                 'categories:id,name',
@@ -31,7 +32,7 @@ class ProductController extends Controller
             ];
         })->values();
 
-        $paymentMethods = PaymentMethod::where('is_active', true)->with('channels')
+        $paymentMethods = PaymentMethod::query()->where('is_active', true)->with('channels')
             ->get()
             ->map(function (PaymentMethod $method) {
                 return [

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Customer;
 
 use App\Events\TransactionStatusUpdated;
 use App\Http\Controllers\Controller;
+use App\Mail\TransactionInvoiceMail;
 use App\Models\PaymentChannel;
 use App\Models\Product;
 use App\Models\ProductPrice;
@@ -12,6 +13,7 @@ use App\Services\DigiflazzService;
 use App\Services\TripayService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Mail;
 use App\Events\DigiflazzStatusUpdated;
 
 class PaymentController extends Controller
@@ -69,6 +71,9 @@ class PaymentController extends Controller
             ) {
                 return response()->json(['success' => true]);
             }
+
+            // Send invoice email
+            $this->sendInvoiceEmail($transaction);
 
             $product = Product::query()->find((int) $transaction->product_id);
 
@@ -346,11 +351,18 @@ class PaymentController extends Controller
         }
 
         // update data
+        $previousDigiflazzStatus = $transaction->digiflazz_status;
+        
         $transaction->update([
             'digiflazz_status' => data_get($data, 'data.status'),
             'digiflazz_sn' => data_get($data, 'data.sn'),
             'digiflazz_response' => $data,
         ]);
+
+        // Send invoice email if status changed to Sukses and not sent before
+        if ($previousDigiflazzStatus !== 'Sukses' && $transaction->digiflazz_status === 'Sukses') {
+            $this->sendInvoiceEmail($transaction);
+        }
 
         broadcast(new DigiflazzStatusUpdated(
             reference: (string) $transaction->reference,
@@ -360,5 +372,29 @@ class PaymentController extends Controller
         ));
 
         return response()->json(['success' => true]);
+    }
+
+    /**
+     * Send invoice email to customer
+     */
+    private function sendInvoiceEmail(Transaction $transaction): void
+    {
+        try {
+            // Dispatch email to queue for async sending
+            Mail::to($transaction->customer_email)
+                ->queue(new TransactionInvoiceMail($transaction));
+
+            Log::info('Invoice email queued', [
+                'transaction_id' => $transaction->id,
+                'merchant_ref' => $transaction->merchant_ref,
+                'customer_email' => $transaction->customer_email,
+            ]);
+        } catch (\Exception $e) {
+            Log::error('Failed to send invoice email', [
+                'transaction_id' => $transaction->id,
+                'merchant_ref' => $transaction->merchant_ref,
+                'error' => $e->getMessage(),
+            ]);
+        }
     }
 }
