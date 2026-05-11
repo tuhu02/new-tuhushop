@@ -2,34 +2,34 @@
 
 namespace Database\Seeders;
 
-use App\Models\Carousel;
+use App\Models\PriceListCategory;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\File;
 
-class CarouselSeeder extends Seeder
+class PriceListCategorySeeder extends Seeder
 {
     /**
-     * Seed the carousels table from JSON file.
+     * Seed the price_list_categories table from JSON file.
      */
     public function run(): void
     {
-        $jsonPath = database_path('seeders/data/carousels.json');
+        $jsonPath = database_path('seeders/data/price_list_categories.json');
 
         if (!File::exists($jsonPath)) {
             $this->command->warn("File not found: {$jsonPath}");
             return;
         }
 
-        $carousels = json_decode(File::get($jsonPath), true);
+        $priceListCategories = json_decode(File::get($jsonPath), true);
 
-        foreach ($carousels as $data) {
-            Carousel::updateOrCreate(
+        foreach ($priceListCategories as $data) {
+            PriceListCategory::updateOrCreate(
                 ['id' => $data['id']],
                 [
-                    'title' => $data['title'],
-                    'image_path' => $data['image_path'],
+                    'name' => $data['name'],
+                    'slug' => $data['slug'],
                     'description' => $data['description'] ?? null,
-                    'sort_order' => $data['sort_order'] ?? 0,
+                    'order' => $data['order'] ?? 0,
                     'is_active' => $data['is_active'] ?? true,
                     'created_at' => $data['created_at'] ?? now(),
                     'updated_at' => $data['updated_at'] ?? now(),
@@ -37,6 +37,6 @@ class CarouselSeeder extends Seeder
             );
         }
 
-        $this->command->info('Carousels seeded successfully');
+        $this->command->info('Price list categories seeded successfully');
     }
 }

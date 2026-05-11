@@ -70,7 +70,7 @@ class PaymentController extends Controller
                 return response()->json(['success' => true]);
             }
 
-            $product = Product::find($transaction->product_id);
+            $product = Product::query()->find((int) $transaction->product_id);
 
             if ($product?->fulfillment_type === 'manual') {
                 Log::info('Produk manual, tidak dikirim ke Digiflazz', [
@@ -82,7 +82,7 @@ class PaymentController extends Controller
                 return response()->json(['success' => true]);
             }
 
-            $price = ProductPrice::find($transaction->price_id);
+            $price = ProductPrice::query()->find((int) $transaction->price_id);
             $buyerSkuCode = $price?->digiflazz_code ?: $price?->code;
 
             if (!$price || !$buyerSkuCode) {
@@ -172,7 +172,7 @@ class PaymentController extends Controller
         $normalizedPaymentCode = strtoupper(trim((string) $validated['payment_code']));
 
         $channel = PaymentChannel::query()
-            ->whereRaw('UPPER(code) = ?', [$normalizedPaymentCode])
+            ->whereRaw('UPPER(code) = ?', [$normalizedPaymentCode], 'and')
             ->where('is_active', true)
             ->first();
 
@@ -335,7 +335,7 @@ class PaymentController extends Controller
             return response()->json(['message' => 'Invalid ref_id'], 400);
         }
 
-        $transaction = Transaction::where('merchant_ref', $refId)->first();
+        $transaction = Transaction::query()->where('merchant_ref', '=', $refId)->first();
 
         if (!$transaction) {
             Log::error('Transaksi tidak ditemukan', [

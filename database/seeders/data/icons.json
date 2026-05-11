@@ -1,0 +1,58 @@
+[
+    {
+        "id": 1,
+        "name": "logo-diamond",
+        "file_path": "\/storage\/icons\/1777828604_1732428730.webp",
+        "created_at": "2026-05-03T17:16:44.000000Z",
+        "updated_at": "2026-05-03T17:16:44.000000Z"
+    },
+    {
+        "id": 2,
+        "name": "logo-wdp",
+        "file_path": "\/storage\/icons\/1777828675_logo-weekly.webp",
+        "created_at": "2026-05-03T17:17:55.000000Z",
+        "updated_at": "2026-05-03T17:17:55.000000Z"
+    },
+    {
+        "id": 3,
+        "name": "membership-mingguan",
+        "file_path": "\/storage\/icons\/1777829574_membership mingguan.png",
+        "created_at": "2026-05-03T17:32:54.000000Z",
+        "updated_at": "2026-05-03T17:32:54.000000Z"
+    },
+    {
+        "id": 4,
+        "name": "membership-bulanan",
+        "file_path": "\/storage\/icons\/1777829642_membership-bulanan.png",
+        "created_at": "2026-05-03T17:34:02.000000Z",
+        "updated_at": "2026-05-03T17:34:02.000000Z"
+    },
+    {
+        "id": 5,
+        "name": "genesis",
+        "file_path": "\/storage\/icons\/1777834034_genesis.webp",
+        "created_at": "2026-05-03T18:47:14.000000Z",
+        "updated_at": "2026-05-03T18:47:14.000000Z"
+    },
+    {
+        "id": 6,
+        "name": "uc",
+        "file_path": "\/storage\/icons\/1777865652_uc.webp",
+        "created_at": "2026-05-04T03:34:13.000000Z",
+        "updated_at": "2026-05-04T03:34:13.000000Z"
+    },
+    {
+        "id": 7,
+        "name": "VP",
+        "file_path": "\/storage\/icons\/1777866763_vp.png",
+        "created_at": "2026-05-04T03:52:43.000000Z",
+        "updated_at": "2026-05-04T03:52:43.000000Z"
+    },
+    {
+        "id": 8,
+        "name": "youtube",
+        "file_path": "\/storage\/icons\/1777884446_Youtube_logo.png",
+        "created_at": "2026-05-04T08:47:26.000000Z",
+        "updated_at": "2026-05-04T08:47:26.000000Z"
+    }
+]

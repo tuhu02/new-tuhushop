@@ -1,0 +1,29 @@
+[
+    {
+        "id": 1,
+        "name": "Virtual Account",
+        "code": "virtual-account",
+        "is_active": true,
+        "created_at": "2026-04-26T12:54:27.000000Z",
+        "updated_at": "2026-04-26T12:54:27.000000Z",
+        "logo": "payment-methods\/virtual-account.png"
+    },
+    {
+        "id": 2,
+        "name": "Convenience Store",
+        "code": "convenience-store",
+        "is_active": true,
+        "created_at": "2026-05-03T17:13:16.000000Z",
+        "updated_at": "2026-05-03T17:13:16.000000Z",
+        "logo": "payment-methods\/convenience-store.png"
+    },
+    {
+        "id": 3,
+        "name": "E-Wallet",
+        "code": "ewallet-qris",
+        "is_active": true,
+        "created_at": "2026-05-03T17:13:18.000000Z",
+        "updated_at": "2026-05-03T17:13:18.000000Z",
+        "logo": "payment-methods\/ewallet-qris.png"
+    }
+]

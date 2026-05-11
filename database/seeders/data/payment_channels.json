@@ -1,0 +1,781 @@
+[
+    {
+        "id": 1,
+        "payment_method_id": 1,
+        "name": "BRI Virtual Account",
+        "code": "BRIVA",
+        "logo": "payment-channels\/briva.png",
+        "fee": 4250,
+        "min_amount": null,
+        "max_amount": null,
+        "is_active": true,
+        "created_at": "2026-04-26T12:54:28.000000Z",
+        "updated_at": "2026-04-26T12:54:28.000000Z",
+        "fee_percent": 0,
+        "instructions": [
+            {
+                "title": "Internet Banking",
+                "steps": [
+                    "Login ke internet banking Bank BRI Anda",
+                    "Pilih menu Pembayaran lalu klik menu BRIVA",
+                    "Pilih rekening sumber dan masukkan Kode Bayar ({{pay_code}}) lalu klik Kirim",
+                    "Detail transaksi akan ditampilkan, pastikan data sudah sesuai",
+                    "Klik Lanjutkan",
+                    "Masukkan kata sandi ibanking lalu klik Request untuk mengirim m-PIN ke nomor HP Anda",
+                    "Periksa HP Anda dan masukkan m-PIN yang diterima lalu klik Kirim",
+                    "Transaksi sukses, simpan bukti transaksi Anda"
+                ]
+            },
+            {
+                "title": "Aplikasi BRImo",
+                "steps": [
+                    "Login ke aplikasi BRImo Anda",
+                    "Pilih menu BRIVA",
+                    "Pilih sumber dana dan masukkan Nomor Pembayaran ({{pay_code}}) lalu klik Lanjut",
+                    "Klik Lanjut",
+                    "Detail transaksi akan ditampilkan, pastikan data sudah sesuai",
+                    "Klik Lanjutkan",
+                    "Klik Konfirmasi",
+                    "Klik Lanjut",
+                    "Masukkan kata sandi ibanking Anda",
+                    "Klik Lanjut",
+                    "Transaksi sukses, simpan bukti transaksi Anda"
+                ]
+            },
+            {
+                "title": "ATM BRI",
+                "steps": [
+                    "Lakukan pembayaran melalui ATM Bank BRI",
+                    "Pilih menu Transaksi Lain > Pembayaran > Lainnya > Pilih BRIVA",
+                    "Masukkan Nomor VA ({{pay_code}})",
+                    "Pilih Ya untuk memproses pembayaran"
+                ]
+            }
+        ]
+    },
+    {
+        "id": 2,
+        "payment_method_id": 1,
+        "name": "Permata Virtual Account",
+        "code": "PERMATAVA",
+        "logo": "payment-channels\/permatava.png",
+        "fee": 4250,
+        "min_amount": null,
+        "max_amount": null,
+        "is_active": true,
+        "created_at": "2026-05-03T17:13:11.000000Z",
+        "updated_at": "2026-05-03T17:13:11.000000Z",
+        "fee_percent": 0,
+        "instructions": [
+            {
+                "title": "Internet Banking",
+                "steps": [
+                    "Login ke internet banking Bank Permata Anda",
+                    "Pilih menu Pembayaran lalu klik menu Pembayaran Tagihan",
+                    "Pilih menu Virtual Account",
+                    "Pilih Rekening Asal lalu centang Masukkan Daftar Tagihan Baru",
+                    "Masukkan Nomor VA ({{pay_code}}) lalu klik Lanjutkan",
+                    "Detail transaksi akan ditampilkan, pastikan data sudah sesuai lalu klik Lanjutkan",
+                    "Masukkan SMS Token Permata, lalu klik Lanjutkan",
+                    "Transaksi sukses, simpan bukti transaksi Anda"
+                ]
+            },
+            {
+                "title": "ATM Permata",
+                "steps": [
+                    "Masukkan PIN",
+                    "Pilih menu Transaksi Lainnya",
+                    "Pilih menu Pembayaran",
+                    "Pilih menu Pembayaran Lainnya",
+                    "Pilih menu Virtual Account",
+                    "Masukkan Nomor VA ({{pay_code}}) lalu tekan Benar",
+                    "Pilih rekening yang menjadi sumber dana yang akan didebet",
+                    "Tekan Ya untuk konfirmasi transaksi"
+                ]
+            }
+        ]
+    },
+    {
+        "id": 3,
+        "payment_method_id": 1,
+        "name": "BNI Virtual Account",
+        "code": "BNIVA",
+        "logo": "payment-channels\/bniva.png",
+        "fee": 4250,
+        "min_amount": null,
+        "max_amount": null,
+        "is_active": true,
+        "created_at": "2026-05-03T17:13:11.000000Z",
+        "updated_at": "2026-05-03T17:13:11.000000Z",
+        "fee_percent": 0,
+        "instructions": [
+            {
+                "title": "Wondr By BNI",
+                "steps": [
+                    "Buka Aplikasi Wondr By BNI",
+                    "Pilih menu Virtual Account",
+                    "Pilih Tujuan Baru",
+                    "Masukkan Nomor Virtual Account",
+                    "Klik tombol Lanjut",
+                    "Akan ditampikan detail transaksi, Pilih rekening sumber dana",
+                    "Klik tombol Lanjut",
+                    "Pastikan semua informasi sudah sesuai kemudian klik Transaksi Sekarang",
+                    "Masukan PIN Anda",
+                    "Transaksi selesai, simpan bukti pembayaran Anda"
+                ]
+            },
+            {
+                "title": "Internet Banking",
+                "steps": [
+                    "Login ke internet banking Bank BNI Anda",
+                    "Pilih menu Transaksi lalu klik menu Virtual Account Billing",
+                    "Masukkan Nomor VA ({{pay_code}}) lalu pilih Rekening Debit",
+                    "Detail transaksi akan ditampilkan, pastikan data sudah sesuai",
+                    "Masukkan respon key BNI appli 2",
+                    "Transaksi sukses, simpan bukti transaksi Anda"
+                ]
+            },
+            {
+                "title": "ATM BNI",
+                "steps": [
+                    "Masukkan kartu Anda",
+                    "Pilih Bahasa",
+                    "Masukkan PIN ATM Anda",
+                    "Kemudian, pilih Menu Lainnya",
+                    "Pilih Transfer dan pilih jenis rekening yang akan digunakan (Contoh: Dari rekening Tabungan)",
+                    "Pilih Virtual Account Billing. Masukkan Nomor VA ({{pay_code}})",
+                    "Tagihan yang harus dibayarkan akan muncul pada layar konfirmasi",
+                    "Konfirmasi, apabila telah selesai, lanjutkan transaksi",
+                    "Transaksi Anda telah selesai"
+                ]
+            },
+            {
+                "title": "Mobile Banking BNI",
+                "steps": [
+                    "Akses BNI Mobile Banking dari handphone kemudian masukkan User ID dan Password",
+                    "Pilih menu Transfer",
+                    "Pilih menu Virtual Account Billing kemudian pilih rekening debet",
+                    "Masukkan Nomor Virtual Account",
+                    "Tagihan yang harus dibayarkan akan muncul pada layar konfirmasi",
+                    "Konfirmasi transaksi dan masukkan Password Transaksi",
+                    "Pembayaran Anda Telah Berhasil"
+                ]
+            }
+        ]
+    },
+    {
+        "id": 4,
+        "payment_method_id": 1,
+        "name": "Mandiri Virtual Account",
+        "code": "MANDIRIVA",
+        "logo": "payment-channels\/mandiriva.png",
+        "fee": 4250,
+        "min_amount": null,
+        "max_amount": null,
+        "is_active": true,
+        "created_at": "2026-05-03T17:13:12.000000Z",
+        "updated_at": "2026-05-03T17:13:12.000000Z",
+        "fee_percent": 0,
+        "instructions": [
+            {
+                "title": "Internet Banking Livin Kuning",
+                "steps": [
+                    "Login ke internet banking Anda",
+                    "Pilih menu Bayar lalu klik menu E-Commerce",
+                    "Masukkan Kode Plink Pay (89039)",
+                    "Masukkan Nomor VA ({{pay_code}})",
+                    "Masukkan Nominal ({{amount}})",
+                    "Detail transaksi akan ditampilkan, pastikan data sudah sesuai",
+                    "Klik tombol Konfirmasi",
+                    "Periksa aplikasi Mandiri Online di ponsel Anda untuk menyelesaikan persetujuan transaksi",
+                    "Transaksi sukses, simpan bukti transaksi Anda"
+                ]
+            },
+            {
+                "title": "ATM Mandiri",
+                "steps": [
+                    "Masukkan kartu ATM & isi PIN ATM Anda",
+                    "Pilih menu Bayar\/Beli lalu pilih menu Lainnya",
+                    "Pilih lagi menu Lainnya",
+                    "Pilih menu Multi Payment",
+                    "Masukkan kode Plink Pay (89039) lalu tekan Benar",
+                    "Masukkan Nomor VA ({{pay_code}})",
+                    "Detail transaksi akan ditampilkan, pastikan data sudah sesuai",
+                    "Tekan 1 lalu tekan YA",
+                    "Transaksi sukses, simpan bukti transaksi Anda"
+                ]
+            },
+            {
+                "title": "Mobile Banking",
+                "steps": [
+                    "Masuk ke New Livin by Mandiri",
+                    "Pilih menu Bayar\/Beli",
+                    "Cari (89039) atau cari (Plink Pay) sebagai Penyedia Jasa",
+                    "Masukkan Nomor Virtual Account, (contoh: 146XXXXXXX)",
+                    "Masukkan jumlah transfer sesuai dengan tagihan kamu. Jumlah yang berbeda tidak dapat diproses",
+                    "Layar menampilkan Kode Bayar dan Data Pembayaran , pastikan data sudah sesuai",
+                    "Jika datanya benar, Klik Lanjutkan",
+                    "Masukkan PIN New Livin, klik OK",
+                    "Pembayaran selesai, simpan bukti transaksi Anda"
+                ]
+            }
+        ]
+    },
+    {
+        "id": 5,
+        "payment_method_id": 1,
+        "name": "BCA Virtual Account",
+        "code": "BCAVA",
+        "logo": "payment-channels\/bcava.png",
+        "fee": 5500,
+        "min_amount": null,
+        "max_amount": null,
+        "is_active": true,
+        "created_at": "2026-05-03T17:13:13.000000Z",
+        "updated_at": "2026-05-03T17:13:13.000000Z",
+        "fee_percent": 0,
+        "instructions": [
+            {
+                "title": "Internet Banking",
+                "steps": [
+                    "Login ke internet banking klikbca Anda",
+                    "Pilih menu Transfer Dana lalu pilih Transfer ke BCA Virtual Account",
+                    "Pilih Dari Rekening",
+                    "Masukkan Nomor VA ({{pay_code}}) lalu klik Lanjutkan",
+                    "Detail transaksi akan ditampilkan, pastikan data sudah sesuai lalu masukkan respon Key BCA Appli 1",
+                    "Klik Kirim",
+                    "Transaksi sukses, simpan bukti transaksi Anda"
+                ]
+            },
+            {
+                "title": "Mobile Banking",
+                "steps": [
+                    "Login pada aplikasi BCA mobile",
+                    "Pilih m-BCA masukkan kode akses m-BCA",
+                    "Pilih m-Transfer",
+                    "Pilih BCA Virtual Account",
+                    "Masukkan Nomor VA ({{pay_code}}) lalu klik OK",
+                    "Konfirmasi no virtual account dan rekening pendebetan",
+                    "Periksa kembalian rincian pembayaran anda, lalu klik Ya",
+                    "Masukkan pin m-BCA",
+                    "Pembayaran Selesai"
+                ]
+            },
+            {
+                "title": "ATM BCA",
+                "steps": [
+                    "Masukkan kartu ATM BCA & PIN",
+                    "Pilih menu Transaksi Lainnya > Transfer > Ke Rekening BCA Virtual Account",
+                    "Masukkan Nomor VA ({{pay_code}})",
+                    "Di halaman konfirmasi, pastikan detail pembayaran sudah sesuai seperti Nomor VA, Nama, Produk dan Total Tagihan",
+                    "Jika sudah benar, klik Ya",
+                    "Simpan struk transaksi sebagai bukti pembayaran"
+                ]
+            }
+        ]
+    },
+    {
+        "id": 6,
+        "payment_method_id": 1,
+        "name": "Muamalat Virtual Account",
+        "code": "MUAMALATVA",
+        "logo": "payment-channels\/muamalatva.png",
+        "fee": 4250,
+        "min_amount": null,
+        "max_amount": null,
+        "is_active": true,
+        "created_at": "2026-05-03T17:13:13.000000Z",
+        "updated_at": "2026-05-03T17:13:13.000000Z",
+        "fee_percent": 0,
+        "instructions": [
+            {
+                "title": "Internet Banking",
+                "steps": [
+                    "Login ke IB Muamalat",
+                    "Pilih menu Payment",
+                    "pilih rekening Anda dan pilih Virtual Account pada bill type",
+                    "masukkan Nomor Va ({{pay_code}})",
+                    "Klik Next",
+                    "Periksa kembali jumlah pembayaran",
+                    "Apabila sudah sesuai, Masukkan mPasscode lalu klik SUBMIT jika setuju dengan informasi pembayaran",
+                    "Transaksi Anda selesai. Silahkan cetak bukti transaksi"
+                ]
+            },
+            {
+                "title": "M-Banking",
+                "steps": [
+                    "Login ke Mobile Banking Muamalat",
+                    "Pilih menu Pembayaran",
+                    "masukkan Nomor Va ({{pay_code}}), klik Proses",
+                    "Periksa kembali jumlah pembayaran",
+                    "Apabila sudah sesuai, masukkan Kode Verifikasi lalu klik Proses jika sudah setuju dengan informasi pembayaran",
+                    "Transaksu Anda selesai, Simpan struk sebagai bukti transaksi"
+                ]
+            },
+            {
+                "title": "ATM Muamalat",
+                "steps": [
+                    "Masukkan kartu ATM, lalu input PIN Anda",
+                    "Pilih menu Transaksi Lain",
+                    "Pilih menu Pembayaran kemudian pilih menu Virtual Account",
+                    "Masukkan Nomor VA ({{pay_code}})",
+                    "Tekan Bayar jika setuju dengan informasi pembayaran",
+                    "Periksa kembali jumlah Tagihan",
+                    "Apabila sudah sesuai, tekan Benar, lalu tekan Bayar",
+                    "Simpan struk ATM sebagai bukti pembayaran"
+                ]
+            }
+        ]
+    },
+    {
+        "id": 7,
+        "payment_method_id": 1,
+        "name": "CIMB Niaga Virtual Account",
+        "code": "CIMBVA",
+        "logo": "payment-channels\/cimbva.png",
+        "fee": 4250,
+        "min_amount": null,
+        "max_amount": null,
+        "is_active": true,
+        "created_at": "2026-05-03T17:13:14.000000Z",
+        "updated_at": "2026-05-03T17:13:14.000000Z",
+        "fee_percent": 0,
+        "instructions": [
+            {
+                "title": "Internet Banking",
+                "steps": [
+                    "Login ke CIMB clicks",
+                    "Pilih menu Bayar Tagihan\/Pay Bills",
+                    "Pilih Rekening Sumber\/Source Account dan jenis Pembayaran\/Payment Type > Virtual Account",
+                    "Masukkan Nomor VA ({{pay_code}})",
+                    "Nomor, nama virtual account dan jumlah billing ditampilkan pada layar",
+                    "Masukkan 6 digit mPIN dan tekan tombol Submit",
+                    "Konfirmasi pembayaran ditampilkan pada layar"
+                ]
+            },
+            {
+                "title": "Mobile Banking",
+                "steps": [
+                    "Login ke Go Mobile",
+                    "Pilih menu Transfer",
+                    "Pilih Transfer to Other CIMB Niaga Account",
+                    "Pilih rekening sumber Anda",
+                    "Pilih CASA dan masukkan Nomor VA ({{pay_code}})",
+                    "Masukkan Nominal ({{amount}})",
+                    "Masukkan Mobile Banking PIN",
+                    "konfirmasi pembayaran ditampilkan pada layar"
+                ]
+            },
+            {
+                "title": "ATM CIMB",
+                "steps": [
+                    "Masukkan Kartu ATM dan PIN CIMB Toppers",
+                    "Pilih menu Pembayaran > Lanjut > Virtual Account",
+                    "Masukkan Nomor VA ({{pay_code}})",
+                    "Pilih rekening debit",
+                    "Nomor, nama virtual account dan jumlah billing ditampilkan pada layar",
+                    "Pilih OK untuk melakukan pembayaran",
+                    "Konfirmasi pembayaran ditampilkan pada layar"
+                ]
+            }
+        ]
+    },
+    {
+        "id": 8,
+        "payment_method_id": 1,
+        "name": "BSI Virtual Account",
+        "code": "BSIVA",
+        "logo": "payment-channels\/bsiva.png",
+        "fee": 4250,
+        "min_amount": null,
+        "max_amount": null,
+        "is_active": true,
+        "created_at": "2026-05-03T17:13:14.000000Z",
+        "updated_at": "2026-05-03T17:13:14.000000Z",
+        "fee_percent": 0,
+        "instructions": [
+            {
+                "title": "BYOND by BSI",
+                "steps": [
+                    "Buka aplikasi BYON by BSI",
+                    "Pilih menu Bayar & Beli",
+                    "Pilih Lembaga",
+                    "Masukkan kode institusi 1062, pilih LINKQU",
+                    "Masukkan Kode VA",
+                    "Klik tombol Lanjutkan",
+                    "Akan ditampikan detail transaksi, pastikan sudah sesuai",
+                    "Klik tombol Konfirmasi",
+                    "Masukan PIN Anda",
+                    "Transaksi selesai, simpan bukti pembayaran Anda"
+                ]
+            },
+            {
+                "title": "Internet Banking",
+                "steps": [
+                    "Masuk ke Internet Banking BSI Anda",
+                    "Pilih menu Pembayaran",
+                    "Pilih nomor rekening Anda",
+                    "Pilih Jenis Pembayaran > Institusi",
+                    "Pada opsi Nama Institusi, pilih 1062 LINKQU",
+                    "Masukkan kode bayar ({{pay_code}})",
+                    "Klik tombol Verifikasi",
+                    "Akan ditampikan detail transaksi, pastikan sudah sesuai",
+                    "Masukkan TAN & PIN Anda",
+                    "Tekan tombol Submit",
+                    "Transaksi selesai, simpan bukti pembayaran Anda"
+                ]
+            },
+            {
+                "title": "BSI Mobile",
+                "steps": [
+                    "Masuk ke aplikasi BSI Mobile Anda",
+                    "Pilih menu Bayar",
+                    "Pilih menu Institusi",
+                    "Pada opsi Nama Institusi, pilih 1062 LINKQU",
+                    "Masukkan kode bayar ({{pay_code}})",
+                    "Klik Selanjutnya",
+                    "Masukkan PIN Anda",
+                    "Klik Selanjutnya",
+                    "Akan ditampikan detail transaksi, pastikan sudah sesuai",
+                    "Klik Selanjutnya",
+                    "Transaksi selesai, simpan bukti pembayaran Anda"
+                ]
+            },
+            {
+                "title": "ATM BSI",
+                "steps": [
+                    "Datang ke ATM BSI",
+                    "Masukkan kartu dan PIN kartu Anda",
+                    "Pilih menu Pembayaran",
+                    "Pilih Institusi",
+                    "Masukkan kode institusi 1062 + Nomor Virtual Account Anda. Contoh: 1062{{pay_code}}",
+                    "Tekan tombol Benar",
+                    "Akan ditampikan detail transaksi, pastikan sudah sesuai",
+                    "Tekan tombol BENAR\/YA",
+                    "Transaksi selesai, simpan bukti pembayaran Anda"
+                ]
+            }
+        ]
+    },
+    {
+        "id": 9,
+        "payment_method_id": 1,
+        "name": "OCBC NISP Virtual Account",
+        "code": "OCBCVA",
+        "logo": "payment-channels\/ocbcva.png",
+        "fee": 4250,
+        "min_amount": null,
+        "max_amount": null,
+        "is_active": true,
+        "created_at": "2026-05-03T17:13:15.000000Z",
+        "updated_at": "2026-05-03T17:13:15.000000Z",
+        "fee_percent": 0,
+        "instructions": [
+            {
+                "title": "Internet Banking",
+                "steps": [
+                    "Pilih menu Pembayaran",
+                    "Pilih Pembayaran dan rekening sumber",
+                    "Pilih Bayar ke Biller Baru",
+                    "Pada opsi Kategori Biller, pilih Pembayaran Lainnya",
+                    "Pada opsi Organisasi Biller, pilih PLINKPAY \/ PLINK",
+                    "Masukkan nomor virtual account Anda ({{pay_code}})",
+                    "Klik Lanjutkan",
+                    "Data transaksi akan ditampikan, pastikan sudah sesuai",
+                    "Masukkan PIN\/OTP Anda lalu klik Lanjutkan",
+                    "Transaksi selesai, simpan bukti pembayaran Anda"
+                ]
+            }
+        ]
+    },
+    {
+        "id": 10,
+        "payment_method_id": 1,
+        "name": "Danamon Virtual Account",
+        "code": "DANAMONVA",
+        "logo": "payment-channels\/danamonva.png",
+        "fee": 4250,
+        "min_amount": null,
+        "max_amount": null,
+        "is_active": true,
+        "created_at": "2026-05-03T17:13:15.000000Z",
+        "updated_at": "2026-05-03T17:13:15.000000Z",
+        "fee_percent": 0,
+        "instructions": [
+            {
+                "title": "ATM Danamon",
+                "steps": [
+                    "Masukkan Kartu ATM Danamon & PIN",
+                    "Pilih menu Pembayaran > menu Lainnya > menu Virtual Account",
+                    "Masukkan nomor virtual account-nya",
+                    "Di halaman konfirmasi, pastikan detil pembayaran sudah sesuai seperti No VA, Nama, Institusi, dan Total Tagihan",
+                    "Pilih Ya untuk memproses transaksi",
+                    "Simpan struk transaksi sebagai bukti pembayaran"
+                ]
+            },
+            {
+                "title": "D-mobile (Mobile Banking)",
+                "steps": [
+                    "Akses D-mobile melalui handphone Anda",
+                    "Masukkan User ID dan password",
+                    "Pilih menu Pembayaran, lalu pilih Virtual Account kemudian Tambah biller baru pembayaran",
+                    "Masukkan nomor virtual account-nya",
+                    "Akan muncul rincian pembayaran Anda. Jika sudah benar, masukan Pin transaksi Anda"
+                ]
+            }
+        ]
+    },
+    {
+        "id": 11,
+        "payment_method_id": 1,
+        "name": "Other Bank Virtual Account",
+        "code": "OTHERBANKVA",
+        "logo": "payment-channels\/otherbankva.png",
+        "fee": 4250,
+        "min_amount": null,
+        "max_amount": null,
+        "is_active": true,
+        "created_at": "2026-05-03T17:13:16.000000Z",
+        "updated_at": "2026-05-03T17:13:16.000000Z",
+        "fee_percent": 0,
+        "instructions": [
+            {
+                "title": "Internet Banking",
+                "steps": [
+                    "Login ke internet banking Bank Anda",
+                    "Pilih menu Transaksi lalu klik menu Virtual Account Billing",
+                    "Pilih Bank BNI (Kode Bank: 009) sebagai Tujuan Transfer",
+                    "Masukkan Nomor VA ({{pay_code}}) lalu pilih Rekening Debit",
+                    "Detail transaksi akan ditampilkan, pastikan data sudah sesuai",
+                    "Setujui konfirmasi",
+                    "Transaksi sukses, simpan bukti transaksi Anda"
+                ]
+            },
+            {
+                "title": "Mesin ATM",
+                "steps": [
+                    "Masukkan kartu Anda",
+                    "Pilih Bahasa",
+                    "Masukkan PIN ATM Anda",
+                    "Kemudian, pilih Menu Lainnya",
+                    "Pilih Transfer dan pilih jenis rekening yang akan digunakan (Contoh: Dari rekening Tabungan)",
+                    "Pilih Bank BNI (Kode Bank: 009) sebagai Tujuan Transfer",
+                    "Pilih Virtual Account Billing. Masukkan Nomor VA ({{pay_code}})",
+                    "Tagihan yang harus dibayarkan akan muncul pada layar konfirmasi",
+                    "Konfirmasi, apabila telah selesai, lanjutkan transaksi",
+                    "Transaksi Anda telah selesai"
+                ]
+            },
+            {
+                "title": "Mobile Banking",
+                "steps": [
+                    "Akses Mobile Banking dari handphone kemudian masukkan User ID dan Password",
+                    "Pilih menu Transfer",
+                    "Pilih menu Virtual Account Billing",
+                    "Pilih Bank BNI (Kode Bank: 009) sebagai Tujuan Transfer",
+                    "Masukkan Nomor Virtual Account",
+                    "Tagihan yang harus dibayarkan akan muncul pada layar konfirmasi",
+                    "Konfirmasi transaksi dan masukkan Password Transaksi",
+                    "Pembayaran Anda Telah Berhasil"
+                ]
+            }
+        ]
+    },
+    {
+        "id": 12,
+        "payment_method_id": 2,
+        "name": "Alfamart",
+        "code": "ALFAMART",
+        "logo": "payment-channels\/alfamart.png",
+        "fee": 3500,
+        "min_amount": null,
+        "max_amount": null,
+        "is_active": true,
+        "created_at": "2026-05-03T17:13:16.000000Z",
+        "updated_at": "2026-05-03T17:13:16.000000Z",
+        "fee_percent": 0,
+        "instructions": [
+            {
+                "title": "Pembayaran via ALFAMART",
+                "steps": [
+                    "Datang ke Alfamart",
+                    "Sampaikan ke kasir ingin melakukan pembayaran aplikasi Linkita",
+                    "Berikan kode bayar ({{pay_code}}) ke kasir",
+                    "Bayar sesuai jumlah yang diinfokan oleh kasir",
+                    "Simpan struk bukti pembayaran Anda"
+                ]
+            }
+        ]
+    },
+    {
+        "id": 13,
+        "payment_method_id": 2,
+        "name": "Indomaret",
+        "code": "INDOMARET",
+        "logo": "payment-channels\/indomaret.png",
+        "fee": 3500,
+        "min_amount": null,
+        "max_amount": null,
+        "is_active": true,
+        "created_at": "2026-05-03T17:13:17.000000Z",
+        "updated_at": "2026-05-03T17:13:17.000000Z",
+        "fee_percent": 0,
+        "instructions": [
+            {
+                "title": "Pembayaran via INDOMARET",
+                "steps": [
+                    "Datang ke gerai Indomaret",
+                    "Sampaikan ke kasir ingin melakukan pembayaran aplikasi Linkita",
+                    "Berikan kode bayar ({{pay_code}}) ke kasir",
+                    "Bayar sesuai jumlah yang diinfokan oleh kasir",
+                    "Simpan struk bukti pembayaran Anda"
+                ]
+            }
+        ]
+    },
+    {
+        "id": 14,
+        "payment_method_id": 2,
+        "name": "Alfamidi",
+        "code": "ALFAMIDI",
+        "logo": "payment-channels\/alfamidi.png",
+        "fee": 3500,
+        "min_amount": null,
+        "max_amount": null,
+        "is_active": true,
+        "created_at": "2026-05-03T17:13:18.000000Z",
+        "updated_at": "2026-05-03T17:13:18.000000Z",
+        "fee_percent": 0,
+        "instructions": [
+            {
+                "title": "Pembayaran via ALFAMIDI",
+                "steps": [
+                    "Datang ke Alfamidi",
+                    "Sampaikan ke kasir ingin melakukan pembayaran aplikasi Linkita",
+                    "Berikan kode bayar ({{pay_code}}) ke kasir",
+                    "Bayar sesuai jumlah yang diinfokan oleh kasir",
+                    "Simpan struk bukti pembayaran Anda"
+                ]
+            }
+        ]
+    },
+    {
+        "id": 15,
+        "payment_method_id": 3,
+        "name": "OVO",
+        "code": "OVO",
+        "logo": "payment-channels\/ovo.png",
+        "fee": 0,
+        "min_amount": 1000,
+        "max_amount": null,
+        "is_active": true,
+        "created_at": "2026-05-03T17:13:18.000000Z",
+        "updated_at": "2026-05-03T17:13:18.000000Z",
+        "fee_percent": 3,
+        "instructions": [
+            {
+                "title": "Pembayaran via OVO",
+                "steps": [
+                    "Klik tombol Lanjutkan Pembayaran",
+                    "Periksa aplikasi OVO di Ponsel Anda",
+                    "Akan muncul prompt transaksi. Pastikan data transaksi sudah sesuai",
+                    "Klik tombol Bayar",
+                    "Transaksi selesai. Simpan bukti pembayaran Anda"
+                ]
+            }
+        ]
+    },
+    {
+        "id": 16,
+        "payment_method_id": 3,
+        "name": "QRIS",
+        "code": "QRIS2",
+        "logo": "payment-channels\/qris2.png",
+        "fee": 750,
+        "min_amount": null,
+        "max_amount": null,
+        "is_active": true,
+        "created_at": "2026-05-03T17:13:18.000000Z",
+        "updated_at": "2026-05-03T17:13:18.000000Z",
+        "fee_percent": 0.7,
+        "instructions": [
+            {
+                "title": "Pembayaran via QRIS",
+                "steps": [
+                    "Masuk ke aplikasi dompet digital Anda yang telah mendukung QRIS",
+                    "Pindai\/Scan QR Code yang tersedia",
+                    "Akan muncul detail transaksi. Pastikan data transaksi sudah sesuai",
+                    "Selesaikan proses pembayaran Anda",
+                    "Transaksi selesai. Simpan bukti pembayaran Anda"
+                ]
+            },
+            {
+                "title": "Pembayaran via QRIS (Mobile)",
+                "steps": [
+                    "Download QR Code pada invoice",
+                    "Masuk ke aplikasi dompet digital Anda yang telah mendukung QRIS",
+                    "Upload QR Code yang telah di download tadi",
+                    "Akan muncul detail transaksi. Pastikan data transaksi sudah sesuai",
+                    "Selesaikan proses pembayaran Anda",
+                    "Transaksi selesai. Simpan bukti pembayaran Anda"
+                ]
+            }
+        ]
+    },
+    {
+        "id": 17,
+        "payment_method_id": 3,
+        "name": "DANA",
+        "code": "DANA",
+        "logo": "payment-channels\/dana.png",
+        "fee": 0,
+        "min_amount": 1000,
+        "max_amount": null,
+        "is_active": true,
+        "created_at": "2026-05-03T17:13:19.000000Z",
+        "updated_at": "2026-05-03T17:13:19.000000Z",
+        "fee_percent": 3,
+        "instructions": [
+            {
+                "title": "Pembayaran via DANA",
+                "steps": [
+                    "Klik tombol Lanjutkan Pembayaran",
+                    "Anda akan dipindah ke Halaman Pembayaran DANA",
+                    "Pastikan saldo DANA anda cukup",
+                    "Masukkan nomor handpone yang terdaftar pada akun DANA",
+                    "Anda akan diminta untuk memasukkan PIN DANA Anda",
+                    "Kemudian anda akan diminta untuk memasukkan kode OTP yang dikirim ke nomor DANA",
+                    "Kemudian akan muncul detail tansaksi pastikan sudah sesuai dengan transaksi yang ingin anda bayar",
+                    "Klik tombol PAY",
+                    "Transaksi selesai. Simpan bukti pembayaran Anda"
+                ]
+            }
+        ]
+    },
+    {
+        "id": 18,
+        "payment_method_id": 3,
+        "name": "ShopeePay",
+        "code": "SHOPEEPAY",
+        "logo": "payment-channels\/shopeepay.png",
+        "fee": 0,
+        "min_amount": 1000,
+        "max_amount": null,
+        "is_active": true,
+        "created_at": "2026-05-03T17:13:19.000000Z",
+        "updated_at": "2026-05-03T17:13:19.000000Z",
+        "fee_percent": 3,
+        "instructions": [
+            {
+                "title": "Pembayaran via ShopeePay",
+                "steps": [
+                    "Klik tombol Lanjutkan Pembayaran",
+                    "Anda akan dialihkan ke aplikasi Shopee",
+                    "Akan muncul detail transaksi. Pastikan data transaksi sudah sesuai",
+                    "Klik tombol Bayar dan masukkan PIN",
+                    "Transaksi selesai. Simpan bukti pembayaran Anda"
+                ]
+            }
+        ]
+    }
+]

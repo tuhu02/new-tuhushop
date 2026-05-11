@@ -1,0 +1,32 @@
+[
+    {
+        "id": 3,
+        "title": "Guide to Wondrous Sights",
+        "image_path": "carousels\/lmZpCydm8uM0kh2AtNjScnwwEEd3lCClo8bjmGKP.jpg",
+        "sort_order": 0,
+        "is_active": true,
+        "created_at": "2026-05-09T17:39:55.000000Z",
+        "updated_at": "2026-05-09T17:39:55.000000Z",
+        "description": "The Web Event for Genshin Impact's new character: Mualani is now available."
+    },
+    {
+        "id": 4,
+        "title": "Skin Starlight Mei 2026 MLBB",
+        "image_path": "carousels\/Wp6SXu4dPpKZCPb1ubEjEsNWPuNkjjnJMJhIa2C4.jpg",
+        "sort_order": 0,
+        "is_active": true,
+        "created_at": "2026-05-09T17:42:41.000000Z",
+        "updated_at": "2026-05-09T17:42:41.000000Z",
+        "description": "Starlight bulanan menjadi peluang besar bagi pemain yang ingin mendapatkan banyak hadiah dengan menjadi member."
+    },
+    {
+        "id": 5,
+        "title": "Misteri bawah laut",
+        "image_path": "carousels\/Ls3qzwNENBvd3R0JkAtw8fdIZ2ob8PobAanIbLAR.jpg",
+        "sort_order": 0,
+        "is_active": true,
+        "created_at": "2026-05-09T17:47:39.000000Z",
+        "updated_at": "2026-05-09T17:47:39.000000Z",
+        "description": "Event Misteri Bawah Laut udah hadir di game Free Fire!"
+    }
+]

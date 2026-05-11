@@ -1,0 +1,248 @@
+[
+    {
+        "id": 1,
+        "name": "Mobile Legends: Bang Bang",
+        "slug": "mobile-legends-bang-bang",
+        "brand_id": 1,
+        "thumbnail": "products\/mobile-legends-bang-bang.webp",
+        "is_active": true,
+        "created_at": "2026-04-26T12:54:03.000000Z",
+        "updated_at": "2026-04-26T12:54:03.000000Z",
+        "banner": "products\/mobile-legends-bang-bang.webp",
+        "description": "Top up Mobile Legends: Bang Bang cepat, aman, dan resmi.",
+        "digiflazz_code": null,
+        "digiflazz_synced_at": null,
+        "input_fields": {
+            "fields": [
+                {
+                    "name": "user_id",
+                    "label": "User ID",
+                    "type": "text",
+                    "required": true
+                },
+                {
+                    "name": "zone_id",
+                    "label": "Zone ID",
+                    "type": "text",
+                    "required": true
+                }
+            ]
+        },
+        "customer_no_template": "{user_id}|{zone_id}",
+        "fulfillment_type": "digiflazz"
+    },
+    {
+        "id": 2,
+        "name": "Free Fire",
+        "slug": "free-fire",
+        "brand_id": 2,
+        "thumbnail": "products\/free-fire.jpg",
+        "is_active": true,
+        "created_at": "2026-04-26T12:54:03.000000Z",
+        "updated_at": "2026-04-26T12:54:03.000000Z",
+        "banner": "products\/free-fire.jpg",
+        "description": "Top up Free Fire cepat, aman, dan resmi.",
+        "digiflazz_code": null,
+        "digiflazz_synced_at": null,
+        "input_fields": {
+            "fields": [
+                {
+                    "name": "user_id",
+                    "label": "Player ID",
+                    "type": "text",
+                    "required": true
+                }
+            ]
+        },
+        "customer_no_template": "{user_id}",
+        "fulfillment_type": "digiflazz"
+    },
+    {
+        "id": 3,
+        "name": "Genshin Impact",
+        "slug": "genshin-impact",
+        "brand_id": 3,
+        "thumbnail": "products\/genshin-impact.jpeg",
+        "is_active": true,
+        "created_at": "2026-04-26T12:54:03.000000Z",
+        "updated_at": "2026-05-03T18:28:47.000000Z",
+        "banner": "products\/genshin-impact.jpeg",
+        "description": "Top up Genshin Impact cepat, aman, dan resmi.",
+        "digiflazz_code": null,
+        "digiflazz_synced_at": null,
+        "input_fields": {
+            "fields": [
+                {
+                    "name": "user_id",
+                    "label": "UID",
+                    "type": "text",
+                    "required": true
+                },
+                {
+                    "name": "server",
+                    "label": "Server",
+                    "type": "select",
+                    "required": false,
+                    "default": "001",
+                    "options": [
+                        {
+                            "label": "Asia Server",
+                            "value": "001"
+                        },
+                        {
+                            "label": "America Server",
+                            "value": "002"
+                        },
+                        {
+                            "label": "Europe Server",
+                            "value": "003"
+                        },
+                        {
+                            "label": "TW, HK, MO Server",
+                            "value": "004"
+                        }
+                    ]
+                }
+            ]
+        },
+        "customer_no_template": "{user_id}|{server}",
+        "fulfillment_type": "digiflazz"
+    },
+    {
+        "id": 4,
+        "name": "Honkai: Star Rail",
+        "slug": "honkai-star-rail",
+        "brand_id": 3,
+        "thumbnail": "products\/honkai-star-rail.jpeg",
+        "is_active": false,
+        "created_at": "2026-04-26T12:54:03.000000Z",
+        "updated_at": "2026-05-03T18:49:44.000000Z",
+        "banner": "products\/honkai-star-rail.jpeg",
+        "description": "Top up Honkai: Star Rail cepat, aman, dan resmi.",
+        "digiflazz_code": null,
+        "digiflazz_synced_at": null,
+        "input_fields": {
+            "fields": [
+                {
+                    "name": "user_id",
+                    "label": "UID",
+                    "type": "text",
+                    "required": true
+                },
+                {
+                    "name": "server",
+                    "label": "Server",
+                    "type": "text",
+                    "required": true
+                }
+            ]
+        },
+        "customer_no_template": "{user_id}|{server}",
+        "fulfillment_type": "digiflazz"
+    },
+    {
+        "id": 5,
+        "name": "PUBG Mobile",
+        "slug": "pubg-mobile",
+        "brand_id": 4,
+        "thumbnail": "products\/pubg-mobile.jpeg",
+        "is_active": true,
+        "created_at": "2026-04-26T12:54:03.000000Z",
+        "updated_at": "2026-04-26T12:54:03.000000Z",
+        "banner": "products\/pubg-mobile.jpeg",
+        "description": "Top up PUBG Mobile cepat, aman, dan resmi.",
+        "digiflazz_code": null,
+        "digiflazz_synced_at": null,
+        "input_fields": {
+            "fields": [
+                {
+                    "name": "user_id",
+                    "label": "Player ID",
+                    "type": "text",
+                    "required": true
+                }
+            ]
+        },
+        "customer_no_template": "{user_id}",
+        "fulfillment_type": "digiflazz"
+    },
+    {
+        "id": 6,
+        "name": "Valorant Points",
+        "slug": "valorant-points",
+        "brand_id": 5,
+        "thumbnail": "products\/valorant-points.jpeg",
+        "is_active": true,
+        "created_at": "2026-04-26T12:54:03.000000Z",
+        "updated_at": "2026-04-26T12:54:03.000000Z",
+        "banner": "products\/valorant-points.jpeg",
+        "description": "Top up Valorant Points cepat, aman, dan resmi.",
+        "digiflazz_code": null,
+        "digiflazz_synced_at": null,
+        "input_fields": {
+            "fields": [
+                {
+                    "name": "riot_id",
+                    "label": "Riot ID",
+                    "type": "text",
+                    "required": true
+                }
+            ]
+        },
+        "customer_no_template": "{riot_id}",
+        "fulfillment_type": "digiflazz"
+    },
+    {
+        "id": 7,
+        "name": "Roblox",
+        "slug": "roblox",
+        "brand_id": 6,
+        "thumbnail": "products\/roblox.jpg",
+        "is_active": false,
+        "created_at": "2026-04-26T12:54:03.000000Z",
+        "updated_at": "2026-05-04T03:13:31.000000Z",
+        "banner": "products\/roblox.jpg",
+        "description": "Top up Roblox cepat, aman, dan resmi.",
+        "digiflazz_code": null,
+        "digiflazz_synced_at": null,
+        "input_fields": {
+            "fields": [
+                {
+                    "name": "username",
+                    "label": "Username Roblox",
+                    "type": "text",
+                    "required": true
+                }
+            ]
+        },
+        "customer_no_template": "{username}",
+        "fulfillment_type": "digiflazz"
+    },
+    {
+        "id": 8,
+        "name": "YouTube Premium",
+        "slug": "youtube-premium",
+        "brand_id": 7,
+        "thumbnail": "products\/gRlU76xeCmJQAzu7Y7s1wBvpTXrnFClJ3EU5lMss.png",
+        "is_active": true,
+        "created_at": "2026-05-04T04:02:36.000000Z",
+        "updated_at": "2026-05-04T09:57:58.000000Z",
+        "banner": "products\/LW4QyWLekvQ2NwA6K14z5qupqJK72TyL9ZYtJ0WP.png",
+        "description": null,
+        "digiflazz_code": null,
+        "digiflazz_synced_at": null,
+        "input_fields": {
+            "fields": [
+                {
+                    "name": "email",
+                    "label": "Email YouTube\/Gmail",
+                    "type": "email",
+                    "required": true,
+                    "placeholder": "contoh@gmail.com"
+                }
+            ]
+        },
+        "customer_no_template": "{email}",
+        "fulfillment_type": "manual"
+    }
+]

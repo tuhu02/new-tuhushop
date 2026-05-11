@@ -1,0 +1,30 @@
+[
+    {
+        "id": 1,
+        "name": "🔥 Lagi Populer",
+        "slug": "lagi-populer",
+        "is_active": true,
+        "created_at": "2026-04-26T12:54:03.000000Z",
+        "updated_at": "2026-04-26T12:54:03.000000Z"
+    },
+    {
+        "id": 2,
+        "name": "Top Up Langsung",
+        "slug": "top-up-langsung",
+        "is_active": true,
+        "created_at": "2026-04-26T12:54:03.000000Z",
+        "updated_at": "2026-04-26T12:54:03.000000Z"
+    },
+
+    
+
+    
+    {
+        "id": 4,
+        "name": "Premium Apps",
+        "slug": "premium-apps",
+        "is_active": true,
+        "created_at": "2026-05-04T03:58:48.000000Z",
+        "updated_at": "2026-05-04T03:58:48.000000Z"
+    }
+]
