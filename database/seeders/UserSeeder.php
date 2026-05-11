@@ -20,6 +20,7 @@ class UserSeeder extends Seeder
                 'name' => 'Tuhu Pangestu',
                 'password' => Hash::make('tuhu.tuhu'),
                 'email_verified_at' => now(),
+                'is_admin' => true
             ]
         );
     }

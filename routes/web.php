@@ -13,12 +13,13 @@ use App\Http\Controllers\Admin\PaymentChannelController;
 use App\Http\Controllers\Admin\DigiflazzSyncController;
 use App\Http\Controllers\Admin\IconController;
 use App\Http\Controllers\Admin\ManualTransactionController;
-use App\Http\Controllers\Admin\TransactionController;
+use App\Http\Controllers\Admin\TransactionController as AdminTransactionController;
+use App\Http\Controllers\Customer\TransactionController;
 use App\Http\Controllers\Customer\DashboardController;
 use App\Http\Controllers\Customer\ProductController as CustomerProductController;
 use App\Http\Controllers\Customer\HistoryController;
-use App\Http\Controllers\Customer\PaymentController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Admin\DashboardController as AdminDashboardController;
 use Inertia\Inertia;
 
 
@@ -35,14 +36,13 @@ Route::prefix('product')->name('product.')->group(function () {
     Route::get('{slug}', [CustomerProductController::class, 'index'])->name('show');
 });
 
-
-// route payment
-Route::post('/checkout', [PaymentController::class, 'checkout'])->name('checkout');
-Route::get('/checkout/{reference}', [PaymentController::class, 'showCheckout'])->name('checkout.show');
+// Route Transaction
+Route::post('/checkout', [TransactionController::class, 'checkout'])->name('checkout');
+Route::get('/checkout/{reference}', [TransactionController::class, 'showCheckout'])->name('checkout.show');
 Route::get('/payment/success', fn() => redirect()->route('home'))->name('payment.success');
 
-Route::middleware([])->prefix('admin')->name('admin.')->group(function () {
-    Route::get('dashboard', [\App\Http\Controllers\Admin\DashboardController::class, 'index'])->name('dashboard');
+Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(function () {
+    Route::get('dashboard', [AdminDashboardController::class, 'index'])->name('dashboard');
 
     Route::resource('customers', CustomerController::class)->except('show');
     Route::resource('carousels', CarouselController::class)->except('show');
@@ -55,12 +55,6 @@ Route::middleware([])->prefix('admin')->name('admin.')->group(function () {
     Route::post('payment-channels/sync-tripay', [PaymentChannelController::class, 'syncTripay'])
         ->name('payment-channels.sync-tripay');
     Route::resource('payment-channels', PaymentChannelController::class)->except('show');
-
-    // Digiflazz sync routes
-    Route::get('digiflazz/sync', [DigiflazzSyncController::class, 'index'])->name('digiflazz.index');
-    Route::post('digiflazz/sync', [DigiflazzSyncController::class, 'sync'])->name('digiflazz.sync');
-    Route::post('digiflazz/validate', [DigiflazzSyncController::class, 'validateCredentials'])->name('digiflazz.validate');
-    Route::get('digiflazz/stats', [DigiflazzSyncController::class, 'getStats'])->name('digiflazz.stats');
 
     // Icons
     Route::resource('icons', IconController::class)->only(['index', 'store', 'destroy']);

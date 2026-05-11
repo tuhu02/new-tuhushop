@@ -16,7 +16,7 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 use App\Events\DigiflazzStatusUpdated;
 
-class PaymentController extends Controller
+class TransactionController extends Controller
 {
     public function __construct(private TripayService $tripay) {}
 
