@@ -39,6 +39,12 @@ type PaymentCheckoutPageProps = {
     };
 };
 
+type TransactionStatusUpdatedEvent = {
+    status?: string;
+    reference?: string;
+    merchant_ref?: string;
+};
+
 const breadcrumbs: BreadcrumbItem[] = [
     {
         title: 'Pembayaran',
@@ -56,11 +62,11 @@ const statusLabelMap: Record<string, string> = {
 
 const terminalStatuses = new Set(['EXPIRED', 'FAILED', 'REFUND']);
 
-type TransactionStatusUpdatedEvent = {
-    status?: string;
-    reference?: string;
-    merchant_ref?: string;
-};
+const redirectPaymentChannels = {
+    OVO: 'OVO',
+    DANA: 'DANA',
+    SHOPEEPAY: 'ShopeePay',
+} as const;
 
 export default function PaymentCheckout({
     transaction,
@@ -90,10 +96,24 @@ export default function PaymentCheckout({
         );
     });
 
+    const isTerminalStatus = terminalStatuses.has(currentStatus);
+
+    const paymentChannelCode =
+        transaction.payment_channel_code?.toUpperCase() ?? '';
+
+    const redirectPaymentName =
+        redirectPaymentChannels[
+            paymentChannelCode as keyof typeof redirectPaymentChannels
+        ];
+
+    const isRedirectPayment = Boolean(redirectPaymentName);
+
+    const shouldShowPayCodeSection = !isTerminalStatus;
+
     useEffect(() => {
         if (!expiredAtDate) return;
 
-        if (terminalStatuses.has(currentStatus)) {
+        if (isTerminalStatus) {
             setRemainingSeconds(0);
             return;
         }
@@ -108,44 +128,10 @@ export default function PaymentCheckout({
         }, 1000);
 
         return () => window.clearInterval(interval);
-    }, [expiredAtDate, currentStatus]);
-
-    const formattedAmount = useMemo(
-        () =>
-            new Intl.NumberFormat('id-ID', {
-                style: 'currency',
-                currency: 'IDR',
-                minimumFractionDigits: 0,
-            }).format(transaction.amount),
-        [transaction.amount],
-    );
-
-    const countdown = useMemo(() => {
-        const hours = Math.floor(remainingSeconds / 3600)
-            .toString()
-            .padStart(2, '0');
-
-        const minutes = Math.floor((remainingSeconds % 3600) / 60)
-            .toString()
-            .padStart(2, '0');
-
-        const seconds = (remainingSeconds % 60).toString().padStart(2, '0');
-
-        return `${hours}:${minutes}:${seconds}`;
-    }, [remainingSeconds]);
-
-    const handleCopy = async () => {
-        if (!transaction.pay_code) return;
-
-        await navigator.clipboard.writeText(transaction.pay_code);
-
-        setCopied(true);
-
-        window.setTimeout(() => setCopied(false), 2000);
-    };
+    }, [expiredAtDate, isTerminalStatus]);
 
     useEffect(() => {
-        if (terminalStatuses.has(currentStatus)) {
+        if (isTerminalStatus) {
             return;
         }
 
@@ -158,7 +144,6 @@ export default function PaymentCheckout({
         const channelName = `transaction.${transaction.reference}`;
 
         echo.channel(channelName)
-            // Reverb Tripay
             .listen(
                 '.transaction.status.updated',
                 (event: TransactionStatusUpdatedEvent) => {
@@ -173,8 +158,6 @@ export default function PaymentCheckout({
                     }
                 },
             )
-
-            // Reverb Digiflazz
             .listen(
                 '.digiflazz.status.updated',
                 (event: DigiflazzStatusUpdatedEvent) => {
@@ -186,10 +169,10 @@ export default function PaymentCheckout({
         return () => {
             echo.leave(channelName);
         };
-    }, [transaction.reference, currentStatus]);
+    }, [transaction.reference, isTerminalStatus]);
 
     useEffect(() => {
-        if (terminalStatuses.has(currentStatus)) {
+        if (isTerminalStatus) {
             return;
         }
 
@@ -224,7 +207,41 @@ export default function PaymentCheckout({
         return () => {
             window.clearInterval(interval);
         };
-    }, [transaction.reference, currentStatus]);
+    }, [transaction.reference, isTerminalStatus]);
+
+    const formattedAmount = useMemo(
+        () =>
+            new Intl.NumberFormat('id-ID', {
+                style: 'currency',
+                currency: 'IDR',
+                minimumFractionDigits: 0,
+            }).format(transaction.amount),
+        [transaction.amount],
+    );
+
+    const countdown = useMemo(() => {
+        const hours = Math.floor(remainingSeconds / 3600)
+            .toString()
+            .padStart(2, '0');
+
+        const minutes = Math.floor((remainingSeconds % 3600) / 60)
+            .toString()
+            .padStart(2, '0');
+
+        const seconds = (remainingSeconds % 60).toString().padStart(2, '0');
+
+        return `${hours}:${minutes}:${seconds}`;
+    }, [remainingSeconds]);
+
+    const handleCopy = async () => {
+        if (!transaction.pay_code) return;
+
+        await navigator.clipboard.writeText(transaction.pay_code);
+
+        setCopied(true);
+
+        window.setTimeout(() => setCopied(false), 2000);
+    };
 
     const renderedInstructions = transaction.instructions.map(
         (instruction) => ({
@@ -392,25 +409,6 @@ export default function PaymentCheckout({
         return 'Fokuskan pembayaran ke kode bayar dan instruksi yang tersedia. Halaman ini tetap berada di website kamu.';
     }, [currentStatus, digiflazzStatus]);
 
-    const shouldShowPayCodeSection = !terminalStatuses.has(currentStatus);
-
-    // ✅ TAMBAHAN DANA: mendeteksi apakah metode pembayaran adalah DANA
-    const isDanaPayment =
-        transaction.payment_channel_code?.toUpperCase() === 'DANA' ||
-        transaction.payment_channel_name?.toLowerCase().includes('dana') ||
-        transaction.payment_method_name?.toLowerCase().includes('dana');
-
-    // ✅ AUTO REDIRECT KE DANA: Langsung redirect ke aplikasi DANA jika payment method adalah DANA
-    useEffect(() => {
-        if (
-            isDanaPayment &&
-            transaction.pay_url &&
-            !terminalStatuses.has(currentStatus)
-        ) {
-            window.location.href = transaction.pay_url;
-        }
-    }, [isDanaPayment, transaction.pay_url, currentStatus]);
-
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="Pembayaran" />
@@ -447,7 +445,7 @@ export default function PaymentCheckout({
                                 statusLabel={finalStatusLabel}
                                 showCountdown={
                                     Boolean(transaction.expired_at) &&
-                                    !terminalStatuses.has(currentStatus) &&
+                                    !isTerminalStatus &&
                                     digiflazzStatus !== 'Sukses' &&
                                     digiflazzStatus !== 'Gagal'
                                 }
@@ -470,35 +468,29 @@ export default function PaymentCheckout({
                                 </div>
                             )}
 
-                            {/* ✅ TAMBAHAN DANA:
-                                Jika metode DANA, jangan tampilkan PayCodeSection biasa
-                                karena DANA tidak pakai kode pembayaran seperti VA/Indomaret.
-                                Tampilkan tombol Bayar Sekarang jika pay_url tersedia.
-                            */}
-                            {shouldShowPayCodeSection && isDanaPayment ? (
+                            {shouldShowPayCodeSection && isRedirectPayment ? (
                                 <div className="rounded-2xl border border-slate-200 bg-white p-4 text-sm">
                                     <p className="font-semibold text-slate-900">
-                                        Lanjutkan Pembayaran DANA
+                                        Lanjutkan Pembayaran{' '}
+                                        {redirectPaymentName}
                                     </p>
 
                                     <p className="mt-2 text-slate-600">
                                         Klik tombol di bawah untuk membuka
-                                        halaman pembayaran DANA. Selesaikan
+                                        halaman pembayaran. Selesaikan
                                         pembayaran sebelum waktu habis.
                                     </p>
 
                                     {transaction.pay_url ? (
                                         <a
                                             href={transaction.pay_url}
-                                            target="_blank"
-                                            rel="noopener noreferrer"
                                             className="mt-4 inline-flex w-full items-center justify-center rounded-xl bg-slate-900 px-4 py-3 text-sm font-semibold text-white transition hover:bg-slate-800"
                                         >
                                             Bayar Sekarang
                                         </a>
                                     ) : (
                                         <div className="mt-4 rounded-xl bg-slate-50 p-4 text-slate-600">
-                                            Link pembayaran DANA belum tersedia.
+                                            Link pembayaran belum tersedia.
                                             Silakan tunggu beberapa saat atau
                                             buat transaksi baru jika tombol
                                             pembayaran tidak muncul.
