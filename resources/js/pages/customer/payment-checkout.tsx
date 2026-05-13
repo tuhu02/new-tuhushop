@@ -51,9 +51,10 @@ const statusLabelMap: Record<string, string> = {
     PAID: 'Pembayaran Berhasil',
     EXPIRED: 'Kedaluwarsa',
     FAILED: 'Gagal',
+    REFUND: 'Refund',
 };
 
-const terminalStatuses = new Set(['EXPIRED', 'FAILED']);
+const terminalStatuses = new Set(['EXPIRED', 'FAILED', 'REFUND']);
 
 type TransactionStatusUpdatedEvent = {
     status?: string;
@@ -79,8 +80,10 @@ export default function PaymentCheckout({
     const expiredAtDate = transaction.expired_at
         ? new Date(transaction.expired_at)
         : null;
+
     const [remainingSeconds, setRemainingSeconds] = useState(() => {
         if (!expiredAtDate) return 0;
+
         return Math.max(
             0,
             Math.floor((expiredAtDate.getTime() - Date.now()) / 1000),
@@ -103,6 +106,7 @@ export default function PaymentCheckout({
                 ),
             );
         }, 1000);
+
         return () => window.clearInterval(interval);
     }, [expiredAtDate, currentStatus]);
 
@@ -120,17 +124,23 @@ export default function PaymentCheckout({
         const hours = Math.floor(remainingSeconds / 3600)
             .toString()
             .padStart(2, '0');
+
         const minutes = Math.floor((remainingSeconds % 3600) / 60)
             .toString()
             .padStart(2, '0');
+
         const seconds = (remainingSeconds % 60).toString().padStart(2, '0');
+
         return `${hours}:${minutes}:${seconds}`;
     }, [remainingSeconds]);
 
     const handleCopy = async () => {
         if (!transaction.pay_code) return;
+
         await navigator.clipboard.writeText(transaction.pay_code);
+
         setCopied(true);
+
         window.setTimeout(() => setCopied(false), 2000);
     };
 
@@ -231,6 +241,7 @@ export default function PaymentCheckout({
             .filter((part) => part.length > 0)
             .map((part, index) => {
                 const boldMatch = part.match(/^<b>(.*?)<\/b>$/i);
+
                 if (boldMatch) {
                     return (
                         <strong
@@ -241,6 +252,7 @@ export default function PaymentCheckout({
                         </strong>
                     );
                 }
+
                 return <span key={index}>{part}</span>;
             });
     };
@@ -252,10 +264,21 @@ export default function PaymentCheckout({
         .filter(Boolean)
         .join(' ');
 
-    // ✅ DITAMBAH: label status utama mengikuti status Digiflazz
     const finalStatusLabel = useMemo(() => {
+        if (currentStatus === 'REFUND') {
+            return 'Refund';
+        }
+
+        if (currentStatus === 'EXPIRED') {
+            return 'Kedaluwarsa';
+        }
+
+        if (currentStatus === 'FAILED') {
+            return 'Gagal';
+        }
+
         if (digiflazzStatus === 'Sukses') {
-            return 'Transaksi Suskes';
+            return 'Transaksi Sukses';
         }
 
         if (digiflazzStatus === 'Gagal') {
@@ -274,12 +297,119 @@ export default function PaymentCheckout({
             return 3;
         }
 
-        if (currentStatus === 'PAID' || digiflazzStatus === 'Pending') {
+        if (
+            currentStatus === 'PAID' ||
+            digiflazzStatus === 'Pending' ||
+            digiflazzStatus === 'Gagal'
+        ) {
             return 2;
         }
 
         return 1;
     }, [currentStatus, digiflazzStatus]);
+
+    const pageTitle = useMemo(() => {
+        if (currentStatus === 'REFUND') {
+            return 'Pembayaran Dikembalikan';
+        }
+
+        if (currentStatus === 'EXPIRED') {
+            return 'Pembayaran Kedaluwarsa';
+        }
+
+        if (currentStatus === 'FAILED') {
+            return 'Pembayaran Gagal';
+        }
+
+        if (digiflazzStatus === 'Sukses') {
+            return 'Transaksi Berhasil';
+        }
+
+        if (digiflazzStatus === 'Gagal') {
+            return 'Transaksi Gagal';
+        }
+
+        if (currentStatus === 'PAID' || digiflazzStatus === 'Pending') {
+            return 'Transaksi Diproses';
+        }
+
+        return 'Selesaikan Pembayaran Anda';
+    }, [currentStatus, digiflazzStatus]);
+
+    const pageDescription = useMemo(() => {
+        if (currentStatus === 'REFUND') {
+            return 'Transaksi ini telah dikembalikan atau dibatalkan oleh sistem pembayaran.';
+        }
+
+        if (currentStatus === 'EXPIRED') {
+            return 'Waktu pembayaran telah habis. Silakan buat transaksi baru jika ingin melanjutkan.';
+        }
+
+        if (currentStatus === 'FAILED') {
+            return 'Pembayaran gagal diproses. Silakan coba lagi menggunakan metode pembayaran lain.';
+        }
+
+        if (digiflazzStatus === 'Sukses') {
+            return 'Transaksi berhasil diproses. Terima kasih sudah berbelanja.';
+        }
+
+        if (digiflazzStatus === 'Gagal') {
+            return 'Pembayaran berhasil diterima, tetapi proses top up gagal. Silakan hubungi admin untuk bantuan.';
+        }
+
+        if (currentStatus === 'PAID' || digiflazzStatus === 'Pending') {
+            return 'Pembayaran berhasil diterima. Pesanan kamu sedang diproses.';
+        }
+
+        return 'Silakan lakukan pembayaran menggunakan metode yang dipilih. Ikuti instruksi yang tersedia untuk menyelesaikan transaksi dengan aman.';
+    }, [currentStatus, digiflazzStatus]);
+
+    const bottomMessage = useMemo(() => {
+        if (currentStatus === 'REFUND') {
+            return 'Transaksi ini berstatus refund. Jika dana sudah terpotong, proses pengembalian mengikuti ketentuan metode pembayaran.';
+        }
+
+        if (currentStatus === 'EXPIRED') {
+            return 'Transaksi ini sudah kedaluwarsa. Silakan buat transaksi baru jika ingin melanjutkan pembayaran.';
+        }
+
+        if (currentStatus === 'FAILED') {
+            return 'Transaksi ini gagal diproses. Silakan buat transaksi baru atau gunakan metode pembayaran lain.';
+        }
+
+        if (digiflazzStatus === 'Sukses') {
+            return 'Transaksi berhasil. Simpan halaman ini sebagai bukti jika diperlukan.';
+        }
+
+        if (digiflazzStatus === 'Gagal') {
+            return 'Top up gagal diproses. Silakan hubungi admin dengan menyertakan nomor referensi transaksi.';
+        }
+
+        if (currentStatus === 'PAID' || digiflazzStatus === 'Pending') {
+            return 'Pembayaran sudah diterima. Mohon tunggu, pesanan sedang diproses oleh sistem.';
+        }
+
+        return 'Fokuskan pembayaran ke kode bayar dan instruksi yang tersedia. Halaman ini tetap berada di website kamu.';
+    }, [currentStatus, digiflazzStatus]);
+
+    const shouldShowPayCodeSection = !terminalStatuses.has(currentStatus);
+
+    // ✅ TAMBAHAN DANA: mendeteksi apakah metode pembayaran adalah DANA
+    const isDanaPayment =
+        transaction.payment_channel_code?.toUpperCase() === 'DANA' ||
+        transaction.payment_channel_name?.toLowerCase().includes('dana') ||
+        transaction.payment_method_name?.toLowerCase().includes('dana');
+
+    // ✅ AUTO REDIRECT KE DANA: Langsung redirect ke aplikasi DANA jika payment method adalah DANA
+    useEffect(() => {
+        if (
+            isDanaPayment &&
+            transaction.pay_url &&
+            !terminalStatuses.has(currentStatus)
+        ) {
+            window.location.href = transaction.pay_url;
+        }
+    }, [isDanaPayment, transaction.pay_url, currentStatus]);
 
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
@@ -300,13 +430,13 @@ export default function PaymentCheckout({
                             <p className="text-xs tracking-[0.28em] text-slate-300 uppercase">
                                 Pembayaran
                             </p>
+
                             <h1 className="mt-2 text-2xl font-semibold">
-                                Selesaikan Pembayaran Anda
+                                {pageTitle}
                             </h1>
+
                             <p className="mt-2 max-w-2xl text-sm text-slate-300">
-                                Silakan lakukan pembayaran menggunakan metode
-                                yang dipilih. Ikuti instruksi yang tersedia
-                                untuk menyelesaikan transaksi dengan aman.
+                                {pageDescription}
                             </p>
                         </div>
 
@@ -318,7 +448,8 @@ export default function PaymentCheckout({
                                 showCountdown={
                                     Boolean(transaction.expired_at) &&
                                     !terminalStatuses.has(currentStatus) &&
-                                    digiflazzStatus !== 'Sukses'
+                                    digiflazzStatus !== 'Sukses' &&
+                                    digiflazzStatus !== 'Gagal'
                                 }
                                 countdown={countdown}
                                 reference={transaction.reference}
@@ -339,31 +470,80 @@ export default function PaymentCheckout({
                                 </div>
                             )}
 
-                            <PayCodeSection
-                                paymentMethodName={
-                                    transaction.payment_method_name
-                                }
-                                paymentChannelName={
-                                    transaction.payment_channel_name
-                                }
-                                paymentChannelCode={
-                                    transaction.payment_channel_code
-                                }
-                                payCode={transaction.pay_code}
-                                payUrl={transaction.pay_url}
-                                qrString={transaction.qr_string}
-                                copied={copied}
-                                onCopy={handleCopy}
-                                hasInstructions={
-                                    renderedInstructions.length > 0
-                                }
-                                onOpenInstructions={() => setModalOpen(true)}
-                            />
+                            {/* ✅ TAMBAHAN DANA:
+                                Jika metode DANA, jangan tampilkan PayCodeSection biasa
+                                karena DANA tidak pakai kode pembayaran seperti VA/Indomaret.
+                                Tampilkan tombol Bayar Sekarang jika pay_url tersedia.
+                            */}
+                            {shouldShowPayCodeSection && isDanaPayment ? (
+                                <div className="rounded-2xl border border-slate-200 bg-white p-4 text-sm">
+                                    <p className="font-semibold text-slate-900">
+                                        Lanjutkan Pembayaran DANA
+                                    </p>
+
+                                    <p className="mt-2 text-slate-600">
+                                        Klik tombol di bawah untuk membuka
+                                        halaman pembayaran DANA. Selesaikan
+                                        pembayaran sebelum waktu habis.
+                                    </p>
+
+                                    {transaction.pay_url ? (
+                                        <a
+                                            href={transaction.pay_url}
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                            className="mt-4 inline-flex w-full items-center justify-center rounded-xl bg-slate-900 px-4 py-3 text-sm font-semibold text-white transition hover:bg-slate-800"
+                                        >
+                                            Bayar Sekarang
+                                        </a>
+                                    ) : (
+                                        <div className="mt-4 rounded-xl bg-slate-50 p-4 text-slate-600">
+                                            Link pembayaran DANA belum tersedia.
+                                            Silakan tunggu beberapa saat atau
+                                            buat transaksi baru jika tombol
+                                            pembayaran tidak muncul.
+                                        </div>
+                                    )}
+
+                                    {renderedInstructions.length > 0 && (
+                                        <button
+                                            type="button"
+                                            onClick={() => setModalOpen(true)}
+                                            className="mt-3 w-full rounded-xl border border-slate-200 px-4 py-3 text-sm font-medium text-slate-700 transition hover:bg-slate-50"
+                                        >
+                                            Lihat cara bayar
+                                        </button>
+                                    )}
+                                </div>
+                            ) : (
+                                shouldShowPayCodeSection && (
+                                    <PayCodeSection
+                                        paymentMethodName={
+                                            transaction.payment_method_name
+                                        }
+                                        paymentChannelName={
+                                            transaction.payment_channel_name
+                                        }
+                                        paymentChannelCode={
+                                            transaction.payment_channel_code
+                                        }
+                                        payCode={transaction.pay_code}
+                                        payUrl={transaction.pay_url}
+                                        qrString={transaction.qr_string}
+                                        copied={copied}
+                                        onCopy={handleCopy}
+                                        hasInstructions={
+                                            renderedInstructions.length > 0
+                                        }
+                                        onOpenInstructions={() =>
+                                            setModalOpen(true)
+                                        }
+                                    />
+                                )
+                            )}
 
                             <div className="rounded-2xl border border-dashed border-slate-300 p-4 text-sm text-slate-600">
-                                Fokuskan pembayaran ke kode bayar dan instruksi
-                                yang tersedia. Halaman ini tetap berada di
-                                website kamu.
+                                {bottomMessage}
                             </div>
                         </div>
                     </section>

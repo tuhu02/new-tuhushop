@@ -10,7 +10,6 @@ use App\Http\Controllers\Admin\ProductInstructionController;
 use App\Http\Controllers\Admin\PriceListCategoryController;
 use App\Http\Controllers\Admin\PaymentMethodController;
 use App\Http\Controllers\Admin\PaymentChannelController;
-use App\Http\Controllers\Admin\DigiflazzSyncController;
 use App\Http\Controllers\Admin\IconController;
 use App\Http\Controllers\Admin\ManualTransactionController;
 use App\Http\Controllers\Admin\TransactionController as AdminTransactionController;
@@ -64,7 +63,7 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
     Route::post('transactions/manual/{id}/process', [ManualTransactionController::class, 'process'])->name('transactions.manual.process');
 
     // Transactions
-    Route::resource('transactions', TransactionController::class)->only('index');
+    Route::resource('transactions', AdminTransactionController::class)->only('index');
 
     // Nested routes for product prices
     Route::post('products/{product}/prices/import', [ProductPriceController::class, 'import'])->name('products.prices.import');

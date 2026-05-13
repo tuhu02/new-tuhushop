@@ -5,9 +5,9 @@ import { useRef, useState } from 'react';
 import SecurityController from '@/actions/App/Http/Controllers/Settings/SecurityController';
 import Heading from '@/components/customer/heading';
 import InputError from '@/components/ui/input-error';
-import PasswordInput from '@/components/password-input';
-import TwoFactorRecoveryCodes from '@/components/two-factor-recovery-codes';
-import TwoFactorSetupModal from '@/components/two-factor-setup-modal';
+import PasswordInput from '@/components/ui/password-input';
+import TwoFactorRecoveryCodes from '@/components/customer/two-factor-recovery-codes';
+import TwoFactorSetupModal from '@/components/customer/two-factor-setup-modal';
 import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
 import { useTwoFactorAuth } from '@/hooks/use-two-factor-auth';
@@ -27,7 +27,7 @@ const breadcrumbs: BreadcrumbItem[] = [
     {
         title: 'Security settings',
         href: edit(),
-    },
+    },  
 ];
 
 export default function Security({

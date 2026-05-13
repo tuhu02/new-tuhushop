@@ -53,12 +53,24 @@ class TransactionController extends Controller
             $transaction->refresh();
 
             if ($previousStatus !== (string) $transaction->status) {
-                broadcast(new DigiflazzStatusUpdated(
+                broadcast(new TransactionStatusUpdated(
                     reference: (string) $transaction->reference,
+                    status: (string) $transaction->status,
                     merchantRef: (string) $transaction->merchant_ref,
-                    digiflazzStatus: $transaction->digiflazz_status,
-                    digiflazzSn: $transaction->digiflazz_sn,
                 ));
+            }
+
+            $status = strtoupper((string) ($data['status'] ?? ''));
+
+            if (in_array($status, ['EXPIRED', 'FAILED', 'REFUND'], true)) {
+                Log::info('TRANSAKSI TIDAK DIBAYAR / GAGAL', [
+                    'transaction_id' => $transaction->id,
+                    'reference' => $transaction->reference,
+                    'merchant_ref' => $transaction->merchant_ref,
+                    'status' => $transaction->status,
+                ]);
+
+                return response()->json(['success' => true]);
             }
         }
 
@@ -296,6 +308,11 @@ class TransactionController extends Controller
                 'amount' => $transaction->amount,
                 'pay_code' => $transaction->pay_code,
                 'pay_url' => $transaction->pay_url
+                    ?? $transaction->checkout_url
+                    ?? data_get($transaction->raw_response, 'pay_url')
+                    ?? data_get($transaction->raw_response, 'checkout_url')
+                    ?? data_get($transaction->raw_response, 'payment_url')
+                    ?? data_get($transaction->raw_response, 'deeplink_url')
                     ?? data_get($transaction->raw_response, 'qr_url')
                     ?? null,
                 'qr_string' => data_get($transaction->raw_response, 'qr_string'),
@@ -311,10 +328,8 @@ class TransactionController extends Controller
 
     public function digiflazzCallback(Request $request)
     {
-        // ✅ 1. LOG MASUK
         Log::info('DIGIFLAZZ CALLBACK MASUK', $request->all());
 
-        // ✅ 2. VALIDASI SIGNATURE (TARUH DI SINI)
         $signature = $request->header('X-Hub-Signature');
 
         $expected = md5(
@@ -331,7 +346,6 @@ class TransactionController extends Controller
             return response()->json(['message' => 'Invalid signature'], 403);
         }
 
-        // ✅ 3. BARU PROSES DATA
         $data = $request->all();
 
         $refId = data_get($data, 'data.ref_id');
@@ -350,7 +364,6 @@ class TransactionController extends Controller
             return response()->json(['success' => false]);
         }
 
-        // update data
         $previousDigiflazzStatus = $transaction->digiflazz_status;
         
         $transaction->update([
@@ -359,7 +372,6 @@ class TransactionController extends Controller
             'digiflazz_response' => $data,
         ]);
 
-        // Send invoice email if status changed to Sukses and not sent before
         if ($previousDigiflazzStatus !== 'Sukses' && $transaction->digiflazz_status === 'Sukses') {
             $this->sendInvoiceEmail($transaction);
         }
@@ -379,20 +391,36 @@ class TransactionController extends Controller
      */
     private function sendInvoiceEmail(Transaction $transaction): void
     {
+        $email = $transaction->customer_email;
+
+        if (
+            !$email ||
+            !filter_var($email, FILTER_VALIDATE_EMAIL) ||
+            in_array(strtolower($email), ['customer@email.com', 'guest@email.com'], true)
+        ) {
+            Log::info('Invoice email skipped: guest/no valid email', [
+                'transaction_id' => $transaction->id,
+                'merchant_ref' => $transaction->merchant_ref,
+                'customer_email' => $email,
+            ]);
+
+            return;
+        }
+
         try {
-            // Dispatch email to queue for async sending
-            Mail::to($transaction->customer_email)
+            Mail::to($email)
                 ->queue(new TransactionInvoiceMail($transaction));
 
             Log::info('Invoice email queued', [
                 'transaction_id' => $transaction->id,
                 'merchant_ref' => $transaction->merchant_ref,
-                'customer_email' => $transaction->customer_email,
+                'customer_email' => $email,
             ]);
         } catch (\Exception $e) {
             Log::error('Failed to send invoice email', [
                 'transaction_id' => $transaction->id,
                 'merchant_ref' => $transaction->merchant_ref,
+                'customer_email' => $email,
                 'error' => $e->getMessage(),
             ]);
         }
