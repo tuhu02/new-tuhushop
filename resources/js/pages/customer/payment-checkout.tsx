@@ -421,24 +421,24 @@ export default function PaymentCheckout({
                 renderStep={renderInstructionStep}
             />
 
-            <div className="px-4 py-6">
-                <div className="mx-auto max-w-2xl">
-                    <section className="overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-sm">
-                        <div className="border-b border-slate-100 bg-linear-to-r from-slate-900 via-slate-800 to-slate-900 px-6 py-6 text-white">
-                            <p className="text-xs tracking-[0.28em] text-slate-300 uppercase">
+            <div className="px-4 py-6 sm:px-6 sm:py-8 lg:px-8">
+                <div className="mx-auto w-full max-w-3xl">
+                    <section className="overflow-hidden rounded-4xl border border-slate-200 bg-white shadow-xl shadow-slate-200/60">
+                        <div className="border-b border-slate-100 bg-linear-to-r from-slate-950 via-slate-900 to-slate-800 px-6 py-7 text-white sm:px-8 sm:py-8">
+                            <p className="text-[0.7rem] tracking-[0.3em] text-slate-300 uppercase">
                                 Pembayaran
                             </p>
 
-                            <h1 className="mt-2 text-2xl font-semibold">
+                            <h1 className="mt-2 text-2xl font-semibold sm:text-3xl">
                                 {pageTitle}
                             </h1>
 
-                            <p className="mt-2 max-w-2xl text-sm text-slate-300">
+                            <p className="mt-2 max-w-2xl text-sm leading-6 text-slate-300 sm:text-[15px]">
                                 {pageDescription}
                             </p>
                         </div>
 
-                        <div className="space-y-5 p-6">
+                        <div className="space-y-6 p-5 sm:p-6">
                             <CheckoutStageBar checkoutStage={checkoutStage} />
 
                             <TransactionInfoCard
@@ -455,7 +455,7 @@ export default function PaymentCheckout({
                             />
 
                             {digiflazzStatus && (
-                                <div className="rounded-2xl border border-slate-200 bg-slate-50 p-4 text-sm">
+                                <div className="rounded-2xl border border-slate-200 bg-slate-50 p-4 text-sm shadow-sm">
                                     <p className="font-semibold text-slate-900">
                                         Status Top Up: {digiflazzStatus}
                                     </p>
@@ -534,7 +534,7 @@ export default function PaymentCheckout({
                                 )
                             )}
 
-                            <div className="rounded-2xl border border-dashed border-slate-300 p-4 text-sm text-slate-600">
+                            <div className="rounded-2xl border border-dashed border-slate-300 bg-slate-50/80 p-4 text-sm leading-6 text-slate-600">
                                 {bottomMessage}
                             </div>
                         </div>
