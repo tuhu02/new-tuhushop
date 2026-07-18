@@ -27,8 +27,8 @@ export default function CarouselHero({ carousels }: CarouselHeroProps) {
         setActiveIndex(index);
 
         if (intervalRef.current) {
-clearInterval(intervalRef.current);
-}
+            clearInterval(intervalRef.current);
+        }
 
         intervalRef.current = setInterval(() => {
             setActiveIndex((prev) => (prev + 1) % carousels.length);
@@ -37,8 +37,8 @@ clearInterval(intervalRef.current);
 
     useEffect(() => {
         if (carousels.length <= 1) {
-return;
-}
+            return;
+        }
 
         intervalRef.current = setInterval(() => {
             setActiveIndex((prev) => (prev + 1) % carousels.length);
@@ -46,14 +46,14 @@ return;
 
         return () => {
             if (intervalRef.current) {
-clearInterval(intervalRef.current);
-}
+                clearInterval(intervalRef.current);
+            }
         };
     }, [carousels.length]);
 
     if (carousels.length === 0) {
-return null;
-}
+        return null;
+    }
 
     const active = carousels[activeIndex];
 

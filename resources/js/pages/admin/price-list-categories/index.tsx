@@ -83,7 +83,7 @@ export default function PriceListCategoryIndex({
                                         <span
                                             className={
                                                 category.is_active
-                                                    ? 'text-sm font-medium text-black-600'
+                                                    ? 'text-black-600 text-sm font-medium'
                                                     : 'text-sm font-medium text-red-600'
                                             }
                                         >

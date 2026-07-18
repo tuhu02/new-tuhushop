@@ -43,7 +43,9 @@ export default function DataTargetSection({
                 <div className="flex h-6 w-6 items-center justify-center rounded-full bg-accent-foreground text-accent">
                     1
                 </div>
-                <span className="dark:text-slate-100">Masukkan Data Tujuan</span>
+                <span className="dark:text-slate-100">
+                    Masukkan Data Tujuan
+                </span>
             </div>
 
             <div className="space-y-3">

@@ -52,15 +52,35 @@ export default function TransactionIndex({
     const getStatusBadge = (status: string) => {
         switch (status) {
             case 'PAID':
-                return <span className="inline-flex items-center rounded-md bg-green-50 px-2 py-1 text-xs font-medium text-green-700 ring-1 ring-inset ring-green-600/20">PAID</span>;
+                return (
+                    <span className="inline-flex items-center rounded-md bg-green-50 px-2 py-1 text-xs font-medium text-green-700 ring-1 ring-green-600/20 ring-inset">
+                        PAID
+                    </span>
+                );
             case 'UNPAID':
-                return <span className="inline-flex items-center rounded-md bg-yellow-50 px-2 py-1 text-xs font-medium text-yellow-800 ring-1 ring-inset ring-yellow-600/20">UNPAID</span>;
+                return (
+                    <span className="inline-flex items-center rounded-md bg-yellow-50 px-2 py-1 text-xs font-medium text-yellow-800 ring-1 ring-yellow-600/20 ring-inset">
+                        UNPAID
+                    </span>
+                );
             case 'EXPIRED':
-                return <span className="inline-flex items-center rounded-md bg-red-50 px-2 py-1 text-xs font-medium text-red-700 ring-1 ring-inset ring-red-600/10">EXPIRED</span>;
+                return (
+                    <span className="inline-flex items-center rounded-md bg-red-50 px-2 py-1 text-xs font-medium text-red-700 ring-1 ring-red-600/10 ring-inset">
+                        EXPIRED
+                    </span>
+                );
             case 'FAILED':
-                return <span className="inline-flex items-center rounded-md bg-red-50 px-2 py-1 text-xs font-medium text-red-700 ring-1 ring-inset ring-red-600/10">FAILED</span>;
+                return (
+                    <span className="inline-flex items-center rounded-md bg-red-50 px-2 py-1 text-xs font-medium text-red-700 ring-1 ring-red-600/10 ring-inset">
+                        FAILED
+                    </span>
+                );
             default:
-                return <span className="inline-flex items-center rounded-md bg-gray-50 px-2 py-1 text-xs font-medium text-gray-600 ring-1 ring-inset ring-gray-500/10">{status}</span>;
+                return (
+                    <span className="inline-flex items-center rounded-md bg-gray-50 px-2 py-1 text-xs font-medium text-gray-600 ring-1 ring-gray-500/10 ring-inset">
+                        {status}
+                    </span>
+                );
         }
     };
 
@@ -76,12 +96,24 @@ export default function TransactionIndex({
                         <thead className="bg-muted/40">
                             <tr>
                                 <th className="px-4 py-3 font-medium">Ref</th>
-                                <th className="px-4 py-3 font-medium">Customer</th>
-                                <th className="px-4 py-3 font-medium">Produk</th>
-                                <th className="px-4 py-3 font-medium">Pembayaran</th>
-                                <th className="px-4 py-3 font-medium">Nominal</th>
-                                <th className="px-4 py-3 font-medium">Status</th>
-                                <th className="px-4 py-3 font-medium">Tanggal</th>
+                                <th className="px-4 py-3 font-medium">
+                                    Customer
+                                </th>
+                                <th className="px-4 py-3 font-medium">
+                                    Produk
+                                </th>
+                                <th className="px-4 py-3 font-medium">
+                                    Pembayaran
+                                </th>
+                                <th className="px-4 py-3 font-medium">
+                                    Nominal
+                                </th>
+                                <th className="px-4 py-3 font-medium">
+                                    Status
+                                </th>
+                                <th className="px-4 py-3 font-medium">
+                                    Tanggal
+                                </th>
                             </tr>
                         </thead>
                         <tbody>
@@ -104,15 +136,25 @@ export default function TransactionIndex({
                                         {transaction.reference}
                                     </td>
                                     <td className="px-4 py-3">
-                                        <div className="font-medium">{transaction.customer_name || '-'}</div>
-                                        <div className="text-xs text-muted-foreground">{transaction.customer_phone || '-'}</div>
+                                        <div className="font-medium">
+                                            {transaction.customer_name || '-'}
+                                        </div>
+                                        <div className="text-xs text-muted-foreground">
+                                            {transaction.customer_phone || '-'}
+                                        </div>
                                     </td>
                                     <td className="px-4 py-3">
-                                        <div className="font-medium">{transaction.product?.name || '-'}</div>
-                                        <div className="text-xs text-muted-foreground">{transaction.product_price?.name || '-'}</div>
+                                        <div className="font-medium">
+                                            {transaction.product?.name || '-'}
+                                        </div>
+                                        <div className="text-xs text-muted-foreground">
+                                            {transaction.product_price?.name ||
+                                                '-'}
+                                        </div>
                                     </td>
                                     <td className="px-4 py-3">
-                                        {transaction.payment_channel?.name || '-'}
+                                        {transaction.payment_channel?.name ||
+                                            '-'}
                                     </td>
                                     <td className="px-4 py-3 font-medium">
                                         {formatCurrency(transaction.amount)}

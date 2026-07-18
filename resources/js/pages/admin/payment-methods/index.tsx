@@ -73,10 +73,10 @@ export default function PaymentMethodIndex({
                                             <img
                                                 src={paymentMethod.logo_url}
                                                 alt={paymentMethod.name}
-                                                className="h-10 w-10 object-cover rounded"
+                                                className="h-10 w-10 rounded object-cover"
                                             />
                                         ) : (
-                                            <div className="h-10 w-10 bg-slate-200 rounded" />
+                                            <div className="h-10 w-10 rounded bg-slate-200" />
                                         )}
                                     </td>
                                     <td className="px-4 py-3">
@@ -123,4 +123,3 @@ export default function PaymentMethodIndex({
         </AdminLayout>
     );
 }
-

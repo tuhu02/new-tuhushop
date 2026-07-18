@@ -59,7 +59,7 @@ export default function PaymentSection({
                                 </button>
 
                                 {isOpen && (
-                                    <div className="grid grid-cols-2 gap-2 border-t border-slate-200 p-3 dark:border-slate-700 md:grid-cols-3">
+                                    <div className="grid grid-cols-2 gap-2 border-t border-slate-200 p-3 md:grid-cols-3 dark:border-slate-700">
                                         {method.channels.length === 0 ? (
                                             <p className="col-span-2 text-xs text-slate-500 dark:text-slate-400">
                                                 Tidak ada channel

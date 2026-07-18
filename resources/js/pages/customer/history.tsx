@@ -59,7 +59,8 @@ export default function History({
                             Histori Transaksi
                         </h1>
                         <p className="text-sm text-muted-foreground">
-                            Pantau status pembayaran dan lihat detail setiap transaksi di sini.
+                            Pantau status pembayaran dan lihat detail setiap
+                            transaksi di sini.
                         </p>
                     </div>
 
@@ -72,7 +73,8 @@ export default function History({
                                 Belum ada transaksi
                             </h2>
                             <p className="mt-2 max-w-md text-sm leading-6 text-slate-500 dark:text-slate-400">
-                                Riwayat transaksi kamu akan muncul di sini. Mulai top up game favorit kamu sekarang.
+                                Riwayat transaksi kamu akan muncul di sini.
+                                Mulai top up game favorit kamu sekarang.
                             </p>
                             <Button
                                 className="mt-6 rounded-full bg-blue-800 px-8 font-semibold text-white hover:bg-blue-900"
@@ -95,9 +97,13 @@ export default function History({
                                             <span className="font-medium">
                                                 {transaction.merchant_ref}
                                             </span>
-                                            <span className="text-muted-foreground/40">•</span>
+                                            <span className="text-muted-foreground/40">
+                                                •
+                                            </span>
                                             <span>
-                                                {new Date(transaction.created_at).toLocaleDateString('id-ID', {
+                                                {new Date(
+                                                    transaction.created_at,
+                                                ).toLocaleDateString('id-ID', {
                                                     day: 'numeric',
                                                     month: 'short',
                                                     year: 'numeric',
@@ -113,11 +119,18 @@ export default function History({
 
                                         <div className="flex flex-wrap items-center gap-2 text-sm font-medium text-slate-700 dark:text-slate-200">
                                             <span>
-                                                Rp {new Intl.NumberFormat('id-ID').format(transaction.amount)}
+                                                Rp{' '}
+                                                {new Intl.NumberFormat(
+                                                    'id-ID',
+                                                ).format(transaction.amount)}
                                             </span>
-                                            <span className="text-muted-foreground/40">•</span>
+                                            <span className="text-muted-foreground/40">
+                                                •
+                                            </span>
                                             <span className="text-muted-foreground">
-                                                {transaction.payment_method_name}
+                                                {
+                                                    transaction.payment_method_name
+                                                }
                                             </span>
                                         </div>
                                     </div>
@@ -137,7 +150,9 @@ export default function History({
                                                         transaction.digiflazz_status,
                                                     )}`}
                                                 >
-                                                    {transaction.digiflazz_status}
+                                                    {
+                                                        transaction.digiflazz_status
+                                                    }
                                                 </div>
                                             )}
                                         </div>
@@ -149,7 +164,9 @@ export default function History({
                                             asChild
                                         >
                                             {/* @ts-expect-error - The route name is dynamic and checking type is complicated */}
-                                            <Link href={`/checkout/${transaction.merchant_ref}`}>
+                                            <Link
+                                                href={`/checkout/${transaction.merchant_ref}`}
+                                            >
                                                 Lihat Detail
                                                 <ArrowRight className="ml-1 h-3.5 w-3.5 transition-transform group-hover:translate-x-1" />
                                             </Link>

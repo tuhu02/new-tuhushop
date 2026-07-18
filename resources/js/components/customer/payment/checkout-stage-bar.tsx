@@ -15,7 +15,9 @@ const stageSteps: Array<{
     { label: 'Selesai', icon: 'done' },
 ];
 
-export default function CheckoutStageBar({ checkoutStage }: CheckoutStageBarProps) {
+export default function CheckoutStageBar({
+    checkoutStage,
+}: CheckoutStageBarProps) {
     return (
         <div className="rounded-2xl bg-slate-100 px-4 py-4">
             <div className="grid grid-cols-3 items-center">
@@ -27,7 +29,10 @@ export default function CheckoutStageBar({ checkoutStage }: CheckoutStageBarProp
                         : 'bg-slate-400 text-white';
 
                     return (
-                        <div key={step.label} className="relative flex justify-center">
+                        <div
+                            key={step.label}
+                            className="relative flex justify-center"
+                        >
                             {index > 0 ? (
                                 <span className="absolute top-1/2 left-0 h-1 w-1/2 -translate-y-1/2 rounded-full bg-slate-300" />
                             ) : null}

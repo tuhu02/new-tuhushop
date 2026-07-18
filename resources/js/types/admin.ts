@@ -95,7 +95,7 @@ export type PriceListCategory = {
     description: string | null;
     order: number;
     is_active: boolean;
-}
+};
 
 export type PaginatedData = {
     data: PriceListCategory[];
@@ -105,16 +105,16 @@ export type PaginatedData = {
     total: number;
     from: number;
     to: number;
-}
+};
 
 // Price List Categories Pages
 export type PriceListCategoryIndexProps = {
     categories: PaginatedData;
-}
+};
 
 export type PriceListCategoryEditProps = {
     category: PriceListCategory;
-}
+};
 export type PaymentMethod = {
     id: number;
     name: string;
@@ -145,4 +145,3 @@ export type PaymentChannel = {
     is_active: boolean;
     payment_method?: PaymentMethodOption | null;
 };
-

@@ -12,7 +12,10 @@ export function AppContent({ variant = 'sidebar', children, ...props }: Props) {
 
     if (variant === 'sidebar') {
         return (
-            <SidebarInset className={cn('overflow-x-hidden', className)} {...restProps}>
+            <SidebarInset
+                className={cn('overflow-x-hidden', className)}
+                {...restProps}
+            >
                 {children}
             </SidebarInset>
         );

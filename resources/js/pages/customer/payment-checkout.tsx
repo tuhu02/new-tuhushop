@@ -1,8 +1,8 @@
 import { Head } from '@inertiajs/react';
-import { useEffect, useMemo, useState  } from 'react';
-import type {ReactNode} from 'react';
+import { useEffect, useMemo, useState } from 'react';
+import type { ReactNode } from 'react';
 import CheckoutStageBar from '@/components/customer/payment/checkout-stage-bar';
-import type {CheckoutStage} from '@/components/customer/payment/checkout-stage-bar';
+import type { CheckoutStage } from '@/components/customer/payment/checkout-stage-bar';
 import InstructionModal from '@/components/customer/payment/instruction-modal';
 import PayCodeSection from '@/components/customer/payment/pay-code-section';
 import TransactionInfoCard from '@/components/customer/payment/transaction-info-card';
@@ -85,16 +85,14 @@ export default function PaymentCheckout({
 
     const expiredAtDate = useMemo(
         () =>
-            transaction.expired_at
-                ? new Date(transaction.expired_at)
-                : null,
+            transaction.expired_at ? new Date(transaction.expired_at) : null,
         [transaction.expired_at],
     );
 
     const [remainingSeconds, setRemainingSeconds] = useState(() => {
         if (!transaction.expired_at) {
-return 0;
-}
+            return 0;
+        }
 
         const expiredAt = new Date(transaction.expired_at);
 
@@ -120,8 +118,8 @@ return 0;
 
     useEffect(() => {
         if (!expiredAtDate || isTerminalStatus) {
-return;
-}
+            return;
+        }
 
         const interval = window.setInterval(() => {
             setRemainingSeconds(
@@ -155,8 +153,8 @@ return;
                     const latestStatus = event.status;
 
                     if (!latestStatus) {
-return;
-}
+                        return;
+                    }
 
                     setCurrentStatus(latestStatus);
 
@@ -246,8 +244,8 @@ return;
 
     const handleCopy = async () => {
         if (!transaction.pay_code) {
-return;
-}
+            return;
+        }
 
         await navigator.clipboard.writeText(transaction.pay_code);
 

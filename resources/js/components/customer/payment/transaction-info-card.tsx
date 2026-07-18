@@ -17,7 +17,9 @@ export default function TransactionInfoCard({
         <div className="grid gap-3 rounded-2xl border border-slate-200 bg-slate-50 p-4 sm:grid-cols-2">
             <div>
                 <p className="text-xs text-slate-500">Status</p>
-                <p className="text-lg font-semibold text-slate-900">{statusLabel}</p>
+                <p className="text-lg font-semibold text-slate-900">
+                    {statusLabel}
+                </p>
             </div>
             <div>
                 <p className="text-xs text-slate-500">Sisa waktu</p>
@@ -31,7 +33,9 @@ export default function TransactionInfoCard({
             </div>
             <div>
                 <p className="text-xs text-slate-500">Total Bayar</p>
-                <p className="text-lg font-semibold text-slate-900">{formattedAmount}</p>
+                <p className="text-lg font-semibold text-slate-900">
+                    {formattedAmount}
+                </p>
             </div>
         </div>
     );

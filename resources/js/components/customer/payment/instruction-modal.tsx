@@ -1,5 +1,5 @@
-import { useEffect, useRef, useState  } from 'react';
-import type {ReactNode} from 'react';
+import { useEffect, useRef, useState } from 'react';
+import type { ReactNode } from 'react';
 import AccordionItem from '@/components/customer/payment/accordion-item';
 
 type PaymentInstruction = {
@@ -27,13 +27,13 @@ export default function InstructionModal({
 
     useEffect(() => {
         if (!open) {
-return;
-}
+            return;
+        }
 
         const handleKey = (e: KeyboardEvent) => {
             if (e.key === 'Escape') {
-onClose();
-}
+                onClose();
+            }
         };
         window.addEventListener('keydown', handleKey);
 
@@ -49,16 +49,16 @@ onClose();
     }, [open]);
 
     if (!open) {
-return null;
-}
+        return null;
+    }
 
     return (
         <div
             ref={backdropRef}
             onClick={(e) => {
                 if (e.target === backdropRef.current) {
-onClose();
-}
+                    onClose();
+                }
             }}
             className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 px-4 backdrop-blur-sm"
         >

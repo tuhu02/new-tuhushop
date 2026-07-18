@@ -27,8 +27,8 @@ function QrCanvas({
 
     useEffect(() => {
         if (!canvasRef.current) {
-return;
-}
+            return;
+        }
 
         QRCode.toCanvas(canvasRef.current, qrString, {
             width: size,

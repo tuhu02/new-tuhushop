@@ -165,15 +165,15 @@ export default function ProductShow({
                                 disabled={isManualProduct}
                                 onIncrease={() => {
                                     if (isManualProduct) {
-return;
-}
+                                        return;
+                                    }
 
                                     setQuantity((prev) => prev + 1);
                                 }}
                                 onDecrease={() => {
                                     if (isManualProduct) {
-return;
-}
+                                        return;
+                                    }
 
                                     setQuantity((prev) =>
                                         Math.max(1, prev - 1),
@@ -204,7 +204,9 @@ return;
                                     <div className="flex h-6 w-6 items-center justify-center rounded-full bg-accent-foreground text-accent">
                                         5
                                     </div>
-                                    <span className="dark:text-slate-100">Nomor WhatsApp</span>
+                                    <span className="dark:text-slate-100">
+                                        Nomor WhatsApp
+                                    </span>
                                 </div>
 
                                 <input

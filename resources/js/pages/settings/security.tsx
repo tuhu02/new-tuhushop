@@ -27,7 +27,7 @@ const breadcrumbs: BreadcrumbItem[] = [
     {
         title: 'Security settings',
         href: edit(),
-    },  
+    },
 ];
 
 export default function Security({

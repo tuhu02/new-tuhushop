@@ -45,7 +45,7 @@ export default function NominalSection({
     const hasMoreItems = visibleCount < priceItems.length;
 
     return (
-        <section className="rounded-2xl border border-slate-200 bg-white p-3 shadow-sm dark:border-slate-800 dark:bg-slate-900 sm:p-4">
+        <section className="rounded-2xl border border-slate-200 bg-white p-3 shadow-sm sm:p-4 dark:border-slate-800 dark:bg-slate-900">
             <div className="mb-3 flex items-center gap-2">
                 <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-slate-900 text-xs font-bold text-white dark:bg-slate-200 dark:text-slate-900">
                     2
@@ -112,7 +112,7 @@ export default function NominalSection({
 
                             <div className="flex min-h-[86px] flex-col justify-between p-2.5 sm:min-h-[92px] sm:p-3">
                                 <div className="flex items-start justify-between gap-2">
-                                    <p className="line-clamp-2 pr-2 text-[14px] leading-snug font-bold text-slate-900 dark:text-slate-100 sm:text-base">
+                                    <p className="line-clamp-2 pr-2 text-[14px] leading-snug font-bold text-slate-900 sm:text-base dark:text-slate-100">
                                         {price.display_name}
                                     </p>
                                     <img
@@ -126,7 +126,7 @@ export default function NominalSection({
                                     />
                                 </div>
 
-                                <p className="mt-3 text-[13px] leading-tight text-slate-900 dark:text-slate-200 sm:text-sm">
+                                <p className="mt-3 text-[13px] leading-tight text-slate-900 sm:text-sm dark:text-slate-200">
                                     {formatRupiah(price.price)}
                                 </p>
                             </div>
@@ -153,7 +153,7 @@ export default function NominalSection({
                                 ),
                             )
                         }
-                        className="w-full rounded-xl border border-slate-300 bg-white px-4 py-2.5 text-xs font-bold text-slate-700 transition hover:border-blue-600 hover:text-blue-600 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-300 dark:hover:border-blue-500 dark:hover:text-blue-400 sm:w-auto"
+                        className="w-full rounded-xl border border-slate-300 bg-white px-4 py-2.5 text-xs font-bold text-slate-700 transition hover:border-blue-600 hover:text-blue-600 sm:w-auto dark:border-slate-700 dark:bg-slate-900 dark:text-slate-300 dark:hover:border-blue-500 dark:hover:text-blue-400"
                     >
                         Tampilkan Lebih Banyak
                     </button>
