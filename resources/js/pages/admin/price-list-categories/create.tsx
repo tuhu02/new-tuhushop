@@ -1,7 +1,7 @@
 import { Link, useForm } from '@inertiajs/react';
-import { FormEvent } from 'react';
+import { ChevronLeft } from 'lucide-react';
+import type { FormEvent } from 'react';
 import { Button } from '@/components/ui/button';
-import AdminLayout from '@/layouts/admin-layout';
 import {
     Card,
     CardContent,
@@ -9,7 +9,7 @@ import {
     CardHeader,
     CardTitle,
 } from '@/components/ui/card';
-import { ChevronLeft } from 'lucide-react';
+import AdminLayout from '@/layouts/admin-layout';
 
 export default function PriceListCategoryCreate() {
     const { data, setData, post, processing, errors } = useForm({

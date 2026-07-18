@@ -1,4 +1,3 @@
-import * as React from 'react';
 import {
     IconCarouselHorizontal,
     IconChartBar,
@@ -13,8 +12,8 @@ import {
     IconUsers,
     IconPhoto,
     IconReceipt,
-    IconNews,
 } from '@tabler/icons-react';
+import * as React from 'react';
 
 import { NavMain } from '@/components/admin/nav-main';
 import { NavUser } from '@/components/admin/nav-user';

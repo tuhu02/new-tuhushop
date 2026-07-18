@@ -1,11 +1,11 @@
 import { Form, Head } from '@inertiajs/react';
-import InputError from '@/components/ui/input-error';
-import PasswordInput from '@/components/ui/password-input';
-import TextLink from '@/components/ui/text-link';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
+import InputError from '@/components/ui/input-error';
 import { Label } from '@/components/ui/label';
+import PasswordInput from '@/components/ui/password-input';
 import { Spinner } from '@/components/ui/spinner';
+import TextLink from '@/components/ui/text-link';
 import AuthLayout from '@/layouts/auth-layout';
 import { login } from '@/routes';
 import { store } from '@/routes/register';

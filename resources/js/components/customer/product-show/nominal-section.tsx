@@ -1,7 +1,7 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useMemo, useState } from 'react';
 
-import type { PriceByCategory, ProductPriceItem } from '@/types';
 import { cn } from '@/lib/utils';
+import type { PriceByCategory, ProductPriceItem } from '@/types';
 
 import { formatRupiah } from './utils';
 
@@ -29,11 +29,14 @@ export default function NominalSection({
     selectedPriceId,
     onSelectPrice,
 }: NominalSectionProps) {
+    const listKey = `${selectedCategoryId}:${priceItems.map((price) => price.id).join(',')}`;
     const [visibleCount, setVisibleCount] = useState(INITIAL_VISIBLE_ITEMS);
+    const [prevListKey, setPrevListKey] = useState(listKey);
 
-    useEffect(() => {
+    if (listKey !== prevListKey) {
+        setPrevListKey(listKey);
         setVisibleCount(INITIAL_VISIBLE_ITEMS);
-    }, [selectedCategoryId, priceItems]);
+    }
 
     const visiblePriceItems = useMemo(() => {
         return priceItems.slice(0, visibleCount);

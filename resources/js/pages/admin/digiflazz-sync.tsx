@@ -1,6 +1,12 @@
+import {
+    AlertCircle,
+    CheckCircle2,
+    Loader2,
+    RefreshCw,
+    AlertTriangle,
+} from 'lucide-react';
 import { useState } from 'react';
-import { router } from '@inertiajs/react';
-import AdminLayout from '@/layouts/admin-layout';
+import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Button } from '@/components/ui/button';
 import {
     Card,
@@ -9,14 +15,7 @@ import {
     CardHeader,
     CardTitle,
 } from '@/components/ui/card';
-import { Alert, AlertDescription } from '@/components/ui/alert';
-import {
-    AlertCircle,
-    CheckCircle2,
-    Loader2,
-    RefreshCw,
-    AlertTriangle,
-} from 'lucide-react';
+import AdminLayout from '@/layouts/admin-layout';
 
 interface SyncStats {
     total_products: number;
@@ -121,6 +120,7 @@ export default function DigiflazzSyncPage() {
             });
 
             const data = await response.json();
+
             if (data.success && data.stats) {
                 setStats(data.stats);
             }

@@ -1,6 +1,6 @@
-import { CardProductProps } from '@/types';
 import { Link } from '@inertiajs/react';
 import { show } from '@/routes/product';
+import type { CardProductProps } from '@/types';
 
 export default function CardProduct({
     title,

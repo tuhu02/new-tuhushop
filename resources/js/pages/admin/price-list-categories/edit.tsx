@@ -1,7 +1,7 @@
 import { Link, useForm } from '@inertiajs/react';
-import { FormEvent } from 'react';
+import { ChevronLeft } from 'lucide-react';
+import type { FormEvent } from 'react';
 import { Button } from '@/components/ui/button';
-import AdminLayout from '@/layouts/admin-layout';
 import {
     Card,
     CardContent,
@@ -9,8 +9,8 @@ import {
     CardHeader,
     CardTitle,
 } from '@/components/ui/card';
-import { ChevronLeft } from 'lucide-react';
-import { PriceListCategoryEditProps } from '@/types/admin';
+import AdminLayout from '@/layouts/admin-layout';
+import type { PriceListCategoryEditProps } from '@/types/admin';
 
 export default function PriceListCategoryEdit({
     category,

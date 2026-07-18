@@ -1,7 +1,7 @@
 import { Head, Link } from '@inertiajs/react';
 import { ArrowRight, Package } from 'lucide-react';
-import AppLayout from '@/layouts/app-layout';
 import { Button } from '@/components/ui/button';
+import AppLayout from '@/layouts/app-layout';
 import { history, dashboard } from '@/routes';
 import type { BreadcrumbItem } from '@/types';
 
@@ -148,7 +148,7 @@ export default function History({
                                             className="group w-full rounded-full sm:w-auto"
                                             asChild
                                         >
-                                            {/* @ts-ignore - The route name is dynamic and checking type is complicated */}
+                                            {/* @ts-expect-error - The route name is dynamic and checking type is complicated */}
                                             <Link href={`/checkout/${transaction.merchant_ref}`}>
                                                 Lihat Detail
                                                 <ArrowRight className="ml-1 h-3.5 w-3.5 transition-transform group-hover:translate-x-1" />

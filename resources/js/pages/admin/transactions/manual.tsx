@@ -1,15 +1,4 @@
-import { useState } from 'react';
 import { router, Link, usePage } from '@inertiajs/react';
-import AdminLayout from '@/layouts/admin-layout';
-import { Button } from '@/components/ui/button';
-import {
-    Card,
-    CardContent,
-    CardDescription,
-    CardHeader,
-    CardTitle,
-} from '@/components/ui/card';
-import { Alert, AlertDescription } from '@/components/ui/alert';
 import {
     CheckCircle2,
     Clock,
@@ -25,6 +14,17 @@ import {
     Hash,
     FileText,
 } from 'lucide-react';
+import { useState } from 'react';
+import { Alert, AlertDescription } from '@/components/ui/alert';
+import { Button } from '@/components/ui/button';
+import {
+    Card,
+    CardContent,
+    CardDescription,
+    CardHeader,
+    CardTitle,
+} from '@/components/ui/card';
+import AdminLayout from '@/layouts/admin-layout';
 
 type PaginatedData<T> = {
     data: T[];
@@ -70,7 +70,6 @@ export default function ManualTransactionPage({
     const { props } = usePage<PageProps>();
     const flash = props.flash;
 
-    const [processingId, setProcessingId] = useState<number | null>(null);
     const [modalTx, setModalTx] = useState<Transaction | null>(null);
     const [serialNumber, setSerialNumber] = useState('');
     const [notes, setNotes] = useState('');
@@ -103,7 +102,10 @@ export default function ManualTransactionPage({
     };
 
     const handleProcess = () => {
-        if (!modalTx || !serialNumber.trim()) return;
+        if (!modalTx || !serialNumber.trim()) {
+return;
+}
+
         setSubmitting(true);
 
         router.post(
@@ -129,8 +131,6 @@ export default function ManualTransactionPage({
         { key: 'done', label: 'Selesai', icon: CheckCircle2 },
         { key: 'all', label: 'Semua', icon: ClipboardList },
     ];
-
-    const pendingCount = filters.status === 'pending' ? transactions.total : null;
 
     return (
         <AdminLayout title="Transaksi Manual" headerTitle="Transaksi Manual">
@@ -159,6 +159,7 @@ export default function ManualTransactionPage({
                     {tabs.map((tab) => {
                         const Icon = tab.icon;
                         const isActive = filters.status === tab.key;
+
                         return (
                             <Link
                                 key={tab.key}
@@ -474,6 +475,7 @@ function StatusBadge({
             </span>
         );
     }
+
     if (status === 'PAID') {
         return (
             <span className="inline-flex items-center gap-1 rounded-md bg-orange-50 px-2 py-1 text-xs font-medium text-orange-700 ring-1 ring-inset ring-orange-600/20">
@@ -482,6 +484,7 @@ function StatusBadge({
             </span>
         );
     }
+
     if (status === 'UNPAID') {
         return (
             <span className="inline-flex items-center rounded-md bg-yellow-50 px-2 py-1 text-xs font-medium text-yellow-800 ring-1 ring-inset ring-yellow-600/20">
@@ -489,6 +492,7 @@ function StatusBadge({
             </span>
         );
     }
+
     if (status === 'EXPIRED') {
         return (
             <span className="inline-flex items-center rounded-md bg-red-50 px-2 py-1 text-xs font-medium text-red-700 ring-1 ring-inset ring-red-600/10">
@@ -496,6 +500,7 @@ function StatusBadge({
             </span>
         );
     }
+
     return (
         <span className="inline-flex items-center rounded-md bg-gray-50 px-2 py-1 text-xs font-medium text-gray-600 ring-1 ring-inset ring-gray-500/10">
             {status}

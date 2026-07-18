@@ -1,9 +1,10 @@
 import { Link, router } from '@inertiajs/react';
-import AdminLayout from '@/layouts/admin-layout';
 import { ChevronLeft } from 'lucide-react';
-import { ProductPriceIndexProps } from '@/types';
-import { useState, useRef, FormEvent } from 'react';
+import type { FormEvent } from 'react';
+import { useState, useRef } from 'react';
 import * as XLSX from 'xlsx';
+import AdminLayout from '@/layouts/admin-layout';
+import type { ProductPriceIndexProps } from '@/types';
 
 export default function ProductPriceIndex({
     product,
@@ -18,8 +19,10 @@ export default function ProductPriceIndex({
 
     const handleImportSubmit = async (e: FormEvent) => {
         e.preventDefault();
+
         if (!importFile || !importCategoryId) {
             alert('Pilih file dan kategori terlebih dahulu!');
+
             return;
         }
 
@@ -29,7 +32,10 @@ export default function ProductPriceIndex({
             const reader = new FileReader();
             reader.onload = (e) => {
                 const data = e.target?.result;
-                if (!data) return;
+
+                if (!data) {
+return;
+}
 
                 const workbook = XLSX.read(data, { type: 'binary' });
                 const sheetName = workbook.SheetNames[0];
@@ -43,9 +49,11 @@ export default function ProductPriceIndex({
                         const nameRaw = row[2];
                         const priceRaw = row[5];
                         
-                        if (!codeRaw || !nameRaw || !priceRaw) return null;
+                        if (!codeRaw || !nameRaw || !priceRaw) {
+return null;
+}
                         
-                        let price = typeof priceRaw === 'number' ? priceRaw : parseInt(String(priceRaw).replace(/[^0-9]/g, ''), 10);
+                        const price = typeof priceRaw === 'number' ? priceRaw : parseInt(String(priceRaw).replace(/[^0-9]/g, ''), 10);
                         
                         return {
                             code: String(codeRaw).trim(),
@@ -58,6 +66,7 @@ export default function ProductPriceIndex({
                 if (items.length === 0) {
                     alert('Tidak ada data valid yang ditemukan di file Excel.');
                     setIsImporting(false);
+
                     return;
                 }
 
@@ -69,7 +78,10 @@ export default function ProductPriceIndex({
                         setIsImportModalOpen(false);
                         setImportFile(null);
                         setImportCategoryId('');
-                        if (fileInputRef.current) fileInputRef.current.value = '';
+
+                        if (fileInputRef.current) {
+fileInputRef.current.value = '';
+}
                     },
                     onFinish: () => setIsImporting(false)
                 });

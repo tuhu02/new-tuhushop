@@ -3,7 +3,6 @@
 import * as React from "react"
 import { Area, AreaChart, CartesianGrid, XAxis, YAxis } from "recharts"
 
-import { useIsMobile } from "@/hooks/use-mobile"
 import {
   Card,
   CardAction,
@@ -15,9 +14,10 @@ import {
 import {
   ChartContainer,
   ChartTooltip,
-  ChartTooltipContent,
-  type ChartConfig,
+  ChartTooltipContent
+  
 } from "@/components/ui/chart"
+import type {ChartConfig} from "@/components/ui/chart";
 import {
   Select,
   SelectContent,
@@ -29,6 +29,7 @@ import {
   ToggleGroup,
   ToggleGroupItem,
 } from "@/components/ui/toggle-group"
+import { useIsMobile } from "@/hooks/use-mobile"
 
 export const description = "An interactive area chart for transaction revenue"
 
@@ -50,11 +51,14 @@ export function ChartAreaInteractive({ chartData = [] }: { chartData?: any[] }) 
   }, [isMobile])
 
   const filteredData = React.useMemo(() => {
-    if (!chartData || chartData.length === 0) return [];
+    if (!chartData || chartData.length === 0) {
+return [];
+}
     
     // The data passed from controller already spans 90 days ending at 'now'
     // Let's filter it further based on the selected range.
     let daysToSubtract = 90
+
     if (timeRange === "30d") {
       daysToSubtract = 30
     } else if (timeRange === "7d") {
@@ -83,10 +87,13 @@ export function ChartAreaInteractive({ chartData = [] }: { chartData?: any[] }) 
     } else if (value >= 1000) {
         return `Rp ${(value / 1000).toFixed(0)}rb`;
     }
+
     return `Rp ${value}`;
   };
 
-  if (!chartData || chartData.length === 0) return null;
+  if (!chartData || chartData.length === 0) {
+return null;
+}
 
   return (
     <Card className="@container/card">
@@ -163,6 +170,7 @@ export function ChartAreaInteractive({ chartData = [] }: { chartData?: any[] }) 
               minTickGap={32}
               tickFormatter={(value) => {
                 const date = new Date(value)
+
                 return date.toLocaleDateString("id-ID", {
                   month: "short",
                   day: "numeric",
@@ -188,7 +196,7 @@ export function ChartAreaInteractive({ chartData = [] }: { chartData?: any[] }) 
                     })
                   }}
                   indicator="dot"
-                  formatter={(value, name, item, index) => {
+                  formatter={(value, _name, item) => {
                     return (
                         <div className="flex flex-col gap-1 w-full">
                             <div className="flex justify-between items-center w-full gap-4">

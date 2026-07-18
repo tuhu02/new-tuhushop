@@ -1,14 +1,14 @@
 import { Head } from '@inertiajs/react';
-import AppLayout from '@/layouts/app-layout';
-import type { BreadcrumbItem } from '@/types';
-import { initializeEcho } from '@/lib/echo';
-import { useEffect, useMemo, useState, type ReactNode } from 'react';
+import { useEffect, useMemo, useState  } from 'react';
+import type {ReactNode} from 'react';
+import CheckoutStageBar from '@/components/customer/payment/checkout-stage-bar';
+import type {CheckoutStage} from '@/components/customer/payment/checkout-stage-bar';
 import InstructionModal from '@/components/customer/payment/instruction-modal';
-import CheckoutStageBar, {
-    type CheckoutStage,
-} from '@/components/customer/payment/checkout-stage-bar';
-import TransactionInfoCard from '@/components/customer/payment/transaction-info-card';
 import PayCodeSection from '@/components/customer/payment/pay-code-section';
+import TransactionInfoCard from '@/components/customer/payment/transaction-info-card';
+import AppLayout from '@/layouts/app-layout';
+import { initializeEcho } from '@/lib/echo';
+import type { BreadcrumbItem } from '@/types';
 
 type PaymentInstruction = {
     title: string;
@@ -83,16 +83,24 @@ export default function PaymentCheckout({
         transaction.digiflazz_sn,
     );
 
-    const expiredAtDate = transaction.expired_at
-        ? new Date(transaction.expired_at)
-        : null;
+    const expiredAtDate = useMemo(
+        () =>
+            transaction.expired_at
+                ? new Date(transaction.expired_at)
+                : null,
+        [transaction.expired_at],
+    );
 
     const [remainingSeconds, setRemainingSeconds] = useState(() => {
-        if (!expiredAtDate) return 0;
+        if (!transaction.expired_at) {
+return 0;
+}
+
+        const expiredAt = new Date(transaction.expired_at);
 
         return Math.max(
             0,
-            Math.floor((expiredAtDate.getTime() - Date.now()) / 1000),
+            Math.floor((expiredAt.getTime() - Date.now()) / 1000),
         );
     });
 
@@ -111,12 +119,9 @@ export default function PaymentCheckout({
     const shouldShowPayCodeSection = !isTerminalStatus;
 
     useEffect(() => {
-        if (!expiredAtDate) return;
-
-        if (isTerminalStatus) {
-            setRemainingSeconds(0);
-            return;
-        }
+        if (!expiredAtDate || isTerminalStatus) {
+return;
+}
 
         const interval = window.setInterval(() => {
             setRemainingSeconds(
@@ -149,7 +154,9 @@ export default function PaymentCheckout({
                 (event: TransactionStatusUpdatedEvent) => {
                     const latestStatus = event.status;
 
-                    if (!latestStatus) return;
+                    if (!latestStatus) {
+return;
+}
 
                     setCurrentStatus(latestStatus);
 
@@ -219,22 +226,28 @@ export default function PaymentCheckout({
         [transaction.amount],
     );
 
+    const effectiveRemainingSeconds = isTerminalStatus ? 0 : remainingSeconds;
+
     const countdown = useMemo(() => {
-        const hours = Math.floor(remainingSeconds / 3600)
+        const hours = Math.floor(effectiveRemainingSeconds / 3600)
             .toString()
             .padStart(2, '0');
 
-        const minutes = Math.floor((remainingSeconds % 3600) / 60)
+        const minutes = Math.floor((effectiveRemainingSeconds % 3600) / 60)
             .toString()
             .padStart(2, '0');
 
-        const seconds = (remainingSeconds % 60).toString().padStart(2, '0');
+        const seconds = (effectiveRemainingSeconds % 60)
+            .toString()
+            .padStart(2, '0');
 
         return `${hours}:${minutes}:${seconds}`;
-    }, [remainingSeconds]);
+    }, [effectiveRemainingSeconds]);
 
     const handleCopy = async () => {
-        if (!transaction.pay_code) return;
+        if (!transaction.pay_code) {
+return;
+}
 
         await navigator.clipboard.writeText(transaction.pay_code);
 

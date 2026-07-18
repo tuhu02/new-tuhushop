@@ -1,10 +1,10 @@
 import { Link, useForm } from '@inertiajs/react';
-import InputError from '@/components/ui/input-error';
+import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
+import InputError from '@/components/ui/input-error';
 import { Label } from '@/components/ui/label';
 import AdminLayout from '@/layouts/admin-layout';
-import { useState } from 'react';
 
 export default function PaymentMethodCreate() {
     const { data, setData, post, processing, errors } = useForm({
@@ -18,6 +18,7 @@ export default function PaymentMethodCreate() {
 
     const handleLogoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0];
+
         if (file) {
             setData('logo', file);
             const reader = new FileReader();

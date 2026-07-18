@@ -1,12 +1,12 @@
 import { Link, useForm } from '@inertiajs/react';
-import { FormEvent } from 'react';
+import { ChevronLeft } from 'lucide-react';
+import type { FormEvent } from 'react';
 import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import AdminLayout from '@/layouts/admin-layout';
-import { ChevronLeft } from 'lucide-react';
-import { Brand, Product } from '@/types/admin';
+import type { Product } from '@/types/admin';
 
 interface PriceListCategory {
     id: number;

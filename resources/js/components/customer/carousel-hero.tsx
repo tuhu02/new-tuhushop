@@ -1,5 +1,5 @@
-import { useEffect, useRef, useState } from 'react';
 import { ShieldCheck, CircleDollarSign, Headphones } from 'lucide-react';
+import { useEffect, useRef, useState } from 'react';
 import { cn } from '@/lib/utils';
 
 type CarouselHeroProps = {
@@ -26,7 +26,9 @@ export default function CarouselHero({ carousels }: CarouselHeroProps) {
     const goTo = (index: number) => {
         setActiveIndex(index);
 
-        if (intervalRef.current) clearInterval(intervalRef.current);
+        if (intervalRef.current) {
+clearInterval(intervalRef.current);
+}
 
         intervalRef.current = setInterval(() => {
             setActiveIndex((prev) => (prev + 1) % carousels.length);
@@ -34,18 +36,24 @@ export default function CarouselHero({ carousels }: CarouselHeroProps) {
     };
 
     useEffect(() => {
-        if (carousels.length <= 1) return;
+        if (carousels.length <= 1) {
+return;
+}
 
         intervalRef.current = setInterval(() => {
             setActiveIndex((prev) => (prev + 1) % carousels.length);
         }, AUTOPLAY_DELAY);
 
         return () => {
-            if (intervalRef.current) clearInterval(intervalRef.current);
+            if (intervalRef.current) {
+clearInterval(intervalRef.current);
+}
         };
     }, [carousels.length]);
 
-    if (carousels.length === 0) return null;
+    if (carousels.length === 0) {
+return null;
+}
 
     const active = carousels[activeIndex];
 

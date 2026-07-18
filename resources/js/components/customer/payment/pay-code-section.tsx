@@ -1,5 +1,5 @@
-import { useEffect, useRef, useState } from 'react';
 import QRCode from 'qrcode';
+import { useEffect, useRef, useState } from 'react';
 
 type PayCodeSectionProps = {
     paymentMethodName: string | null;
@@ -26,7 +26,9 @@ function QrCanvas({
     const canvasRef = useRef<HTMLCanvasElement>(null);
 
     useEffect(() => {
-        if (!canvasRef.current) return;
+        if (!canvasRef.current) {
+return;
+}
 
         QRCode.toCanvas(canvasRef.current, qrString, {
             width: size,

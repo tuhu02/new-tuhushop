@@ -1,7 +1,7 @@
 import { useState } from 'react';
-import SectionCard from './section-card';
-import type { PaymentMethod } from '@/types';
 import { cn } from '@/lib/utils';
+import type { PaymentMethod } from '@/types';
+import SectionCard from './section-card';
 
 type PaymentSectionProps = {
     paymentMethods: (PaymentMethod & { logo_url?: string })[];
@@ -16,6 +16,7 @@ export default function PaymentSection({
 }: PaymentSectionProps) {
     const activePayments = paymentMethods.filter((method) => method.is_active);
     const [openMethod, setOpenMethod] = useState<number | null>(null);
+
     return (
         <SectionCard number={4} title="Pilih Pembayaran">
             <div className="space-y-3 text-slate-900 dark:text-slate-100">

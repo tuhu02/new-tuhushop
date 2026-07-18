@@ -1,7 +1,7 @@
 import { Link, useForm } from '@inertiajs/react';
-import InputError from '@/components/ui/input-error';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
+import InputError from '@/components/ui/input-error';
 import { Label } from '@/components/ui/label';
 import AdminLayout from '@/layouts/admin-layout';
 import type { Category } from '@/types';

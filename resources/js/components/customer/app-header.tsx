@@ -1,9 +1,10 @@
 import { Link, usePage } from '@inertiajs/react';
 import { House, Menu, Search, Clock } from 'lucide-react';
 import { useEffect, useMemo, useRef, useState } from 'react';
+import { Breadcrumbs } from '@/components/customer/breadcrumbs';
+import { UserMenuContent } from '@/components/customer/user-menu-content';
 import AppLogo from '@/components/ui/app-logo';
 import AppLogoIcon from '@/components/ui/app-logo-icon';
-import { Breadcrumbs } from '@/components/customer/breadcrumbs';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import {
@@ -15,7 +16,6 @@ import {
     NavigationMenu,
     NavigationMenuItem,
     NavigationMenuList,
-    navigationMenuTriggerStyle,
 } from '@/components/ui/navigation-menu';
 import {
     Sheet,
@@ -25,7 +25,6 @@ import {
     SheetTitle,
     SheetTrigger,
 } from '@/components/ui/sheet';
-import { UserMenuContent } from '@/components/customer/user-menu-content';
 import { useCurrentUrl } from '@/hooks/use-current-url';
 import { useInitials } from '@/hooks/use-initials';
 import { cn } from '@/lib/utils';
@@ -57,9 +56,6 @@ const getMainNavItems = (isAuthenticated: boolean): NavItem[] => [
     },
 ];
 
-const activeItemStyles =
-    'text-neutral-900 dark:bg-neutral-800 dark:text-neutral-100';
-
 export function AppHeader({ breadcrumbs = [] }: Props) {
     const page = usePage();
     const { auth } = page.props;
@@ -72,12 +68,13 @@ export function AppHeader({ breadcrumbs = [] }: Props) {
     const [isSearchOpen, setIsSearchOpen] = useState(false);
     const mainNavItems = getMainNavItems(currentUser !== null);
 
-    const searchProducts =
-        (page.props.headerSearchProducts as SearchProduct[] | undefined) ?? [];
-
     const normalizedQuery = searchValue.trim().toLowerCase();
 
     const filteredProducts = useMemo(() => {
+        const searchProducts =
+            (page.props.headerSearchProducts as SearchProduct[] | undefined) ??
+            [];
+
         if (normalizedQuery === '') {
             return [];
         }
@@ -87,7 +84,7 @@ export function AppHeader({ breadcrumbs = [] }: Props) {
                 product.name.toLowerCase().includes(normalizedQuery),
             )
             .slice(0, 8);
-    }, [normalizedQuery, searchProducts]);
+    }, [normalizedQuery, page.props.headerSearchProducts]);
 
     useEffect(() => {
         function handleClickOutside(event: MouseEvent): void {

@@ -1,10 +1,10 @@
-import { useState, useRef } from 'react';
 import { router, useForm } from '@inertiajs/react';
-import AdminLayout from '@/layouts/admin-layout';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Card, CardContent } from '@/components/ui/card';
 import { Trash2, Upload, ImageIcon } from 'lucide-react';
+import { useState, useRef } from 'react';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent } from '@/components/ui/card';
+import { Input } from '@/components/ui/input';
+import AdminLayout from '@/layouts/admin-layout';
 
 interface IconData {
     id: number;
@@ -23,13 +23,19 @@ export default function IconGallery({ icons }: { icons: IconData[] }) {
 
     const handleUpload = (e: React.FormEvent) => {
         e.preventDefault();
-        if (!data.image) return;
+
+        if (!data.image) {
+return;
+}
 
         setIsUploading(true);
         post('/admin/icons', {
             onSuccess: () => {
                 reset();
-                if (fileInputRef.current) fileInputRef.current.value = '';
+
+                if (fileInputRef.current) {
+fileInputRef.current.value = '';
+}
             },
             onFinish: () => setIsUploading(false),
             forceFormData: true,

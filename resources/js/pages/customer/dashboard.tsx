@@ -48,6 +48,7 @@ export default function Dashboard({
         (groups, product) => {
             if (product.categories.length === 0) {
                 groups.Lainnya = [...(groups.Lainnya ?? []), product];
+
                 return groups;
             }
 
@@ -68,9 +69,17 @@ export default function Dashboard({
             (category) => category.toLowerCase() === b.toLowerCase(),
         );
 
-        if (aIndex !== -1 && bIndex !== -1) return aIndex - bIndex;
-        if (aIndex !== -1) return -1;
-        if (bIndex !== -1) return 1;
+        if (aIndex !== -1 && bIndex !== -1) {
+return aIndex - bIndex;
+}
+
+        if (aIndex !== -1) {
+return -1;
+}
+
+        if (bIndex !== -1) {
+return 1;
+}
 
         return a.localeCompare(b);
     });

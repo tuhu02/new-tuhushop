@@ -23,7 +23,9 @@ type MetricsData = {
 };
 
 export function SectionCards({ metrics }: { metrics?: MetricsData }) {
-  if (!metrics) return null;
+  if (!metrics) {
+return null;
+}
 
   const formatCurrency = (amount: number) => {
       return new Intl.NumberFormat('id-ID', {
@@ -49,6 +51,7 @@ export function SectionCards({ metrics }: { metrics?: MetricsData }) {
               </Badge>
           );
       }
+
       return (
           <Badge variant="outline" className="text-gray-600 bg-gray-50 border-gray-200">
               <IconMinus className="mr-1 h-3 w-3" />

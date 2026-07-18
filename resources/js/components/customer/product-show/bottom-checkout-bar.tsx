@@ -42,10 +42,13 @@ export default function BottomCheckoutBar({
               }`;
 
     const handleCheckout = async () => {
-        if (selectedPrice === null) return;
+        if (selectedPrice === null) {
+return;
+}
 
         if (selectedChannel === null) {
             alert('Pilih metode pembayaran terlebih dahulu');
+
             return;
         }
 
@@ -55,11 +58,13 @@ export default function BottomCheckoutBar({
 
         if (Object.keys(customerInputs).length === 0 || hasEmptyInput) {
             alert('Lengkapi data tujuan terlebih dahulu');
+
             return;
         }
 
         if (phoneNumber.trim() === '') {
             alert('Masukkan nomor WhatsApp terlebih dahulu');
+
             return;
         }
 

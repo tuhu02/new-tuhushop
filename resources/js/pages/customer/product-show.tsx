@@ -1,3 +1,5 @@
+import { Head } from '@inertiajs/react';
+import { useState } from 'react';
 import {
     BottomCheckoutBar,
     NominalSection,
@@ -15,8 +17,6 @@ import type {
     User,
     PaymentMethod,
 } from '@/types';
-import { Head } from '@inertiajs/react';
-import { useEffect, useState } from 'react';
 
 type ProductShowPageProps = {
     product: {
@@ -84,12 +84,7 @@ export default function ProductShow({
     >({});
 
     const isManualProduct = product.fulfillment_type === 'manual';
-
-    useEffect(() => {
-        if (isManualProduct && quantity !== 1) {
-            setQuantity(1);
-        }
-    }, [isManualProduct, quantity]);
+    const effectiveQuantity = isManualProduct ? 1 : quantity;
 
     const handleCustomerInputChange = (name: string, value: string) => {
         setCustomerInputs((previousInputs) => ({
@@ -123,7 +118,7 @@ export default function ProductShow({
         selectedCategoryGroup?.category.name ?? 'Instant Top Up';
 
     const basePrice =
-        selectedPrice !== null ? selectedPrice.price * quantity : 0;
+        selectedPrice !== null ? selectedPrice.price * effectiveQuantity : 0;
 
     const feeFlat = selectedChannel?.fee ?? 0;
     const feePercent = selectedChannel?.fee_percent ?? 0;
@@ -169,11 +164,17 @@ export default function ProductShow({
                                 quantity={quantity}
                                 disabled={isManualProduct}
                                 onIncrease={() => {
-                                    if (isManualProduct) return;
+                                    if (isManualProduct) {
+return;
+}
+
                                     setQuantity((prev) => prev + 1);
                                 }}
                                 onDecrease={() => {
-                                    if (isManualProduct) return;
+                                    if (isManualProduct) {
+return;
+}
+
                                     setQuantity((prev) =>
                                         Math.max(1, prev - 1),
                                     );
@@ -224,7 +225,7 @@ export default function ProductShow({
             <BottomCheckoutBar
                 selectedPrice={selectedPrice}
                 selectedChannel={selectedChannel ?? null}
-                quantity={quantity}
+                quantity={effectiveQuantity}
                 feeFlat={feeFlat}
                 feePercent={feePercent}
                 feePercentAmount={feePercentAmount}

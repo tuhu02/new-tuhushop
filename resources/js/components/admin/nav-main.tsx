@@ -1,5 +1,5 @@
 import { Link, usePage } from '@inertiajs/react';
-import { type Icon } from '@tabler/icons-react';
+import type {Icon} from '@tabler/icons-react';
 import {
     SidebarGroup,
     SidebarGroupContent,

@@ -1,11 +1,11 @@
 import { Link, useForm } from '@inertiajs/react';
-import InputError from '@/components/ui/input-error';
+import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
+import InputError from '@/components/ui/input-error';
 import { Label } from '@/components/ui/label';
 import AdminLayout from '@/layouts/admin-layout';
 import type { PaymentMethod } from '@/types';
-import { useState } from 'react';
 
 type PaymentMethodWithLogoUrl = PaymentMethod & {
     logo_url?: string | null;
@@ -29,6 +29,7 @@ export default function PaymentMethodEdit({
 
     const handleLogoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0];
+
         if (file) {
             setData('logo', file);
             const reader = new FileReader();

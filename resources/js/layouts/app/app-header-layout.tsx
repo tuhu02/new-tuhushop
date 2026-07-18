@@ -1,7 +1,7 @@
 import { AppContent } from '@/components/customer/app-content';
+import { AppFooter } from '@/components/customer/app-footer';
 import { AppHeader } from '@/components/customer/app-header';
 import { AppShell } from '@/components/customer/app-shell';
-import { AppFooter } from '@/components/customer/app-footer';
 import type { AppLayoutProps } from '@/types';
 
 export default function AppHeaderLayout({

@@ -1,5 +1,3 @@
-import { Headphones } from 'lucide-react';
-
 interface Instruction {
     title: string;
     content: string;
