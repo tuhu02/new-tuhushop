@@ -68,8 +68,10 @@ export default function ProductShow({
     pricesByCategory,
     paymentMethods,
 }: ProductShowPageProps) {
+    const initialCategoryId = pricesByCategory[0]?.category.id ?? null;
+
     const [selectedCategoryId, setSelectedCategoryId] = useState<number | null>(
-        pricesByCategory[0]?.category.id ?? null,
+        initialCategoryId,
     );
     const [selectedPriceId, setSelectedPriceId] = useState<number | null>(null);
     const [quantity, setQuantity] = useState<number>(1);
@@ -103,18 +105,10 @@ export default function ProductShow({
 
     const priceItems = selectedCategoryGroup?.prices ?? [];
 
-    useEffect(() => {
-        if (
-            selectedCategoryId === null &&
-            pricesByCategory[0]?.category.id !== undefined
-        ) {
-            setSelectedCategoryId(pricesByCategory[0].category.id);
-        }
-    }, [pricesByCategory, selectedCategoryId]);
-
-    useEffect(() => {
+    const handleSelectCategory = (categoryId: number) => {
+        setSelectedCategoryId(categoryId);
         setSelectedPriceId(null);
-    }, [selectedCategoryId]);
+    };
 
     const selectedPrice =
         selectedPriceId !== null
@@ -158,7 +152,7 @@ export default function ProductShow({
                             categoryTitle={categoryTitle}
                             pricesByCategory={pricesByCategory}
                             selectedCategoryId={selectedCategoryId}
-                            onSelectCategory={setSelectedCategoryId}
+                            onSelectCategory={handleSelectCategory}
                             priceItems={priceItems}
                             selectedPriceId={selectedPriceId}
                             onSelectPrice={setSelectedPriceId}
