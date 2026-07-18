@@ -190,7 +190,7 @@ export default function ManualTransactionPage({
                     </CardHeader>
                     <CardContent className="p-0">
                         <div className="overflow-x-auto">
-                            <table className="w-full min-w-[900px] text-left text-sm">
+                            <table className="w-full min-w-225 text-left text-sm">
                                 <thead className="bg-muted/40 border-b border-sidebar-border/70">
                                     <tr>
                                         <th className="px-4 py-3 font-medium text-muted-foreground">Referensi</th>
@@ -258,7 +258,7 @@ export default function ManualTransactionPage({
 
                                             {/* Target / Customer No */}
                                             <td className="px-4 py-3">
-                                                <div className="font-mono text-xs bg-muted rounded px-2 py-1 inline-block max-w-[180px] truncate" title={tx.digiflazz_customer_no || '-'}>
+                                                <div className="font-mono text-xs bg-muted rounded px-2 py-1 inline-block max-w-45 truncate" title={tx.digiflazz_customer_no || '-'}>
                                                     {tx.digiflazz_customer_no || '-'}
                                                 </div>
                                                 {tx.customer_inputs && Object.keys(tx.customer_inputs).length > 0 && (
@@ -516,9 +516,9 @@ function InfoRow({
 }) {
     return (
         <div className="flex items-start gap-2.5">
-            <Icon className="h-3.5 w-3.5 mt-0.5 text-muted-foreground flex-shrink-0" />
+            <Icon className="h-3.5 w-3.5 mt-0.5 text-muted-foreground shrink-0" />
             <div className="flex items-start gap-2 flex-1 min-w-0">
-                <span className="text-xs text-muted-foreground w-20 flex-shrink-0">{label}</span>
+                <span className="text-xs text-muted-foreground w-20 shrink-0">{label}</span>
                 <span className={`text-xs font-medium truncate ${mono ? 'font-mono' : ''}`}>{value}</span>
             </div>
         </div>

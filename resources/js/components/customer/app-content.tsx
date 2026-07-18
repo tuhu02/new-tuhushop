@@ -21,7 +21,7 @@ export function AppContent({ variant = 'sidebar', children, ...props }: Props) {
     return (
         <main
             className={cn(
-                'relative mx-auto flex min-h-0 w-full max-w-7xl flex-1 flex-col gap-4 overflow-x-hidden overflow-y-auto rounded-xl',
+                'relative mx-auto flex w-full max-w-7xl flex-1 flex-col gap-4 overflow-x-hidden rounded-xl',
                 className,
             )}
             {...restProps}
