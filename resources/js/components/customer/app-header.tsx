@@ -44,7 +44,7 @@ type SearchProduct = {
     thumbnail_url: string | null;
 };
 
-const mainNavItems: NavItem[] = [
+const getMainNavItems = (isAuthenticated: boolean): NavItem[] => [
     {
         title: 'Home',
         href: dashboard(),
@@ -52,7 +52,7 @@ const mainNavItems: NavItem[] = [
     },
     {
         title: 'Transaksi',
-        href: history(),
+        href: isAuthenticated ? history() : login(),
         icon: Clock,
     },
 ];
@@ -70,6 +70,7 @@ export function AppHeader({ breadcrumbs = [] }: Props) {
     const searchContainerRef = useRef<HTMLDivElement | null>(null);
     const [searchValue, setSearchValue] = useState('');
     const [isSearchOpen, setIsSearchOpen] = useState(false);
+    const mainNavItems = getMainNavItems(currentUser !== null);
 
     const searchProducts =
         (page.props.headerSearchProducts as SearchProduct[] | undefined) ?? [];
