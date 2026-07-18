@@ -28,7 +28,7 @@ import {
 import { useCurrentUrl } from '@/hooks/use-current-url';
 import { useInitials } from '@/hooks/use-initials';
 import { cn } from '@/lib/utils';
-import { dashboard, login, history } from '@/routes';
+import { home, dashboard, login, history } from '@/routes';
 import { show as showProduct } from '@/routes/product';
 import type { BreadcrumbItem, NavItem } from '@/types';
 
@@ -46,7 +46,7 @@ type SearchProduct = {
 const getMainNavItems = (isAuthenticated: boolean): NavItem[] => [
     {
         title: 'Home',
-        href: dashboard(),
+        href: home(),
         icon: House,
     },
     {
@@ -141,7 +141,10 @@ export function AppHeader({ breadcrumbs = [] }: Props) {
                                                 const isActive =
                                                     isCurrentUrl(item.href) ||
                                                     (item.title === 'Home' &&
-                                                        isCurrentUrl('/'));
+                                                        (isCurrentUrl('/') ||
+                                                            isCurrentUrl(
+                                                                '/dashboard',
+                                                            )));
 
                                                 return (
                                                     <SheetClose
@@ -175,7 +178,7 @@ export function AppHeader({ breadcrumbs = [] }: Props) {
                     </div>
 
                     <Link
-                        href={dashboard()}
+                        href={home()}
                         prefetch
                         className="flex items-center space-x-2"
                     >
@@ -190,7 +193,8 @@ export function AppHeader({ breadcrumbs = [] }: Props) {
                                     const isActive =
                                         isCurrentUrl(item.href) ||
                                         (item.title === 'Home' &&
-                                            isCurrentUrl('/'));
+                                            (isCurrentUrl('/') ||
+                                                isCurrentUrl('/dashboard')));
 
                                     return (
                                         <NavigationMenuItem
