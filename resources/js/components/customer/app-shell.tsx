@@ -13,7 +13,7 @@ export function AppShell({ children, variant = 'sidebar' }: Props) {
 
     if (variant === 'header') {
         return (
-            <div className="flex min-h-screen w-full flex-col">
+            <div className="flex h-screen w-full flex-col overflow-hidden">
                 {children}
             </div>
         );
