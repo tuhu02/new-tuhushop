@@ -15,7 +15,6 @@ export function AppFooter() {
         <footer className="w-full overflow-x-hidden border-t border-border/40 bg-background/95 backdrop-blur supports-backdrop-filter:bg-background/60">
             <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
                 <div className="flex flex-col gap-6 md:flex-row md:items-start md:justify-between">
-                    {/* Kiri: Logo + Deskripsi */}
                     <div className="flex flex-col items-center gap-2 md:max-w-xs md:items-start">
                         <div className="flex items-center gap-2">
                             <AppLogoIcon className="h-8 w-auto" />
