@@ -53,11 +53,15 @@ class TransactionController extends Controller
             $transaction->refresh();
 
             if ($previousStatus !== (string) $transaction->status) {
-                broadcast(new TransactionStatusUpdated(
-                    reference: (string) $transaction->reference,
-                    status: (string) $transaction->status,
-                    merchantRef: (string) $transaction->merchant_ref,
-                ));
+                try {
+                    broadcast(new TransactionStatusUpdated(
+                        reference: (string) $transaction->reference,
+                        status: (string) $transaction->status,
+                        merchantRef: (string) $transaction->merchant_ref,
+                    ));
+                } catch (\Throwable $e) {
+                    Log::warning('Websocket broadcast failed: ' . $e->getMessage());
+                }
             }
 
             $status = strtoupper((string) ($data['status'] ?? ''));
@@ -145,11 +149,15 @@ class TransactionController extends Controller
 
             $transaction->refresh();
 
-            broadcast(new TransactionStatusUpdated(
-                reference: (string) $transaction->reference,
-                status: (string) $transaction->status,
-                merchantRef: (string) $transaction->merchant_ref,
-            ));
+            try {
+                broadcast(new TransactionStatusUpdated(
+                    reference: (string) $transaction->reference,
+                    status: (string) $transaction->status,
+                    merchantRef: (string) $transaction->merchant_ref,
+                ));
+            } catch (\Throwable $e) {
+                Log::warning('Websocket broadcast failed: ' . $e->getMessage());
+            }
         }
 
         return response()->json(['success' => true]);
@@ -376,12 +384,16 @@ class TransactionController extends Controller
             $this->sendInvoiceEmail($transaction);
         }
 
-        broadcast(new DigiflazzStatusUpdated(
-            reference: (string) $transaction->reference,
-            merchantRef: (string) $transaction->merchant_ref,
-            digiflazzStatus: $transaction->digiflazz_status,
-            digiflazzSn: $transaction->digiflazz_sn,
-        ));
+        try {
+            broadcast(new DigiflazzStatusUpdated(
+                reference: (string) $transaction->reference,
+                merchantRef: (string) $transaction->merchant_ref,
+                digiflazzStatus: $transaction->digiflazz_status,
+                digiflazzSn: $transaction->digiflazz_sn,
+            ));
+        } catch (\Throwable $e) {
+            Log::warning('Websocket broadcast failed: ' . $e->getMessage());
+        }
 
         return response()->json(['success' => true]);
     }

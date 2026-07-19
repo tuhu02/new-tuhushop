@@ -168,7 +168,7 @@ export default function Dashboard({
                                 ),
                             )}
 
-                            <section className="w-full overflow-hidden rounded-2xl border border-gray-200 bg-white">
+                            <section className="w-full overflow-hidden rounded-2xl border border-slate-200 bg-white dark:border-slate-800 dark:bg-slate-900">
                                 <div className="relative flex flex-col items-center gap-6 px-6 py-8 text-center md:flex-row md:gap-8 md:px-8 md:py-10 md:text-left">
                                     <div className="relative z-10 shrink-0">
                                         <img
@@ -179,24 +179,24 @@ export default function Dashboard({
                                     </div>
 
                                     <div className="relative z-10 flex flex-col items-center md:items-start">
-                                        <h2 className="text-xl font-bold text-gray-900 md:text-2xl">
+                                        <h2 className="text-xl font-bold text-gray-900 md:text-2xl dark:text-white">
                                             Gak nemu yang kamu cari?
                                         </h2>
 
-                                        <p className="mt-2 max-w-md text-sm text-gray-700 md:text-base">
+                                        <p className="mt-2 max-w-md text-sm text-gray-700 md:text-base dark:text-slate-400">
                                             Kasih tau kami game atau produk yang
                                             harusnya ada di Tuhu Shop.
                                         </p>
 
-                                        <button className="mt-6 w-full rounded-full border border-blue-700 px-6 py-2.5 font-semibold text-blue-700 transition hover:bg-blue-50 sm:w-auto md:px-8 md:py-3">
+                                        <button className="mt-6 w-full rounded-full border border-blue-700 px-6 py-2.5 font-semibold text-blue-700 transition hover:bg-blue-50 sm:w-auto md:px-8 md:py-3 dark:border-blue-500 dark:text-blue-400 dark:hover:bg-blue-950/30">
                                             Kasih saran game atau produk
                                         </button>
                                     </div>
 
-                                    <div className="pointer-events-none absolute inset-y-0 right-0 hidden w-1/3 bg-linear-to-l from-indigo-50 to-transparent md:block" />
+                                    <div className="pointer-events-none absolute inset-y-0 right-0 hidden w-1/3 bg-linear-to-l from-indigo-50 to-transparent md:block dark:from-indigo-950/10" />
 
-                                    <div className="pointer-events-none absolute right-0 bottom-0 hidden h-40 w-72 rotate-12 rounded-xl bg-indigo-100/50 md:block" />
-                                    <div className="pointer-events-none absolute right-20 bottom-8 hidden h-32 w-56 rotate-12 rounded-xl bg-indigo-100/40 md:block" />
+                                    <div className="pointer-events-none absolute right-0 bottom-0 hidden h-40 w-72 rotate-12 rounded-xl bg-indigo-100/50 md:block dark:bg-indigo-950/30" />
+                                    <div className="pointer-events-none absolute right-20 bottom-8 hidden h-32 w-56 rotate-12 rounded-xl bg-indigo-100/40 md:block dark:bg-indigo-950/20" />
                                 </div>
                             </section>
                         </div>
