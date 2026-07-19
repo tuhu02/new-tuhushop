@@ -25,7 +25,7 @@ export function AppFooter() {
                             aman, dan terpercaya.
                         </p>
                         <p className="text-center text-sm text-muted-foreground md:text-left">
-                            Tinawun Kecamatan Malo Kabupaten Bojonegoro
+                            Ds.Tinawun Kec.Malo Kab.Bojonegoro
                         </p>
                     </div>
 
