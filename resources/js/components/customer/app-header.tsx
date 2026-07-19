@@ -369,7 +369,7 @@ export function AppHeader({ breadcrumbs = [] }: Props) {
                                 <Link href={login()}>Log in</Link>
                             </Button>
                         ) : (
-                            <DropdownMenu>
+                            <DropdownMenu modal={false}>
                                 <DropdownMenuTrigger asChild>
                                     <Button
                                         variant="ghost"
