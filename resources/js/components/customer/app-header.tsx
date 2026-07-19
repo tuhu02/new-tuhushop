@@ -373,7 +373,8 @@ export function AppHeader({ breadcrumbs = [] }: Props) {
                                 <DropdownMenuTrigger asChild>
                                     <Button
                                         variant="ghost"
-                                        className="size-10 rounded-full p-1"
+                                        size="icon-lg"
+                                        className="rounded-full"
                                     >
                                         <Avatar className="size-8 overflow-hidden rounded-full">
                                             <AvatarImage

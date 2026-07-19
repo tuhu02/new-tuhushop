@@ -163,7 +163,6 @@ export default function History({
                                             className="group w-full rounded-full sm:w-auto"
                                             asChild
                                         >
-                                            {/* @ts-expect-error - The route name is dynamic and checking type is complicated */}
                                             <Link
                                                 href={`/checkout/${transaction.merchant_ref}`}
                                             >

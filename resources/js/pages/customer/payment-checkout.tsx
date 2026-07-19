@@ -114,7 +114,7 @@ export default function PaymentCheckout({
 
     const isRedirectPayment = Boolean(redirectPaymentName);
 
-    const shouldShowPayCodeSection = !isTerminalStatus;
+    const shouldShowPayCodeSection = currentStatus === 'UNPAID';
 
     useEffect(() => {
         if (!expiredAtDate || isTerminalStatus) {
@@ -456,7 +456,7 @@ export default function PaymentCheckout({
                                 statusLabel={finalStatusLabel}
                                 showCountdown={
                                     Boolean(transaction.expired_at) &&
-                                    !isTerminalStatus &&
+                                    currentStatus === 'UNPAID' &&
                                     digiflazzStatus !== 'Sukses' &&
                                     digiflazzStatus !== 'Gagal'
                                 }
