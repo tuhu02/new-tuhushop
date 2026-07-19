@@ -35,11 +35,11 @@ class DashboardController extends Controller
         }
 
         // 2. New Customers
-        $currentCustomers = User::where('role', 'customer')
+        $currentCustomers = User::where('is_admin', false)
             ->where('created_at', '>=', $startOfMonth)
             ->count();
         
-        $lastMonthCustomers = User::where('role', 'customer')
+        $lastMonthCustomers = User::where('is_admin', false)
             ->whereBetween('created_at', [$startOfLastMonth, $endOfLastMonth])
             ->count();
             
