@@ -28,7 +28,7 @@ import {
 import { useCurrentUrl } from '@/hooks/use-current-url';
 import { useInitials } from '@/hooks/use-initials';
 import { cn } from '@/lib/utils';
-import { home, dashboard, login, history } from '@/routes';
+import { home, login, history } from '@/routes';
 import { show as showProduct } from '@/routes/product';
 import type { BreadcrumbItem, NavItem } from '@/types';
 
