@@ -31,6 +31,7 @@ class ProductPriceController extends Controller
                 ->with('category')
                 ->orderBy('price_list_category_id')
                 ->orderBy('order')
+                ->orderBy('price', 'asc')
                 ->orderBy('id')
                 ->cursorPaginate(15),
         ]);

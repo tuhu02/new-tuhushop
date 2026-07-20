@@ -20,7 +20,11 @@ class ProductController extends Controller
                 'categories:id,name',
                 'instructions',
                 'prices' => function ($query) {
-                    $query->with(['category', 'icon'])->orderBy('price_list_category_id')->orderBy('order');
+                    $query->with(['category', 'icon'])
+                        ->orderBy('price_list_category_id')
+                        ->orderBy('order')
+                        ->orderBy('price', 'asc')
+                        ->orderBy('id', 'asc');
                 }
             ])
             ->firstOrFail();
