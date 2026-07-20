@@ -50,6 +50,8 @@ class AppServiceProvider extends ServiceProvider
 
         DB::prohibitDestructiveCommands(app()->isProduction());
 
+        \Illuminate\Pagination\Paginator::currentPathResolver(fn () => url()->current());
+
         Password::defaults(
             fn(): ?Password => app()->isProduction()
                 ? Password::min(12)
