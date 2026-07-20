@@ -103,6 +103,7 @@ export default function PaymentCheckout({
     });
 
     const isTerminalStatus = terminalStatuses.has(currentStatus);
+    const isFinished = isTerminalStatus || digiflazzStatus === 'Sukses' || digiflazzStatus === 'Gagal';
 
     const paymentChannelCode =
         transaction.payment_channel_code?.toUpperCase() ?? '';
@@ -117,7 +118,7 @@ export default function PaymentCheckout({
     const shouldShowPayCodeSection = currentStatus === 'UNPAID';
 
     useEffect(() => {
-        if (!expiredAtDate || isTerminalStatus) {
+        if (!expiredAtDate || isFinished) {
             return;
         }
 
@@ -131,10 +132,10 @@ export default function PaymentCheckout({
         }, 1000);
 
         return () => window.clearInterval(interval);
-    }, [expiredAtDate, isTerminalStatus]);
+    }, [expiredAtDate, isFinished]);
 
     useEffect(() => {
-        if (isTerminalStatus) {
+        if (isFinished) {
             return;
         }
 
@@ -174,10 +175,10 @@ export default function PaymentCheckout({
         return () => {
             echo.leave(channelName);
         };
-    }, [transaction.reference, isTerminalStatus]);
+    }, [transaction.reference, isFinished]);
 
     useEffect(() => {
-        if (isTerminalStatus) {
+        if (isFinished) {
             return;
         }
 
@@ -199,10 +200,20 @@ export default function PaymentCheckout({
 
                 const payload = (await response.json()) as {
                     status?: string;
+                    digiflazz_status?: string | null;
+                    digiflazz_sn?: string | null;
                 };
 
                 if (payload.status) {
                     setCurrentStatus(payload.status);
+                }
+
+                if (payload.digiflazz_status !== undefined) {
+                    setDigiflazzStatus(payload.digiflazz_status);
+                }
+
+                if (payload.digiflazz_sn !== undefined) {
+                    setDigiflazzSn(payload.digiflazz_sn);
                 }
             } catch {
                 // Ignore transient polling errors.
@@ -212,7 +223,7 @@ export default function PaymentCheckout({
         return () => {
             window.clearInterval(interval);
         };
-    }, [transaction.reference, isTerminalStatus]);
+    }, [transaction.reference, isFinished]);
 
     const formattedAmount = useMemo(
         () =>
@@ -224,7 +235,7 @@ export default function PaymentCheckout({
         [transaction.amount],
     );
 
-    const effectiveRemainingSeconds = isTerminalStatus ? 0 : remainingSeconds;
+    const effectiveRemainingSeconds = isFinished ? 0 : remainingSeconds;
 
     const countdown = useMemo(() => {
         const hours = Math.floor(effectiveRemainingSeconds / 3600)

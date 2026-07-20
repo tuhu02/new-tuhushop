@@ -180,6 +180,8 @@ class TransactionController extends Controller
             'reference' => $transaction->reference,
             'merchant_ref' => $transaction->merchant_ref,
             'status' => $transaction->status,
+            'digiflazz_status' => $transaction->digiflazz_status,
+            'digiflazz_sn' => $transaction->digiflazz_sn,
         ]);
     }
 
@@ -341,12 +343,16 @@ class TransactionController extends Controller
         $signature = $request->header('X-Hub-Signature');
 
         $rawBody = $request->getContent();
-        $expected = 'sha1=' . hash_hmac('sha1', $rawBody, config('services.digiflazz.webhook_secret'));
+        $secret = config('services.digiflazz.webhook_secret');
+        $computed = hash_hmac('sha1', $rawBody, (string) $secret);
+        
+        $expectedWithPrefix = 'sha1=' . $computed;
 
-        if (!hash_equals($expected, (string) $signature)) {
+        if (!hash_equals($expectedWithPrefix, (string) $signature) && !hash_equals($computed, (string) $signature)) {
             Log::error('Signature Digiflazz tidak valid', [
                 'received' => $signature,
-                'expected' => $expected,
+                'expected_with_prefix' => $expectedWithPrefix,
+                'expected_raw' => $computed,
             ]);
 
             return response()->json(['message' => 'Invalid signature'], 403);

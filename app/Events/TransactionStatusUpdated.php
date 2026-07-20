@@ -20,9 +20,9 @@ class TransactionStatusUpdated implements ShouldBroadcastNow
         public string $merchantRef,
     ) {}
 
-    public function broadcastOn(): array
+    public function broadcastOn(): Channel
     {
-        return [new Channel("payments.{$this->reference}")];
+        return new Channel("transaction.{$this->reference}");
     }
 
     public function broadcastAs(): string
