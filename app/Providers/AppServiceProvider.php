@@ -34,7 +34,16 @@ class AppServiceProvider extends ServiceProvider
     {
         Date::use(CarbonImmutable::class);
 
-        if (app()->isProduction() || str_starts_with(config('app.url'), 'https://')) {
+        if (!app()->runningInConsole()) {
+            $host = request()->getHost();
+            $isLocalHost = in_array($host, ['localhost', '127.0.0.1', '::1'], true) 
+                || str_ends_with($host, '.test') 
+                || str_contains($host, 'new-tuhushop');
+
+            if (!$isLocalHost || app()->isProduction() || str_starts_with(config('app.url'), 'https://')) {
+                URL::forceScheme('https');
+            }
+        } elseif (app()->isProduction() || str_starts_with(config('app.url'), 'https://')) {
             URL::forceScheme('https');
         }
 

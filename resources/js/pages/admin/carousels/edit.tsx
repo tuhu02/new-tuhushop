@@ -8,20 +8,19 @@ import AdminLayout from '@/layouts/admin-layout';
 import type { CarouselItem } from '@/types';
 
 export default function CarouselEdit({ carousel }: { carousel: CarouselItem }) {
-    const { data, setData, put, processing, errors } = useForm({
+    const { data, setData, post, processing, errors } = useForm({
         title: carousel.title ?? '',
         description: carousel.description ?? '',
         image: null as File | null,
         sort_order: String(carousel.sort_order),
         is_active: carousel.is_active,
+        _method: 'PUT',
     });
 
     const submit = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
 
-        put(`/admin/carousels/${carousel.id}`, {
-            forceFormData: true,
-        });
+        post(`/admin/carousels/${carousel.id}`);
     };
 
     return (
