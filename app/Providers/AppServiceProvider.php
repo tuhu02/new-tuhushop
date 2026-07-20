@@ -42,6 +42,7 @@ class AppServiceProvider extends ServiceProvider
 
             if (!$isLocalHost || app()->isProduction() || str_starts_with(config('app.url'), 'https://')) {
                 URL::forceScheme('https');
+                request()->server->set('HTTPS', 'on');
             }
         } elseif (app()->isProduction() || str_starts_with(config('app.url'), 'https://')) {
             URL::forceScheme('https');
