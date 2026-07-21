@@ -127,7 +127,19 @@ export default function ProductShow({
 
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
-            <Head title={product.name} />
+            <Head>
+                <title>{`Top Up ${product.name} Murah & Cepat`}</title>
+                <meta name="description" content={`Top up ${product.name} murah, aman, cepat, dan terpercaya di TUHU SHOP. Layanan transaksi 24 jam otomatis dan terpercaya.`} />
+                <meta name="keywords" content={`top up ${product.name}, beli ${product.name}, ${product.name} murah, tuhu shop`} />
+                <meta property="og:type" content="website" />
+                <meta property="og:title" content={`Top Up ${product.name} Murah & Cepat - TUHU SHOP`} />
+                <meta property="og:description" content={`Top up ${product.name} murah, aman, cepat, dan terpercaya di TUHU SHOP. Layanan transaksi 24 jam otomatis.`} />
+                {product.thumbnail_url && <meta property="og:image" content={product.thumbnail_url} />}
+                <meta name="twitter:card" content="summary_large_image" />
+                <meta name="twitter:title" content={`Top Up ${product.name} Murah & Cepat - TUHU SHOP`} />
+                <meta name="twitter:description" content={`Top up ${product.name} murah, aman, cepat, dan terpercaya di TUHU SHOP. Layanan transaksi 24 jam otomatis.`} />
+                {product.thumbnail_url && <meta name="twitter:image" content={product.thumbnail_url} />}
+            </Head>
 
             <div className="px-4 pt-4">
                 <div className="mx-auto grid max-w-5xl items-start gap-3 xl:grid-cols-[minmax(260px,300px)_minmax(0,1fr)]">

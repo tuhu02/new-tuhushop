@@ -34,6 +34,7 @@
     </style>
 
     <title inertia>{{ config('app.name', 'Laravel') }}</title>
+    <meta name="description" content="TUHU SHOP adalah platform top up game murah, aman, cepat, dan terpercaya. Menyediakan top up Mobile Legends, PUBG Mobile, Free Fire, dan game populer lainnya.">
 
     <link rel="icon" href="/favicon.ico" sizes="any">
     <link rel="icon" href="/favicon.svg" type="image/svg+xml">

@@ -24,6 +24,7 @@ export default function ProductEdit({
         brand_id: string;
         category_ids: string[];
         thumbnail: File | null;
+        banner: File | null;
         is_active: boolean;
         input_fields: string;
         customer_no_template: string;
@@ -36,6 +37,7 @@ export default function ProductEdit({
         brand_id: product.brand_id ? String(product.brand_id) : '',
         category_ids: product.categories.map((category) => String(category.id)),
         thumbnail: null,
+        banner: null,
         is_active: product.is_active,
         input_fields:
             typeof product.input_fields === 'string'
@@ -231,6 +233,32 @@ export default function ProductEdit({
                         />
 
                         <InputError message={errors.thumbnail} />
+                    </div>
+
+                    <div className="grid gap-2">
+                        <Label htmlFor="banner">Banner / Background</Label>
+
+                        {product.banner_url && (
+                            <img
+                                src={product.banner_url}
+                                alt={`${product.name} banner`}
+                                className="h-24 w-full rounded-md object-cover"
+                            />
+                        )}
+
+                        <Input
+                            id="banner"
+                            type="file"
+                            accept="image/png,image/jpeg,image/jpg,image/webp"
+                            onChange={(event) =>
+                                setData(
+                                    'banner',
+                                    event.target.files?.[0] ?? null,
+                                )
+                            }
+                        />
+
+                        <InputError message={errors.banner} />
                     </div>
 
                     <div className="grid gap-2">

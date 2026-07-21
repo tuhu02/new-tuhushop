@@ -76,7 +76,7 @@ export default function CarouselHero({ carousels }: CarouselHeroProps) {
             <div className="relative mx-auto w-full max-w-[1345px] px-4 md:px-8 lg:px-14">
                 <div className="grid gap-5 lg:grid-cols-[minmax(0,1fr)_320px]">
                     {/* Main banner */}
-                    <div className="relative min-h-[260px] overflow-hidden rounded-xl bg-[#050532] md:min-h-[330px] lg:min-h-[360px]">
+                    <div className="relative h-[260px] overflow-hidden rounded-xl bg-[#050532] md:h-[330px] lg:h-[360px]">
                         <img
                             key={active.id}
                             src={active.image_url}
@@ -87,7 +87,7 @@ export default function CarouselHero({ carousels }: CarouselHeroProps) {
 
                     {/* Right thumbnails */}
                     {carousels.length > 1 && (
-                        <div className="hidden grid-rows-3 gap-3 lg:grid">
+                        <div className="hidden grid-rows-3 gap-3 lg:grid h-full">
                             {thumbnails.map((item, i) => {
                                 const isActive = i === 1;
 
@@ -102,7 +102,7 @@ export default function CarouselHero({ carousels }: CarouselHeroProps) {
                                     return (
                                         <div
                                             key={`ghost-${i}`}
-                                            className="flex items-center gap-4 rounded-lg bg-slate-100 px-3 py-3 dark:bg-slate-800/70"
+                                            className="flex h-full items-center gap-4 rounded-lg bg-slate-100 px-3 py-3 dark:bg-slate-800/70"
                                         >
                                             <div className="h-[60px] w-[60px] shrink-0 rounded-lg bg-slate-200 dark:bg-slate-700" />
                                             <div className="min-w-0 flex-1 space-y-2">
@@ -119,7 +119,7 @@ export default function CarouselHero({ carousels }: CarouselHeroProps) {
                                         type="button"
                                         onClick={() => goTo(slideIndex)}
                                         className={cn(
-                                            'flex items-center gap-4 rounded-lg border px-3 py-3 text-left transition',
+                                            'flex h-full items-center gap-4 rounded-lg border px-3 py-3 text-left transition',
                                             isActive
                                                 ? 'border-[#ff3d5f] bg-white shadow-sm dark:bg-slate-900'
                                                 : 'border-slate-200 bg-white hover:bg-slate-50 dark:border-slate-800 dark:bg-slate-900 dark:hover:bg-slate-800',

@@ -91,7 +91,17 @@ export default function Dashboard({
 
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
-            <Head title="Dashboard" />
+            <Head>
+                <title>Top Up Game Murah, Cepat & Terpercaya</title>
+                <meta name="description" content="TUHU SHOP adalah platform top up game murah, aman, cepat, dan terpercaya. Menyediakan top up Mobile Legends (ML), PUBG Mobile, Free Fire (FF), dan game populer lainnya dengan pelayanan 24 jam otomatis." />
+                <meta name="keywords" content="tuhu shop, tuhushop, top up game, top up ml, top up pubg, top up ff, top up murah, voucher game murah, top up game otomatis" />
+                <meta property="og:type" content="website" />
+                <meta property="og:title" content="TUHU SHOP - Top Up Game Murah, Cepat & Terpercaya" />
+                <meta property="og:description" content="TUHU SHOP adalah platform top up game murah, aman, cepat, dan terpercaya. Menyediakan top up Mobile Legends, PUBG Mobile, Free Fire, dan game populer lainnya dengan pelayanan 24 jam otomatis." />
+                <meta name="twitter:card" content="summary_large_image" />
+                <meta name="twitter:title" content="TUHU SHOP - Top Up Game Murah, Cepat & Terpercaya" />
+                <meta name="twitter:description" content="TUHU SHOP adalah platform top up game murah, aman, cepat, dan terpercaya. Menyediakan top up Mobile Legends, PUBG Mobile, Free Fire, dan game populer lainnya dengan pelayanan 24 jam otomatis." />
+            </Head>
 
             <div className="w-full overflow-x-hidden">
                 <div className="space-y-6 p-4">
