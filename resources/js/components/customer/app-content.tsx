@@ -10,10 +10,10 @@ type Props = React.ComponentProps<'main'> & {
 export function AppContent({ variant = 'sidebar', children, ...props }: Props) {
     const { className, ...restProps } = props;
 
-    if (variant === 'sidebar') {
+  if (variant === 'sidebar') {
         return (
             <SidebarInset
-                className={cn('overflow-x-hidden', className)}
+                className={cn('min-w-0 overflow-x-hidden', className)}
                 {...restProps}
             >
                 {children}
